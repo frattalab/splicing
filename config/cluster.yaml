@@ -1,0 +1,22 @@
+__default__:
+    h_vmem: 4G
+    h_rt:   1:0:0
+    pe: smp 1
+    R:  y
+merge_bam:
+    h_vmem:    4G
+    tmem:   4G
+    h_rt: 72:00:00    
+remove_dups:
+    h_vmem:    4G
+    tmem:   4G
+    h_rt: 72:00:00
+index_bam:
+    h_vmem:    4G
+    tmem:   4G
+    h_rt: 72:00:00
+build_whippet_index:
+    h_vmem:   4G
+    tmem:   4G
+    pe: smp 4
+    h_rt: 72:00:00
