@@ -1,12 +1,34 @@
+import pandas as pd
+import os
+import subprocess
+
+configfile: "config/config.yaml"
+
+
+#empty string
+bams = ""
+bam_dir = config['bam_dir']
+for file in os.listdir(bam_dir):
+	#for all the aligned sorted bams
+    if file.endswith(".Aligned.sorted.out.bam"):
+    	#samtools merge takes a list of space separated files
+        bams = bams + " " + os.path.join(bam_dir,file)
+
+#final output of the index run is a graph and an exons tab
+rule all_index:
+	input:
+		os.path.join(config['whippet_bin'],config['run_name'],config['run_name'],".jls"),
+		os.path.join(config['whippet_bin'],config['run_name'],config['run_name'],".exons.tab.gz")
+
 
 rule merge_bam:
 	input:
-		all the bam file
+		bam_dir
 	output:
-		temp(data_output_path + mergedbam)
+		temp(os.path.join(config['data_output_path'],config['run_name'],"merged.bam"))
 	shell:
 		"""
-		smatools merge bamfiles
+		samtools merge bams
 		"""
 rule sort_bam:
 	input:
@@ -15,7 +37,7 @@ rule sort_bam:
 		temp(data_output_path + sorted_mergedbam)
 	shell:
 		"""
-		smatools merge bamfiles
+		samtools merge bamfiles
 		"""
 rule remove_dups:
 	input:
@@ -24,7 +46,7 @@ rule remove_dups:
 		temp(data_output_path + sorted_mergedbam_rm_dup)
 	shell:
 		"""
-		smatools merge bamfiles
+		samtools merge bamfiles
 		"""
 rule index_bam:
 	input:
@@ -33,7 +55,7 @@ rule index_bam:
 		temp(data_output_path + sorted_mergedbam_rm_dup.bai)
 	shell:
 		"""
-		smatools merge bamfiles
+		samtools merge bamfiles
 		"""
 	
 rule build_whippet_index:
@@ -41,12 +63,16 @@ rule build_whippet_index:
 		bam = data_output_path + sorted_mergedbam_rm_dup,
 		bai = data_output_path + sorted_mergedbam_rm_dup.bai,
 	output:
-		whippet bin + run_name_index,
-		temp
+		whpt_graph = os.path.join(config['whippet_bin'],config['run_name'],config['run_name'],".jls"),
+		whpt_exons = os.path.join(config['whippet_bin'],config['run_name'],config['run_name'],".exons.tab.gz")
 	params:
 		fasta = 
 		gtf = 
+		annotation_julia_indices = os.path.join(config['whippet_bin'],config['run_name'],config['run_name'])
 
 	shell:
+		"""
+		config[julia] config[julia_bin]/whippet-index.jl --fasta {params.fasta} --bam {input.bam} --gtf {params.gtf} --index {params.annotation_julia_indices}
+		"""
 
 
