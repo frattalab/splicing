@@ -17,9 +17,10 @@ else
     RUN_NAME=$""
 fi
 
-FOLDER=$(date +"%Y%m%d%H%M")
+FOLDER=submissions/$(date +"%Y%m%d%H%M")
+
 mkdir -p $FOLDER
-cp config/config.yaml $FOLDER/$RUN_NAME.config.yaml
+cp config/config.yaml $FOLDER/$RUN_NAMEconfig.yaml
 
 snakemake -s build_whippet_sample_index.smk \
 --jobscript cluster_qsub.sh \
