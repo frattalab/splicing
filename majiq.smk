@@ -23,11 +23,10 @@
 # 		with open(output.majiqConfig,"w") as outFile:
 # 			for opt in options:
 # 				outFile.write(opt + "\n")
-TESTY TESYTY TESYT
 rule majiq_build:
 	input:
 	output:
 	shell:
 		"""
-		majiq build <transcript list> -c <configuration file> -j NT -o <build outdir>
+		config['majiq_path'] build <transcript list> -c <configuration file> -j NT -o <build outdir>
 		"""

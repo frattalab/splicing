@@ -14,7 +14,7 @@ julia: /SAN/vyplab/alb_projects/tools/julia-9d11f62bcb/bin/julia
 whippet_bin: /SAN/vyplab/alb_projects/tools/julia_pkgdir/v0.6/Whippet/bin/
 #the path where your samtools is installed
 samtools_path: /share/apps/genomics/samtools-1.9/bin/samtools
-
+majiq_path: /share/apps/python-3.6.9/bin/majiq
 
 fasta: /SAN/vyplab/vyplab_reference_genomes/sequence/human/GRCh38/Homo_sapiens.GRCh38.dna.primary_assembly.fa
 gtf: /SAN/vyplab/vyplab_reference_genomes/annotation/human/GRCh38/Homo_sapiens.GRCh38.96.gtf
