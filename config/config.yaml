@@ -1,5 +1,6 @@
 
 sampleCSVpath: /SAN/vyplab/alb_projects/data/muscle/wide_fastq.csv
+majiq_config: /SAN/vyplab/alb_projects/data/muscle/analysis/majiq/majiqConfig.tsv
 #folder where the fastq files are
 fastq_files: /Users/annaleigh/Documents/data/4su_bams/fastq/
 #lazy way of pulling out all the sample names in the fastq fiels
@@ -19,3 +20,5 @@ majiq_path: /share/apps/python-3.6.9/bin/majiq
 fasta: /SAN/vyplab/vyplab_reference_genomes/sequence/human/GRCh38/Homo_sapiens.GRCh38.dna.primary_assembly.fa
 gtf: /SAN/vyplab/vyplab_reference_genomes/annotation/human/GRCh38/Homo_sapiens.GRCh38.96.gtf
 gff3: /SAN/vyplab/vyplab_reference_genomes/annotation/human/GRCh38/gencode.v30.annotation.gff3
+
+majiq_builder_output:

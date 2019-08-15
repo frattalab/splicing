@@ -26,7 +26,9 @@
 rule majiq_build:
 	input:
 	output:
+	threads:
+			16
 	shell:
 		"""
-		config['majiq_path'] build <transcript list> -c <configuration file> -j NT -o <build outdir>
+		config['majiq_path'] build config['gff3'] -c config['majiq_config'] -j {threads} -o config['majiq_builder_output']
 		"""
