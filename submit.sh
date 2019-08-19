@@ -5,22 +5,22 @@
 #$ -cwd
 #$ -V
 #$ -l h_vmem=1.9G,h_rt=20:00:00,tmem=1.9G
-#$ -pe smp 2
+
 
 # join stdout and stderr output
 #$ -j y
-#$ -R y
+
 
 if [ "$1" != "" ]; then
     RUN_NAME=$1
 else
-    RUN_NAME=$""
+    RUN_NAME="run"
 fi
 
 FOLDER=submissions/$(date +"%Y%m%d%H%M")
 
 mkdir -p $FOLDER
-cp config/config.yaml $FOLDER/$RUN_NAMEconfig.yaml
+cp config/config.yaml $FOLDER/$RUN_NAME"_config.yaml"
 
 snakemake -s build_whippet_index.smk \
 --jobscript cluster_qsub.sh \

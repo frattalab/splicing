@@ -1,7 +1,11 @@
 
 
-#todo impletent this
-# # create MAJIQ config file
+import pandas as pd
+import os
+import subprocess
+
+configfile: "config/config.yaml"
+
 # rule buildMAJIQConfig:
 # 	output:
 # 		majiqConfig = outFolder + dataCode + "_majiqConfig.tsv"
@@ -25,10 +29,16 @@
 # 				outFile.write(opt + "\n")
 rule majiq_build:
 	input:
+		majiq_config_file = config['majiq_config'] # then add the bams as in the input
 	output:
+		config['majiq_builder_output'] + "TDP_5.Aligned.sorted.out.splicegraph.sql."
 	threads:
 			16
+	params:
+		majiq_path = config['majiq_path'],
+		gff3 = config['gff3'],
+		majiq_builder_output = config['majiq_builder_output']
 	shell:
 		"""
-		config['majiq_path'] build config['gff3'] -c config['majiq_config'] -j {threads} -o config['majiq_builder_output']
+		 {params.majiq_path} build {params.gff3} -c {input.majiq_config_file} -j {threads} -o {params.majiq_builder_output}
 		"""

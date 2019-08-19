@@ -2,3 +2,4 @@ submissions/
 *.log
 .snakemake/.DS_Store
 .DS_Store
+.snakemake/
