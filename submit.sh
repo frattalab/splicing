@@ -4,7 +4,7 @@
 
 #$ -cwd
 #$ -V
-#$ -l h_vmem=1.9G,h_rt=20:00:00,tmem=1.9G
+#$ -l h_vmem=1.9G,h_rt=72:00:00,tmem=1.9G
 
 
 # join stdout and stderr output

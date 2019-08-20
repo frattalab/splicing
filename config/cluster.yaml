@@ -18,10 +18,15 @@ index_bam:
 build_whippet_index:
     h_vmem:   4G
     tmem:   4G
-    pe: smp 4
+    pe: smp 8
     h_rt: 72:00:00
 majiq_build:
     h_vmem:   1G
     tmem:   1G
     pe: smp 16
+    h_rt: 72:00:00
+whippet_psi:
+    h_vmem:   4G
+    tmem:   4G
+    pe: smp 8
     h_rt: 72:00:00

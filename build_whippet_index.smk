@@ -20,8 +20,8 @@ for file in os.listdir(bam_dir):
 #final output of the index run is a graph and an exons tab
 rule all_index:
     input:
-        os.path.join(config['whippet_bin'],"index", config['run_name'] + ".jls"),
-        os.path.join(config['whippet_bin'],"index", config['run_name'] + ".exons.tab.gz")
+        os.path.join(config['whippet_bin'],"index", config['run_name'] + "gencode" + ".jls"),
+        os.path.join(config['whippet_bin'],"index", config['run_name'] + "gencode" + ".exons.tab.gz")
 
 #just a fast rule to merge the bams produced previously
 rule merge_bam:
@@ -67,8 +67,8 @@ rule build_whippet_index:
         bam = os.path.join(config['data_output_path'], config['run_name'] + "_merged.sorted.rmdup.bam"),
         bai = os.path.join(config['data_output_path'], config['run_name'] + "_merged.sorted.rmdup.bam.bai"),
     output:
-        whpt_graph = os.path.join(config['whippet_bin'],"index", config['run_name'] + ".jls"),
-        whpt_exons = os.path.join(config['whippet_bin'],"index", config['run_name'] + ".exons.tab.gz")
+        whpt_graph = os.path.join(config['whippet_bin'],"index", config['run_name'] + "gencode" + ".jls"),
+        whpt_exons = os.path.join(config['whippet_bin'],"index", config['run_name'] + "gencode" + ".exons.tab.gz")
     params:
         fasta = config['fasta'],
         gtf = config['gtf'],
