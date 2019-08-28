@@ -1,5 +1,8 @@
-submissions/
+
 *.log
 .snakemake/.DS_Store
 .DS_Store
+*.yaml
+submissions/
 .snakemake/
+._*
