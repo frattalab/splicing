@@ -1,6 +1,11 @@
 library_type: fr-firststrand
+readLen: 75
+refcode: mm10
+strandCode: forward
 sampleCSVpath: /SAN/vyplab/alb_projects/data/muscle/wide_fastq.csv
+group_column: cell_cond
 majiq_config: /SAN/vyplab/alb_projects/data/muscle/analysis/majiq/majiqConfig.tsv
+majiq_top_level: /SAN/vyplab/alb_projects/data/muscle/analysis/majiq/
 #folder where the fastq files are
 fastq_files: /Users/annaleigh/Documents/data/4su_bams/fastq/
 #lazy way of pulling out all the sample names in the fastq fiels

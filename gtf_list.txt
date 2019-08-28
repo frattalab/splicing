@@ -1,0 +1,2 @@
+/home/annbrown/muscle/cuffdiff_gtf/Ctrl1/transcripts.gtf
+/home/annbrown/muscle/cuffdiff_gtf/Fus1/transcripts.gtf
