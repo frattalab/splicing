@@ -12,7 +12,7 @@ rule buildMAJIQConfig:
 	output:
 		majiqConfig = config['majiq_top_level'] + config['run_name'] + "_majiqConfig.tsv"
 	params:
-		conditions_bams_parsed = parse_sample_csv_majiq(config['sampleCSVpath'])
+		conditions_bams_parsed = parse_sample_csv_majiq(config['sample_csv_path'])
 	# use config.yaml and samples.tsv to make MAJIQ file
 	run:
 		options = [
