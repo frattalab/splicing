@@ -9,7 +9,7 @@
 
 # join stdout and stderr output
 #$ -j y
-
+#$ -sync y
 
 if [ "$1" != "" ]; then
     RUN_NAME=$1
@@ -22,7 +22,7 @@ FOLDER=submissions/$(date +"%Y%m%d%H%M")
 mkdir -p $FOLDER
 cp config/config.yaml $FOLDER/$RUN_NAME"_config.yaml"
 
-snakemake -s whippet.smk \
+snakemake -s rules/majiq.smk \
 --jobscript cluster_qsub.sh \
 --cluster-config config/cluster.yaml \
 --cluster-sync "qsub -R y -l h_vmem={cluster.h_vmem},h_rt={cluster.h_rt} -pe {cluster.pe} -o $FOLDER" \
