@@ -1,8 +1,8 @@
 library_type: fr-firststrand
-readLen: 75
-refcode: mm10
-strandCode: forward
-sampleCSVpath: /SAN/vyplab/alb_projects/data/muscle/wide_fastq.csv
+read_len: 75
+genome_refcode: mm10
+strand_code: none
+sample_csv_path: /SAN/vyplab/alb_projects/data/muscle/wide_fastq.csv
 group_column: cell_cond
 majiq_config: /SAN/vyplab/alb_projects/data/muscle/analysis/majiq/majiqConfig.tsv
 majiq_top_level: /SAN/vyplab/alb_projects/data/muscle/analysis/majiq/
