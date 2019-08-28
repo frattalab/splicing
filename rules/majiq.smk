@@ -5,7 +5,7 @@ import os
 import subprocess
 
 configfile: "config/config.yaml"
-
+include: "helpers.py"
 rule buildMAJIQConfig:
 	input:
 		config['sample_csv_path']
