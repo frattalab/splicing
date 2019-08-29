@@ -1,6 +1,7 @@
 import pandas as pd
 import os
 import subprocess
+import yaml
 
 configfile: "config/config.yaml"
 include: "helpers.py"
@@ -10,27 +11,27 @@ samples = pd.read_csv(config['sample_csv_path'])
 samples2 = samples.loc[samples.exclude_sample_downstream_analysis != 1]
 SAMPLE_NAMES = list(set(samples2['sample_name'] + config['bam_suffix']))
 GROUPS = list(set(samples2['group']))
-
+BASES, CONTRASTS = return_bases_and_contrasts()
 
 rule top:
     input:
         config['majiq_top_level'] + config['run_name'] + "_majiqConfig.tsv",
         os.path.join(config['majiq_top_level'],"builder","majiq.log"),
-        expand(os.path.join(config['majiq_top_level'],"psi",'{group}' + ".psi.voila"),group = GROUPS)
+        expand(os.path.join(config['majiq_top_level'],"psi",'{group}' + ".psi.voila"),group = GROUPS),
+        expand(os.path.join(config['majiq_top_level'],"psi",'{base}_{contrast}' + '.tsv'),zip,base = BASES,contrast = CONTRASTS)
 
 rule create_majiq_config_file:
     input:
         config['sample_csv_path']
     output:
         majiq_config = config['majiq_top_level'] + config['run_name'] + "_majiqConfig.tsv"
-    params:
-        conditions_bams_parsed = parse_sample_csv_majiq(config['sample_csv_path'])
     # use config.yaml and samples.tsv to make MAJIQ file
     run:
+        conditions_bams_parsed = parse_sample_csv_majiq(config['sample_csv_path'])
         options = [
             "[info]",
             "readlen=" + str(config['read_len']),
-            "bamdir=" + config['bam_dir'],
+            "bamdirs=" + config['bam_dir'],
             "genome=" + config['genome_refcode'],
             "strandness=" + config['strand_code'],
             "[experiments]"]
@@ -74,4 +75,21 @@ rule majiq_psi:
         """
         mkdir -p {params.psi_output_folder}
         {params.majiq_path} psi {input.group_majiq} -j {threads} -o {params.psi_output_folder} -n {wildcards.group}
+        """
+rule majiq_delta_psi:
+    input:
+        base_group_majiq = lambda wildcards: majiq_files_from_contrast(wildcards.base),
+        contrast_group_majiq = lambda wildcards: majiq_files_from_contrast(wildcards.contrast)
+    output:
+        os.path.join(config['majiq_top_level'],"delta_psi",'{base}_{contrast}' + '.tsv')
+    params:
+        majiq_path = config['majiq_path'],
+        delta_psi_output_folder = os.path.join(config['majiq_top_level'],"delta_psi"),
+        wildcards.
+    threads:
+        16
+    shell:
+        """
+        mkdir -p {params.delta_psi_output_folder}
+        {params.majiq_path} deltapsi -grp1 {input.control_group_majiq} grp2 {input.control_group_majiq} -j {threads} -o {params.delta_psi_output_folder} --name {wildcards.base} {wildcards.contrast}
         """

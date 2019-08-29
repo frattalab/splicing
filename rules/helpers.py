@@ -47,3 +47,25 @@ def majiq_files_by_group(group):
     samples2 = samples.loc[samples.exclude_sample_downstream_analysis != 1]
     majiq_files = [os.path.join(config['majiq_top_level'],"builder",x) for x in list(samples2.loc[samples2.group == group].sample_name + config['bam_suffix'] + ".majiq")]
     return(majiq_files)
+
+def return_bases_and_contrasts():
+    """
+    returns all the bases and contrasts from the comparisons.yaml
+    """
+    comparisons = "config/comparisons.yaml"
+    with open(comparisons, 'r') as stream:
+        try:
+            compare_dict = yaml.safe_load(stream)
+        except yaml.YAMLError as exc:
+            print(exc)
+
+    base_keys = []
+    contrast_keys = []
+    for key in compare_dict:
+        temp = compare_dict[key]
+        for ind, k2 in enumerate(temp):
+            if ind == 1:
+                base_keys.append(k2)
+            if ind == 2:
+                contrast_keys.append(k2)
+    return([base_keys,contrast_keys])
