@@ -6,7 +6,7 @@ import yaml
 configfile: "config/config.yaml"
 include: "helpers.py"
 
-#reading in the samples and dropping the sampels to be excluded in order to get a list of sample names
+#reading in the samples and dropping the samples to be excluded in order to get a list of sample names
 samples = pd.read_csv(config['sample_csv_path'])
 samples2 = samples.loc[samples.exclude_sample_downstream_analysis != 1]
 SAMPLE_NAMES = list(set(samples2['sample_name'] + config['bam_suffix']))
@@ -15,10 +15,11 @@ BASES, CONTRASTS = return_bases_and_contrasts()
 
 rule top:
     input:
+        expand(config['majiq_top_level'] + "delta_psi/" + "{bse}_{contrast}" + ".tsv",zip, bse = BASES,contrast = CONTRASTS),
         config['majiq_top_level'] + config['run_name'] + "_majiqConfig.tsv",
         os.path.join(config['majiq_top_level'],"builder","majiq.log"),
         expand(os.path.join(config['majiq_top_level'],"psi",'{group}' + ".psi.voila"),group = GROUPS),
-        expand(os.path.join(config['majiq_top_level'],"psi",'{base}_{contrast}' + '.tsv'),zip,base = BASES,contrast = CONTRASTS)
+
 
 rule create_majiq_config_file:
     input:
@@ -62,6 +63,7 @@ rule majiq_build:
 
 rule majiq_psi:
     input:
+    #this is always calling from the column named 'group' in the sample csv file
         group_majiq = lambda wildcards: majiq_files_by_group(wildcards.group)
     output:
         voila = os.path.join(config['majiq_top_level'],"psi",'{group}' + ".psi.voila"),
@@ -78,18 +80,17 @@ rule majiq_psi:
         """
 rule majiq_delta_psi:
     input:
-        base_group_majiq = lambda wildcards: majiq_files_from_contrast(wildcards.base),
+        base_group_majiq = lambda wildcards: majiq_files_from_contrast(wildcards.bse),
         contrast_group_majiq = lambda wildcards: majiq_files_from_contrast(wildcards.contrast)
     output:
-        os.path.join(config['majiq_top_level'],"delta_psi",'{base}_{contrast}' + '.tsv')
+        os.path.join(config['majiq_top_level'],"delta_psi","{bse}_{contrast}" + ".tsv")
     params:
         majiq_path = config['majiq_path'],
-        delta_psi_output_folder = os.path.join(config['majiq_top_level'],"delta_psi"),
-        wildcards.
+        delta_psi_output_folder = os.path.join(config['majiq_top_level'],"delta_psi")
     threads:
         16
     shell:
         """
         mkdir -p {params.delta_psi_output_folder}
-        {params.majiq_path} deltapsi -grp1 {input.control_group_majiq} grp2 {input.control_group_majiq} -j {threads} -o {params.delta_psi_output_folder} --name {wildcards.base} {wildcards.contrast}
+        {params.majiq_path} deltapsi -grp1 {input.base_group_majiq} -grp2 {input.contrast_group_majiq} -j {threads} -o {params.delta_psi_output_folder} --name {wildcards.bse} {wildcards.contrast}
         """
