@@ -15,7 +15,7 @@ BASES, CONTRASTS = return_bases_and_contrasts()
 
 rule top:
     input:
-        expand(config['majiq_top_level'] + "delta_psi/" + "{bse}_{contrast}" + ".tsv",zip, bse = BASES,contrast = CONTRASTS),
+        expand(config['majiq_top_level'] + "delta_psi/" + "{bse}_{contrast}" + ".deltapsi.tsv",zip, bse = BASES,contrast = CONTRASTS),
         config['majiq_top_level'] + config['run_name'] + "_majiqConfig.tsv",
         os.path.join(config['majiq_top_level'],"builder","majiq.log"),
         expand(os.path.join(config['majiq_top_level'],"psi",'{group}' + ".psi.voila"),group = GROUPS),
@@ -83,7 +83,7 @@ rule majiq_delta_psi:
         base_group_majiq = lambda wildcards: majiq_files_from_contrast(wildcards.bse),
         contrast_group_majiq = lambda wildcards: majiq_files_from_contrast(wildcards.contrast)
     output:
-        os.path.join(config['majiq_top_level'],"delta_psi","{bse}_{contrast}" + ".tsv")
+        os.path.join(config['majiq_top_level'],"delta_psi","{bse}_{contrast}" + ".deltapsi.tsv")
     params:
         majiq_path = config['majiq_path'],
         delta_psi_output_folder = os.path.join(config['majiq_top_level'],"delta_psi")

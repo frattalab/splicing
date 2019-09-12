@@ -97,11 +97,13 @@ def majiq_files_from_contrast(grp):
     if comparison_column == "":
         print(grp)
         return([""])
-    grp_samples = list(samples2[samples2[comparison_column].isin(grps)].sample_name)
+    grp_samples = list(set(list(samples2[samples2[comparison_column].isin(grps)].sample_name)))
 
     #build a list with the full path from those sample names
     majiq_files = [os.path.join(config['majiq_top_level'],"builder",x + config['bam_suffix'] + ".majiq") \
                    for x in grp_samples]
+    majiq_files = list(set(majiq_files))
+
     return(majiq_files)
 
 def return_bases_and_contrasts():
