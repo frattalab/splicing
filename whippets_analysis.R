@@ -1,9 +1,14 @@
-wt_f_base = fread("/Users/annaleigh/Documents/data/whippet_snake/wt_f_baseline.diff.gz")
+wt_f_base = fread("/Users/annaleigh/Documents/data/whippet_snake/wt_f.diff.gz")
 
 corrected_names = names(wt_f_base)[2:length(wt_f_base)]
 wt_f_base[,Entropy := NULL]
 names(wt_f_base) = corrected_names
-
+wide_new_fractions = fread("/Users/annaleigh/Documents/GitHub/4su_tagging/data/wide_bayes_extra_information.csv")
+wide_new_fractions_base = wide_new_fractions[cond == "base"]
+setDT(wt_f_base)[wide_new_fractions_base, bayesian_p := bayesian_p, on = c(Gene = "gene")]
+setDT(wt_f_base)[wide_new_fractions_base, median_diff := median_diff, on = c(Gene = "gene")]
+setDT(wt_f_base)[wide_new_fractions_base, mean_s1_ntr := mean_s1_ntr, on = c(Gene = "gene")]
+setDT(wt_f_base)[wide_new_fractions_base, mean_f210_ntr := mean_s2_ntr, on = c(Gene = "gene")]
 #exon skipping cassette exon usage even is CE 
 probability = 0.95 # min probability
 psiDelta = 0.1 # min change in PSI
