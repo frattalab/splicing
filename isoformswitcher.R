@@ -5,11 +5,11 @@ library(pacman)
 
 p_load("IsoformSwitchAnalyzeR")
 
-top_level = "/Users/annaleigh/cluster/alb_projects/data/muscle/analysis/kallisto"
-grep_pattern = "Ctrl[[:digit:]]|SBMA_[[:digit:]]"
+top_level = "/Users/annaleigh/cluster/alb_projects/data/4su_tdp_f210i/kallisto"
+grep_pattern = "WT[[:digit:]]A|F[[:digit:]]A"
 
-baseline = "Ctrl"
-comparison = "SBMA"
+baseline = "WT"
+comparison = "F210I"
 
 kallisto_control_sbma = file.path(list.files(top_level,pattern = grep_pattern, full.names = TRUE),"abundance.tsv")
 names(kallisto_control_sbma) = list.files(top_level,pattern = grep_pattern) 
@@ -21,10 +21,10 @@ ctrl_sbma_des <- data.frame(
   condition = ifelse(grepl(baseline,colnames(k_quant_control_sbma$abundance)[-1]),baseline, comparison)
 )
 
-exons = "/Users/annaleigh/cluster/vyplab_reference_genomes/annotation/human/ensembl/Homo_sapiens.GRCh38.97.chr_patch_hapl_scaff.gtf.gz"
-ntfasta = "/Users/annaleigh/cluster/vyplab_reference_genomes/sequence/human/ensembl/Homo_sapiens.GRCh38.cdna.all.fa.gz"
-#exons = "/Users/annaleigh/cluster/vyplab_reference_genomes/annotation/mouse/ensembl/Mus_musculus.GRCm38.97.chr_patch_hapl_scaff.gtf.gz"
-#ntfasta = "/Users/annaleigh/cluster/vyplab_reference_genomes/sequence/mouse/ensembl/Mus_musculus.GRCm38.cdna.all.fa.gz"
+# exons = "/Users/annaleigh/cluster/vyplab_reference_genomes/annotation/human/ensembl/Homo_sapiens.GRCh38.97.chr_patch_hapl_scaff.gtf.gz"
+# ntfasta = "/Users/annaleigh/cluster/vyplab_reference_genomes/sequence/human/ensembl/Homo_sapiens.GRCh38.cdna.all.fa.gz"
+exons = "/Users/annaleigh/cluster/vyplab_reference_genomes/annotation/mouse/ensembl/Mus_musculus.GRCm38.97.chr_patch_hapl_scaff.gtf.gz"
+ntfasta = "/Users/annaleigh/cluster/vyplab_reference_genomes/sequence/mouse/ensembl/Mus_musculus.GRCm38.cdna.all.fa.gz"
 ### Create switchAnalyzeRlist
 
 SwitchList <- importRdata(
@@ -56,18 +56,22 @@ SwitchListAnalyzed <- analyzeORF(
 
 SwitchListAnalyzed <- extractSequence(
   SwitchListAnalyzed, 
-  pathToOutput = '/Users/annaleigh/Documents/data/isoform_switcher/control_sbma/'
+  pathToOutput = '/Users/annaleigh/Documents/data/isoform_switcher/wt_f210i_baseline/'
 )
 
+SwitchListAnalyzed = analyzeCPAT(SwitchListAnalyzed, 
+                                 pathToCPATresultFile = "/Users/annaleigh/Documents/data/isoform_switcher/wt_f210i_baseline/cpat_result.txt",
+                                 removeNoncodinORFs = FALSE,
+                                codingCutoff = 0.721)
 SwitchListAnalyzed = analyzeCPC2(SwitchListAnalyzed, 
                                     pathToCPC2resultFile = "/Users/annaleigh/Documents/data/isoform_switcher/control_sbma/result_cpc2.txt",
                                     removeNoncodinORFs = FALSE)
 
 SwitchListAnalyzed = analyzePFAM(SwitchListAnalyzed, 
-                                    pathToPFAMresultFile = "/Users/annaleigh/Documents/data/isoform_switcher/control_sbma/pfam_annotation.txt")
+                                    pathToPFAMresultFile = "/Users/annaleigh/Documents/data/isoform_switcher/wt_f210i_baseline/pfam_annotation.txt")
 
 SwitchListAnalyzed = analyzeSignalP(SwitchListAnalyzed, 
-                                       pathToSignalPresultFile = "/Users/annaleigh/Documents/data/isoform_switcher/control_sbma/output_protein_type.txt")
+                                       pathToSignalPresultFile = "/Users/annaleigh/Documents/data/isoform_switcher/wt_f210i_baseline/output_protein_type.txt")
 
 
 SwitchListAnalyzed <- analyzeAlternativeSplicing(SwitchListAnalyzed, quiet=TRUE)
@@ -96,7 +100,7 @@ exampleSwitchListAnalyzed <- analyzeSwitchConsequences(
 
 
 
-switching_genes = extractTopSwitches(exampleSwitchListAnalyzed, sortByQvals = TRUE, n = 50)$gene_name
+switching_genes = extractTopSwitches(exampleSwitchListAnalyzed, sortByQvals = TRUE, n = 50,filterForConsequences = TRUE)$gene_name
 
 pdf("/Users/annaleigh/Documents/data/isoform_switcher/control_sbma/isoform_switches.pdf")
 for(g in switching_genes){
