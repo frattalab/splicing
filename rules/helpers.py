@@ -79,6 +79,7 @@ def majiq_files_by_group(grp):
     compare_dict = load_comparisons()
 
     majiq_files = [os.path.join(config['majiq_top_level'],"builder",x) for x in list(samples2.loc[samples2.group == grp].sample_name + config['bam_suffix'] + ".majiq")]
+
     return(majiq_files)
 
 def majiq_files_from_contrast(grp):
@@ -103,7 +104,6 @@ def majiq_files_from_contrast(grp):
     majiq_files = [os.path.join(config['majiq_top_level'],"builder",x + config['bam_suffix'] + ".majiq") \
                    for x in grp_samples]
     majiq_files = list(set(majiq_files))
-
     return(majiq_files)
 
 def return_bases_and_contrasts():
@@ -127,3 +127,23 @@ def return_bases_and_contrasts():
             if ind == 2:
                 contrast_keys.append(k2)
     return(base_keys,contrast_keys)
+
+
+def get_lib_size(sample_name):
+    """
+    reads the star log files to find the library size for SGSeq
+    """
+getLibSize <- function(logFile){
+      """
+      returns all the bases and contrasts from the comparisons.yaml
+      """
+    stopifnot(file.exists(logFile))
+    log <- readLines(logFile)
+    unique <- log[ grepl("Uniquely mapped reads number", log)]
+    multi <- log[ grepl("Number of reads mapped to multiple loci", log)]
+
+    num_unique <- str_trim( str_split_fixed( unique, "\\|\t", 2)[,2] )
+    num_multi <- str_trim( str_split_fixed( multi, "\\|\t", 2)[,2] )
+    libSize <- as.numeric(num_unique) + as.numeric(num_multi)
+    return(libSize)
+ }
