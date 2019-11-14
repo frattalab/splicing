@@ -129,21 +129,21 @@ def return_bases_and_contrasts():
     return(base_keys,contrast_keys)
 
 
-def get_lib_size(sample_name):
-    """
-    reads the star log files to find the library size for SGSeq
-    """
-getLibSize <- function(logFile){
-      """
-      returns all the bases and contrasts from the comparisons.yaml
-      """
-    stopifnot(file.exists(logFile))
-    log <- readLines(logFile)
-    unique <- log[ grepl("Uniquely mapped reads number", log)]
-    multi <- log[ grepl("Number of reads mapped to multiple loci", log)]
-
-    num_unique <- str_trim( str_split_fixed( unique, "\\|\t", 2)[,2] )
-    num_multi <- str_trim( str_split_fixed( multi, "\\|\t", 2)[,2] )
-    libSize <- as.numeric(num_unique) + as.numeric(num_multi)
-    return(libSize)
- }
+# def get_lib_size(sample_name):
+#     """
+#     reads the star log files to find the library size for SGSeq
+#     """
+# getLibSize <- function(logFile){
+#       """
+#       returns all the bases and contrasts from the comparisons.yaml
+#       """
+#     stopifnot(file.exists(logFile))
+#     log <- readLines(logFile)
+#     unique <- log[ grepl("Uniquely mapped reads number", log)]
+#     multi <- log[ grepl("Number of reads mapped to multiple loci", log)]
+#
+#     num_unique <- str_trim( str_split_fixed( unique, "\\|\t", 2)[,2] )
+#     num_multi <- str_trim( str_split_fixed( multi, "\\|\t", 2)[,2] )
+#     libSize <- as.numeric(num_unique) + as.numeric(num_multi)
+#     return(libSize)
+#  }

@@ -44,23 +44,23 @@ rule create_majiq_config_file:
             for opt in options:
                 outfile.write(opt + "\n")
 
-# rule majiq_build:
-#     input:
-#         majiq_config_file = config['majiq_top_level'] + config['run_name'] + "_majiqConfig.tsv"
-#     output:
-#         expand(os.path.join(config['majiq_top_level'],"builder",'{name}' + ".majiq"),name = SAMPLE_NAMES)
-#     threads:
-#             2
-#     params:
-#         majiq_path = config['majiq_path'],
-#         gff3 = config['gff3'],
-#         majiq_builder_output = os.path.join(config['majiq_top_level'],"builder"),
-#         majiq_extra_parameters = return_parsed_extra_params(config['majiq_extra_parameters'])
-#     shell:
-#         """
-#         mkdir -p {params.majiq_builder_output}
-#         {params.majiq_path} build {params.gff3} -c {input.majiq_config_file} -j {threads} -o {params.majiq_builder_output}{params.majiq_extra_parameters}
-#         """
+rule majiq_build:
+    input:
+        majiq_config_file = config['majiq_top_level'] + config['run_name'] + "_majiqConfig.tsv"
+    output:
+        expand(os.path.join(config['majiq_top_level'],"builder",'{name}' + ".majiq"),name = SAMPLE_NAMES)
+    threads:
+            2
+    params:
+        majiq_path = config['majiq_path'],
+        gff3 = config['gff3'],
+        majiq_builder_output = os.path.join(config['majiq_top_level'],"builder"),
+        majiq_extra_parameters = return_parsed_extra_params(config['majiq_extra_parameters'])
+    shell:
+        """
+        mkdir -p {params.majiq_builder_output}
+        {params.majiq_path} build {params.gff3} -c {input.majiq_config_file} -j {threads} -o {params.majiq_builder_output}{params.majiq_extra_parameters}
+        """
 
 rule majiq_psi:
     input:
