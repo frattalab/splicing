@@ -18,7 +18,7 @@ rule top:
     input:
         expand(config['majiq_top_level'] + "delta_psi/" + "{bse}_{contrast}" + ".deltapsi.tsv",zip, bse = BASES,contrast = CONTRASTS),
         expand(os.path.join(config['majiq_top_level'],"delta_psi_voila_tsv","{bse}_{contrast}" + ".psi.tsv"),zip, bse = BASES,contrast = CONTRASTS),
-        #config['majiq_top_level'] + config['run_name'] + "_majiqConfig.tsv",
+        config['majiq_top_level'] + config['run_name'] + "_majiqConfig.tsv",
         expand(os.path.join(config['majiq_top_level'],"builder",'{name}' + ".majiq"),name = SAMPLE_NAMES),
         expand(os.path.join(config['majiq_top_level'],"psi",'{group}' + ".psi.voila"),group = GROUPS)
 
@@ -48,7 +48,8 @@ rule majiq_build:
     input:
         majiq_config_file = config['majiq_top_level'] + config['run_name'] + "_majiqConfig.tsv"
     output:
-        expand(os.path.join(config['majiq_top_level'],"builder",'{name}' + ".majiq"),name = SAMPLE_NAMES)
+        expand(os.path.join(config['majiq_top_level'],"builder",'{name}' + ".majiq"),name = SAMPLE_NAMES),
+        os.path.join(config['majiq_top_level'],"builder/splicegraph.sql")
     threads:
             2
     params:
@@ -82,6 +83,8 @@ rule majiq_psi:
 
 rule majiq_delta_psi:
     input:
+        majiq_config_file = config['majiq_top_level'] + config['run_name'] + "_majiqConfig.tsv",
+        finished_splicegraph = os.path.join(config['majiq_top_level'],"builder/splicegraph.sql"),
         base_group_majiq = lambda wildcards: majiq_files_from_contrast(wildcards.bse),
         contrast_group_majiq = lambda wildcards: majiq_files_from_contrast(wildcards.contrast)
     output:
