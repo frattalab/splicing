@@ -119,6 +119,7 @@ def return_bases_and_contrasts():
 
     base_keys = []
     contrast_keys = []
+
     for key in compare_dict:
         temp = compare_dict[key]
         for ind, k2 in enumerate(temp):
