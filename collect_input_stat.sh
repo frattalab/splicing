@@ -4,7 +4,7 @@
 # 2. prompt for name of file or directory
 echo -n "file or directory name: "
 # ...  and read it
-# read HANDLE
+read HANDLE
 # mv {,new.}original.filename
 # # 2. b - check if it exists and is readable
 # if [ ! -r "$HANDLE" ]
@@ -13,7 +13,7 @@ echo -n "file or directory name: "
 #     # if not, exit with an exit code != 0
 #     exit 2;
 # fi
-HANDLE=/SAN/vyplab/alb_projects/data/bilal_mouse/STAR_aligned/
+
 for f in $HANDLE*.Aligned.sorted.out.bam; do
   echo "$f"
   echo "$f.insert_size_metrics.txt"

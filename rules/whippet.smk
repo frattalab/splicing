@@ -1,27 +1,59 @@
 
 
-import os,re
-
-configfile: "config/config.yaml"
-#lazy way of pulling out all the sample names in the fastq fiels
-if config['endtype'] == "se":
-	SAMPLES = [re.sub(".merged.fastq.gz", "",smp) for smp in os.listdir(config['fastq_files'])]
-elif config['endtype'] == "pe":
-	SAMPLES = [re.sub("_\d.merged.fastq.gz", "",smp) for smp in os.listdir(config['fastq_files'])]
-else:
-	print("End type either 'se' or 'pe'")
 import pandas as pd
 import os
 import subprocess
 
-#first rule of a snakemake file always defines the final desired output. Eventually this file should produced the psi file
-#and the sorted bam
+configfile: "config/config.yaml"
+samples = pd.read_csv(config['sample_csv_path'])
+samples2 = samples.loc[samples.exclude_sample_downstream_analysis != 1]
+SAMPLE_NAMES = list(set(samples2['sample_name'] + config['bam_suffix']))
+
+
+# had conversation with Ben Whathisface at RNA uk, suggested trying to
+# build each bam their own index, and using the PSI for that
+# that does mean that you can't use the delte PSI, but let's give her a go
+
 print(SAMPLES)
 print(len(SAMPLES))
 #our final output
 rule all_whippet:
     input:
-        expand(config['data_output_path'] + "{sample}.sorted.bam.bai", sample = SAMPLES)
+        expand(config['data_output_path'] + "{sample}.sorted.bam.bai", sample = SAMPLES),
+		expand(os.path.join(config['whippet_bin'],"index", config['run_name'] + "gencode" + ".jls")),
+		expand(os.path.join(config['whippet_bin'],"index", config['run_name'] + "gencode" + ".exons.tab.gz"))
+
+
+
+
+#empty string
+bam_dir = config['bam_dir']
+bamFiles = ""
+for file in os.listdir(bam_dir):
+    #for all the aligned sorted bams
+    if file.endswith(".Aligned.sorted.out.bam"):
+        #{config[samtools_path]} merge takes a list of space separated files
+        bamFiles = bamFiles + " " + os.path.join(bam_dir,file)
+        quick_temp = os.path.join(bam_dir,file)
+
+
+
+rule build_whippet_index:
+    input:
+        bam = os.path.join(config['bam_dir'], "{sample}" + ".Aligned.sorted.out.bam"),
+        bai = os.path.join(config['bam_dir'],  "{sample}" + ".Aligned.sorted.out.bam.bai"),
+    output:
+        whpt_graph = os.path.join(config['whippet_bin'],"index", "{sample}" + "gencode" + ".jls"),
+        whpt_exons = os.path.join(config['whippet_bin'],"index", "{sample}" + "gencode" + ".exons.tab.gz")
+    params:
+        fasta = config['fasta'],
+        gtf = config['gtf'],
+        whippet_ind_path = os.path.join(config['whippet_bin'],"whippet-index.jl"),
+        annotation_julia_indices = os.path.join(config['whippet_bin'],"index",config['run_name'])
+    shell:
+        """
+        {config[julia]} {params.whippet_ind_path} --fasta {params.fasta} --suppress-low-tsl --bam {input.bam} --gtf {params.gtf} --index {params.annotation_julia_indices}
+        """
 
 #first we'll run the psi run
 if config['endtype'] == "se":
