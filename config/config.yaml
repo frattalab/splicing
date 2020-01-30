@@ -27,13 +27,17 @@ gtf: /SAN/vyplab/vyplab_reference_genomes/annotation/human/GRCh38/gencode.v31.an
 gff3: /SAN/vyplab/vyplab_reference_genomes/annotation/human/GRCh38/gencode.v31.annotation.gff3
 
 
+# Whippets configurations
 
-
+whippet_output_path: /SAN/vyplab/alb_projects/data/muscle/analysis/whippets/
+whippet_extra_parameters:
+  suppress-low-tsl:
+  bam-min-reads: 10
 # -------------------------- Global configurations which shouldn't need to be
 # -------------------------- adjusted.
 
 
-
+julia: /SAN/vyplab/alb_projects/tools/julia-9d11f62bcb/bin/julia
 bam_suffix: .Aligned.sorted.out
 #the path where your samtools is installed
 samtools_path: /share/apps/genomics/samtools-1.9/bin/samtools
