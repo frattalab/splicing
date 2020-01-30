@@ -2,7 +2,7 @@
 *.log
 .snakemake/.DS_Store
 .DS_Store
-*.yaml
+old_config_file/
 submissions/
 .snakemake/
 ._*
