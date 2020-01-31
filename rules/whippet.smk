@@ -87,7 +87,7 @@ elif config['endtype'] == "pe":
             params:
                 julia = config['julia'],
                 whippet_quant = config['whippet_bin'] + "whippet-quant.jl",
-                index = os.path.join(config['whippet_bin'],"index",config['run_name'] + ".jls"),
+                index = os.path.join(whippet_index_path + "{sample}" + ".jls"),
                 output_path = whippet_psi_path
             shell:
                 """
