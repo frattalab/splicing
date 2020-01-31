@@ -5,7 +5,7 @@ import yaml
 
 configfile: "config/config.yaml"
 include: "helpers.py"
-
+localrules: create_majiq_config_file
 #reading in the samples and dropping the samples to be excluded in order to get a list of sample names
 samples = pd.read_csv(config['sample_csv_path'])
 samples2 = samples.loc[samples.exclude_sample_downstream_analysis != 1]
@@ -13,8 +13,10 @@ SAMPLE_NAMES = list(set(samples2['sample_name'] + config['bam_suffix']))
 GROUPS = list(set(samples2['group']))
 
 BASES, CONTRASTS = return_bases_and_contrasts()
+print(BASES)
+print(CONTRASTS)
 
-rule top:
+rule all:
     input:
         expand(config['majiq_top_level'] + "delta_psi/" + "{bse}_{contrast}" + ".deltapsi.tsv",zip, bse = BASES,contrast = CONTRASTS),
         expand(os.path.join(config['majiq_top_level'],"delta_psi_voila_tsv","{bse}_{contrast}" + ".psi.tsv"),zip, bse = BASES,contrast = CONTRASTS),
@@ -80,7 +82,6 @@ rule majiq_psi:
         mkdir -p {params.psi_output_folder}
         {params.majiq_path} psi {input.group_majiq} -j {threads} -o {params.psi_output_folder} -n {wildcards.group}
         """
-
 rule majiq_delta_psi:
     input:
         majiq_config_file = config['majiq_top_level'] + config['run_name'] + "_majiqConfig.tsv",
