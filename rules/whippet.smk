@@ -60,7 +60,9 @@ rule build_whippet_index:
 if config['endtype'] == "se":
     rule whippet_psi:
         input:
-            config['fastq_files'] + "{sample}_1.merged.fastq.gz"
+            config['fastq_files'] + "{sample}_1.merged.fastq.gz",
+            index = os.path.join(whippet_index_path + "{sample}" + ".jls")
+
         output:
             psi_file = whippet_psi_path + "{sample}.psi.gz",
             jnc_file = whippet_psi_path + "{sample}.jnc.gz",
@@ -68,18 +70,18 @@ if config['endtype'] == "se":
         params:
             julia = config['julia'],
             whippet_quant = config['whippet_bin'] + "whippet-quant.jl",
-            index = os.path.join(whippet_index_path + "{sample}" + ".jls"),
             output_path = whippet_psi_path
         shell:
             """
             export JULIA_PKGDIR=/SAN/vyplab/alb_projects/tools/julia_pkgdir/v0.6/
-            {params.julia} {params.whippet_quant} {input} --index {params.index} --o {params.output_path} --sam > {output.sam_file}
+            {params.julia} {params.whippet_quant} {input} --index {input.index} --o {params.output_path} --sam > {output.sam_file}
             """
 elif config['endtype'] == "pe":
         rule whippet_psi:
             input:
                 fwd = config['fastq_files'] + "{sample}_1.merged.fastq.gz",
-                rev = config['fastq_files'] + "{sample}_2.merged.fastq.gz"
+                rev = config['fastq_files'] + "{sample}_2.merged.fastq.gz",
+                index = os.path.join(whippet_index_path + "{sample}" + ".jls")
             output:
                 psi_file = whippet_psi_path + "{sample}.psi.gz",
                 jnc_file = whippet_psi_path + "{sample}.jnc.gz",
@@ -87,12 +89,11 @@ elif config['endtype'] == "pe":
             params:
                 julia = config['julia'],
                 whippet_quant = config['whippet_bin'] + "whippet-quant.jl",
-                index = os.path.join(whippet_index_path + "{sample}" + ".jls"),
                 output_path = whippet_psi_path
             shell:
                 """
                 export JULIA_PKGDIR=/SAN/vyplab/alb_projects/tools/julia_pkgdir/v0.6/
-                {params.julia} {params.whippet_quant} {input} --index {params.index} --o {params.output_path} --sam > {output.sam_file}
+                {params.julia} {params.whippet_quant} {input} --index {input.index} --o {params.output_path} --sam > {output.sam_file}
                 """
 else:
     print("End type either 'se' or 'pe'")
