@@ -1,7 +1,6 @@
 __default__:
     h_vmem: 2G
     h_rt:   1:0:0
-    pe: smp 2
 majiq_build:
     h_vmem:   8G
     tmem:   8G
@@ -24,9 +23,7 @@ majiq_delta_psi_tsv:
     h_vmem:   1G
     tmem:   1G
     h_rt: 72:00:00
-    R:  y
 build_whippet_index:
-    h_vmem:   2G
-    tmem:   2G
+    h_vmem:   6G
+    tmem:   6G
     h_rt: 72:00:00
-    R:  y

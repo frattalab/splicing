@@ -15,14 +15,14 @@ majiq_top_level: /SAN/vyplab/alb_projects/data/muscle/analysis/majiq_disable_den
 bam_dir: /SAN/vyplab/alb_projects/data/muscle/analysis/STAR_aligned/
 run_name: disable_denovo
 #folder where the fastq files are
-
+fastq_files: /SAN/vyplab/alb_projects/data/muscle/analysis/merged_fastqs/
 majiq_extra_parameters:
   simplify:
   disable-denovo:
 extra_voila_parameters:
   threshold: "0.1"
 
-fasta: /SAN/vyplab/vyplab_reference_genomes/sequence/human/GRCh38/Homo_sapiens.GRCh38.dna.primary_assembly.fa
+fasta: /SAN/vyplab/vyplab_reference_genomes/sequence/human/gencode/GRCh38.primary_assembly.genome.fa
 gtf: /SAN/vyplab/vyplab_reference_genomes/annotation/human/GRCh38/gencode.v31.annotation.gtf
 gff3: /SAN/vyplab/vyplab_reference_genomes/annotation/human/GRCh38/gencode.v31.annotation.gff3
 
