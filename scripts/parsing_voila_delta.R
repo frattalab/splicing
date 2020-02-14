@@ -10,6 +10,7 @@ parse_voila_delta_tsv = function(file_path){
     voila_org =  as.data.table(clean_names(fread(file_path)))
     # look for columns with conditional psi
     condition_psi_cols = colnames(voila_org)[grep("e_psi",colnames(voila_org))]
+    
     # this changes depending on the flag we run to majiq
     changed_by_evidence = colnames(voila_org)[grep("p_d_psi_",colnames(voila_org))]
     columns_to_split = c("e_d_psi_per_lsv_junction",
@@ -41,6 +42,11 @@ parse_voila_delta_tsv = function(file_path){
     
     # the 5% is the FDR
     setnames(voila_melt,"p_d_psi_0_05_per_lsv_junction", "FDR")
+    setnames(voila_melt,"number_gene_name", "gene_name")
+    # rename that column to something shorter
+    setnames(voila_melt,"e_d_psi_per_lsv_junction","deltaPSI")
+
+    
     return(voila_melt)
   } else{
     print(file_path)
