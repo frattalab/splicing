@@ -3,112 +3,47 @@
 #problems. I suggest camelCase names, but doesn't really matter as long as you can interpret them. Throughout the file they have to be unique.
 #each of these two items has as many idenitifiers as you like, but they must be
 #valid identifiers from the column_name column in the sample_csv. The first identifier is always the baseline group
-# twelevemonth:
-#   column_name:
-#     - ar_length
-#   twelveAR20:
-#     - 12mnth_ar20
-#   twelveAR100:
-#     - 12mnth_ar100
-# eighteenmonth:
-#   column_name:
-#     - ar_length
-#   eighteenAR20:
-#     - 18mnth_ar20
-#   eighteenAR100:
-#     - 18mnth_ar100
-#always formated as so each comparison has an item called column_name. This MUST be called column_name. It has one item.
-#then there are 2 more items, this should be named as you want the output to be named. Only two. The name must NEVER contain and UnderScore or you will have
-#problems. I suggest camelCase names, but doesn't really matter as long as you can interpret them. Throughout the file they have to be unique.
-#each of these two items has as many idenitifiers as you like, but they must be
-#valid identifiers from the column_name column in the sample_csv. The first identifier is always the baseline group
-opmd_muscle:
+controlALS:
   column_name:
-    - group
-  cntrl:
-    - andrea_control
-  opmd:
-    - OPMD
-pm_muscle:
-  column_name:
-    - group
-  cntrlPm:
-    - andrea_control
-  pm:
-    - PM
-ibm_muscle:
-  column_name:
-    - group
-  cntrlibm:
-    - andrea_control
-  ibm:
-    - IBM
-ibm_PMCompar:
-  column_name:
-    - group
-  PM:
-    - PM
-  ibmPM:
-    - IBM
-ibm_PMCompar:
-  column_name:
-    - group
-  PMCtrl:
-    - andrea_control
-    - PM
-  ibmPMCtrl:
-    - IBM
-ibm_muscleTwo:
-  column_name:
-    - group
-  cntrlOURs:
-    - control
-  ibm:
-    - IBM
-lgmd2a_muscle:
-  column_name:
-    - group
-  cntrllgm:
-    - andrea_control
-  lgmd2a:
-    - LGMD2A
-controlVsDisease:
-  column_name:
-    - group
+    - disease_type
   control:
-    - control
-  sbma:
-    - SBMA
-controlALSSBMA:
+    - control_muscle
+  als:
+    - als
+tpdKOCompare:
   column_name:
-    - group
-  controlALS:
-    - control
-    - Fus
-    - C9
-    - SOD
-    - TDP
-  sbmaALONE:
-    - SBMA
-controlALSTDP:
+    - tpdKOexperiment
+  controlKO:
+    - controlKO
+  tdpKO:
+    - tpdKO
+tpdPathcryptic:
   column_name:
-    - group
-  controlALST:
-    - control
-  tdpALONE:
-    - TDP
-controlALScnine:
+    - tdp_path
+  notaPathcrypticdisease:
+    - notaPath
+  crypticcluster:
+    - cryptic_cluster
+tdpPathTE:
   column_name:
-    - group
-  controlALSC:
-    - control
-  cnineALONE:
-    - TDP
-controlALScnine:
+    - tdp_path
+  notaPathcrypticdisease:
+    - notaPath
+  tecluster:
+    - te_cluster
+tpdPathcrypticControl:
   column_name:
-    - group
-  controlALSCT:
-    - control
-  cnineAndTD:
-    - TDP
-    - C9
+    - tdp_path
+  notaPathcrypticdiseaseAndControl:
+    - notaPath
+    - control_muscle
+  crypticclusterWithControl:
+    - cryptic_cluster
+tdpPathTEControl:
+  column_name:
+    - tdp_path
+  notaPathcrypticdiseaseAndControl:
+    - notaPath
+    - control_muscle
+  teclusterWithControl:
+    - te_cluster

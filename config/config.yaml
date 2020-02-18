@@ -1,30 +1,36 @@
 
 # ########IBM GEO information
 species: human
-library_type: fr-firststrand
-read_len: 150
+library_type: fr-secondstrand
+read_len: 75
 genome_refcode: hg38
 strand_code: none
 endtype: pe
-sample_csv_path: /SAN/vyplab/alb_projects/data/muscle/wide_fastq.csv
+sample_csv_path: /SAN/vyplab/alb_projects/data/combined_muscle_ibm_bams_linked/full_muscle_sample_table.csv
 group_column: group
 
-majiq_top_level: /SAN/vyplab/alb_projects/data/muscle/analysis/majiq_disable_denovo/
-
 #directory of all the already aligned bam files, this is necessary for building the majic data index from this data
-bam_dir: /SAN/vyplab/alb_projects/data/muscle/analysis/STAR_aligned/
-run_name: disable_denovo
+bam_dir: /SAN/vyplab/alb_projects/data/combined_muscle_ibm_bams_linked/linked_bams/
+run_name: all_muscle_and_ko
 #folder where the fastq files are
-fastq_files: /SAN/vyplab/alb_projects/data/muscle/analysis/merged_fastqs/
+fastq_files: /SAN/vyplab/alb_projects/data/combined_muscle_ibm_bams_linked/merged_fastqs/
+majiq_top_level: /SAN/vyplab/alb_projects/data/combined_muscle_ibm_bams_linked/majiq_all_muscle/
+
 majiq_extra_parameters:
   simplify:
-  disable-denovo:
+majiq_psi_extra_parameters:
+  min-experiments: "3"
 extra_voila_parameters:
   threshold: "0.1"
+
+# fasta: /SAN/vyplab/vyplab_reference_genomes/sequence/mouse/gencode/GRCm38.primary_assembly.genome.fa
+# gtf: /SAN/vyplab/vyplab_reference_genomes/annotation/mouse/gencode/gencode.vM22.annotation.gtf
+# gff3: /SAN/vyplab/vyplab_reference_genomes/annotation/mouse/gencode/gencode.vM22.annotation.gff3
 
 fasta: /SAN/vyplab/vyplab_reference_genomes/sequence/human/gencode/GRCh38.primary_assembly.genome.fa
 gtf: /SAN/vyplab/vyplab_reference_genomes/annotation/human/GRCh38/gencode.v31.annotation.gtf
 gff3: /SAN/vyplab/vyplab_reference_genomes/annotation/human/GRCh38/gencode.v31.annotation.gff3
+
 
 
 # Whippets configurations

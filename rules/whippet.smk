@@ -9,7 +9,11 @@ configfile: "config/config.yaml"
 include: "helpers.py"
 samples = pd.read_csv(config['sample_csv_path'])
 samples2 = samples.loc[samples.exclude_sample_downstream_analysis != 1]
-SAMPLE_NAMES = list(set(samples2['sample_name']))
+
+bool_tdp = samples2.sample_name.str.contains('TDP')
+samples3 = samples2[bool_tdp]
+
+SAMPLE_NAMES = list(set(samples3['sample_name']))
 
 whippet_index_path = config['whippet_output_path'] + "index/"
 whippet_psi_path = config['whippet_output_path'] + "psi/"
@@ -31,7 +35,8 @@ print(len(SAMPLE_NAMES))
 rule all_whip:
     input:
         expand(whippet_index_path + "{sample}" + ".jls",sample = SAMPLE_NAMES),
-        expand(whippet_psi_path + "{sample}.sorted.bam.bai", sample = SAMPLE_NAMES)
+        expand(whippet_psi_path + "{sample}.sorted.bam.bai", sample = SAMPLE_NAMES),
+        expand(whippet_psi_path + "{sample}.psi.gz", sample = SAMPLE_NAMES)
     wildcard_constraints:
         sample="|".join(SAMPLE_NAMES)
         # expand(os.path.join(config['whippet_bin'],"index", config['run_name'] + "gencode" + ".exons.tab.gz"))
@@ -60,9 +65,8 @@ rule build_whippet_index:
 if config['endtype'] == "se":
     rule whippet_psi:
         input:
-            config['fastq_files'] + "{sample}_1.merged.fastq.gz",
+            fq = config['fastq_files'] + "{sample}_1.merged.fastq.gz",
             index = os.path.join(whippet_index_path + "{sample}" + ".jls")
-
         output:
             psi_file = whippet_psi_path + "{sample}.psi.gz",
             jnc_file = whippet_psi_path + "{sample}.jnc.gz",
@@ -70,11 +74,11 @@ if config['endtype'] == "se":
         params:
             julia = config['julia'],
             whippet_quant = config['whippet_bin'] + "whippet-quant.jl",
-            output_path = whippet_psi_path
+            output_path = whippet_psi_path + "{sample}"
         shell:
             """
             export JULIA_PKGDIR=/SAN/vyplab/alb_projects/tools/julia_pkgdir/v0.6/
-            {params.julia} {params.whippet_quant} {input} --index {input.index} --o {params.output_path} --sam > {output.sam_file}
+            {params.julia} {params.whippet_quant} {input.fq} --index {input.index} --o {params.output_path} --sam > {output.sam_file}
             """
 elif config['endtype'] == "pe":
         rule whippet_psi:
@@ -89,11 +93,11 @@ elif config['endtype'] == "pe":
             params:
                 julia = config['julia'],
                 whippet_quant = config['whippet_bin'] + "whippet-quant.jl",
-                output_path = whippet_psi_path
+                output_path = whippet_psi_path + "{sample}"
             shell:
                 """
                 export JULIA_PKGDIR=/SAN/vyplab/alb_projects/tools/julia_pkgdir/v0.6/
-                {params.julia} {params.whippet_quant} {input} --index {input.index} --o {params.output_path} --sam > {output.sam_file}
+                {params.julia} {params.whippet_quant} {input.fwd} {input.rev} --index {input.index} --o {params.output_path} --sam > {output.sam_file}
                 """
 else:
     print("End type either 'se' or 'pe'")
