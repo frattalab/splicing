@@ -3,47 +3,10 @@
 #problems. I suggest camelCase names, but doesn't really matter as long as you can interpret them. Throughout the file they have to be unique.
 #each of these two items has as many idenitifiers as you like, but they must be
 #valid identifiers from the column_name column in the sample_csv. The first identifier is always the baseline group
-controlALS:
+wt_f210i:
   column_name:
-    - disease_type
-  control:
-    - control_muscle
-  als:
-    - als
-tpdKOCompare:
-  column_name:
-    - tpdKOexperiment
-  controlKO:
-    - controlKO
-  tdpKO:
-    - tpdKO
-tpdPathcryptic:
-  column_name:
-    - tdp_path
-  notaPathcrypticdisease:
-    - notaPath
-  crypticcluster:
-    - cryptic_cluster
-tdpPathTE:
-  column_name:
-    - tdp_path
-  notaPathcrypticdisease:
-    - notaPath
-  tecluster:
-    - te_cluster
-tpdPathcrypticControl:
-  column_name:
-    - tdp_path
-  notaPathcrypticdiseaseAndControl:
-    - notaPath
-    - control_muscle
-  crypticclusterWithControl:
-    - cryptic_cluster
-tdpPathTEControl:
-  column_name:
-    - tdp_path
-  notaPathcrypticdiseaseAndControl:
-    - notaPath
-    - control_muscle
-  teclusterWithControl:
-    - te_cluster
+    - group
+  ctrlF210ibrain:
+    - CTL
+  homF210ibrain:
+    - HOM
