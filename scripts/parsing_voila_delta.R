@@ -13,11 +13,15 @@ parse_voila_delta_tsv = function(file_path){
     
     # this changes depending on the flag we run to majiq
     changed_by_evidence = colnames(voila_org)[grep("p_d_psi_",colnames(voila_org))]
+
+    
     columns_to_split = c("e_d_psi_per_lsv_junction",
                          changed_by_evidence,
                          "exons_coords",
                          "junctions_coords","de_novo_junctions",
                          "ir_coords",condition_psi_cols)
+    
+    # for some reason....some of this columns didn't show up with me running majiq on the old bam files, different GFF or genome or something is possible route cuase sofor now
     voila_melt = cSplit(voila_org, splitCols = columns_to_split, sep = ';', direction = "long")
     #the splitting and melting can produce non unique rows, so remove those
     voila_melt = unique(voila_melt)
@@ -43,6 +47,8 @@ parse_voila_delta_tsv = function(file_path){
     
     voila_melt[,exon_length :=abs(as.numeric(exon_start) - as.numeric(exon_end))]
     voila_melt[,exon_mod_3 := exon_length %% 3]
+    voila_melt[,exon_type := tstrsplit(lsv_id,":")[2]]
+    voila_melt[,exon_type := ifelse(exon_type == "t",'target',"source")]
     # the 5% is the FDR
     setnames(voila_melt,"p_d_psi_0_05_per_lsv_junction", "FDR")
     setnames(voila_melt,"number_gene_name", "gene_name")
