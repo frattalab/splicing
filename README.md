@@ -3,3 +3,7 @@ Splicing done with MAJIQ tool - This is very bare bones implentation as it stand
 
 
 
+To run the full build, simply call "submit_majiq.sh runname" with whatever run name you'd like.
+To run the majiq PSI with each sample as it's own group "submit_majiq_single.sh runname"
+
+The scripts folder as of 2020-02-27 contains a series of half-functional things. Be cautious. 
