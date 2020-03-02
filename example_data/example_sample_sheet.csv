@@ -1,0 +1,27 @@
+sample_name	unit	fast1	fast2	group	tdp_path	exclude_sample_downstream_analysis	diease_col	disease_type	tpdKOexperiment
+C9_1	C9_1	place	place	C9	notaPath			als	na
+C9_2	C9_2	place	place	C9	notaPath			als	na
+C9_3	C9_3	place	place	C9	notaPath			als	na
+C9_4	C9_4	place	place	C9	notaPath			als	na
+C9_5	C9_5	place	place	C9	notaPath			als	na
+C9_6	C9_6	place	place	C9	notaPath			als	na
+control_fluorescent_2	control_fluorescent_2	place	place	control_fluorescent	na			control_fluorescent	controlKO
+control_fluorescent_3	control_fluorescent_3	place	place	control_fluorescent	na			control_fluorescent	controlKO
+control_none_1	control_none_1	place	place	control_none	na			control_none	controlKO
+control_none_2	control_none_2	place	place	control_none	na			control_none	controlKO
+control_none_3	control_none_3	place	place	control_none	na			control_none	controlKO
+control_scramble_1	control_scramble_1	place	place	control_scramble	na			control_scramble	controlKO
+control_scramble_2	control_scramble_2	place	place	control_scramble	na			control_scramble	controlKO
+control_scramble_3	control_scramble_3	place	place	control_scramble	na			control_scramble	controlKO
+control_scramble_4	control_scramble_4	place	place	control_scramble	na			control_scramble	controlKO
+control_scramble_5	control_scramble_5	place	place	control_scramble	na			control_scramble	controlKO
+control_scramble_6	control_scramble_6	place	place	control_scramble	na			control_scramble	controlKO
+Ctrl1	Ctrl1	place	place	control_muscle	control_muscle			control_muscle	na
+Ctrl2	Ctrl2	place	place	control_muscle	control_muscle			control_muscle	na
+Ctrl_3_27_4_18	Ctrl_3_27_4_18	place	place	control_andrea	control_andrea			control_andrea	na
+Ctrl3	Ctrl3	place	place	control_muscle	control_muscle			control_muscle	na
+Ctrl4	Ctrl4	place	place	control_muscle	control_muscle			control_muscle	na
+Fus_1	Fus_1	place	place	fus	notaPath			als	na
+Fus_3	Fus_3	place	place	fus	notaPath			als	na
+Fus_4	Fus_4	place	place	fus	notaPath			als	na
+IBM_2_6_27_4_18	IBM_2_6_27_4_18	place	place	ibm_andrea	notaPath			ibm_andrea	na

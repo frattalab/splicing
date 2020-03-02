@@ -1,0 +1,5 @@
+sample_name,unit,fast1,fast2,group,cell_cond,group,exclude_sample_downstream_analysis
+control_fluorescent_2,control_fluorescent_2,/SAN/vyplab/TDP43_RNA/Klim_TDP/fastq/SRR8083871_1.fastq.gz,/SAN/vyplab/TDP43_RNA/Klim_TDP/fastq/SRR8083871_2.fastq.gz,control_fluorescent,,,
+control_fluorescent_3,control_fluorescent_3,/SAN/vyplab/TDP43_RNA/Klim_TDP/fastq/SRR8083877_1.fastq.gz,/SAN/vyplab/TDP43_RNA/Klim_TDP/fastq/SRR8083877_2.fastq.gz,control_fluorescent,,,
+control_none_1,control_none_1,/SAN/vyplab/TDP43_RNA/Klim_TDP/fastq/SRR8083869_1.fastq.gz,/SAN/vyplab/TDP43_RNA/Klim_TDP/fastq/SRR8083869_2.fastq.gz,control_none,,,
+control_none_2,control_none_2,/SAN/vyplab/TDP43_RNA/Klim_TDP/fastq/SRR8083870_1.fastq.gz,/SAN/vyplab/TDP43_RNA/Klim_TDP/fastq/SRR8083870_2.fastq.gz,control_none,,,
