@@ -59,6 +59,8 @@ def return_parsed_extra_params(extra_params):
     so that it can be stuck to the end of any shell command
     """
     #starting blank
+    if extra_params is None:
+        return("")
     cmd = ""
     #for key in extra parameters
     for key in extra_params:
