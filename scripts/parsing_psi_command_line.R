@@ -13,6 +13,7 @@ opt = parse_args(opt_parser);
 parse_voila_tsv = function(file_path){
     library(data.table)
     library(splitstackshape)
+    library(janitor)
     ####this function takes the file path to a voila tsv and parses it using splitstackshape and then combines the lsv_id and junction coordinates to make a unique
     ###lsv_id_junction for each lsv to get a PSI per splice event in long format
     #read in the file using data table and janitor to get clean names
