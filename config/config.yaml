@@ -2,23 +2,24 @@
 # ########IBM GEO information
 species: human
 library_type: fr-secondstrand
-read_len: 76
+read_len: 75
 genome_refcode: hg38
 strand_code: none
 endtype: pe
-sample_csv_path: /home/annbrown/data/ward_bams/ward_bams.csv
+sample_csv_path: /SAN/vyplab/alb_projects/data/combined_muscle_ibm_bams_linked/full_muscle_sample_table.csv
 group_column: group
 
 #directory of all the already aligned bam files, this is necessary for building the majic data index from this data
-bam_dir: /home/annbrown/data/ward_bams/bam_files/
-run_name: wardTDPKD
+bam_dir: /SAN/vyplab/alb_projects/data/combined_muscle_ibm_bams_linked/linked_bams/
+run_name: all_muscle_and_ko
 #folder where the fastq files are
 fastq_files: /SAN/vyplab/alb_projects/data/combined_muscle_ibm_bams_linked/merged_fastqs/
-majiq_top_level: /SAN/vyplab/alb_projects/data/ward_bams/majiq/
+majiq_top_level: /SAN/vyplab/alb_projects/data/combined_muscle_ibm_bams_linked/majiq_all_muscle/
 
 majiq_extra_parameters:
   simplify:
 majiq_psi_extra_parameters:
+  min-experiments: "3"
 extra_voila_parameters:
   threshold: "0.1"
 
@@ -43,7 +44,7 @@ whippet_extra_parameters:
 
 
 julia: /SAN/vyplab/alb_projects/tools/julia-9d11f62bcb/bin/julia
-bam_suffix: .pass2Aligned.sortedByCoord.out
+bam_suffix: .Aligned.sorted.out
 #the path where your samtools is installed
 samtools_path: /share/apps/genomics/samtools-1.9/bin/samtools
 cufflinks_path: /share/apps/genomics/cufflinks-2.2.1/bin/cufflinks
