@@ -1,8 +1,8 @@
 #!/usr/bin/env Rscript
 library("optparse")
 option_list = list(
-    make_option(c("-f", "--file"), type="character", default=NULL, 
-                help="dataset file name", metavar="character"),
+    make_option(c("-i", "--input"), type="character", default=NULL, 
+                help="psi single tsv file", metavar="character"),
     make_option(c("-o", "--out"), type="character", default="out.txt", 
                 help="output file name [default= %default]", metavar="character")
 ); 
@@ -44,4 +44,5 @@ parse_voila_tsv = function(file_path){
 }
 
 
-args = commandArgs(trailingOnly=TRUE)
+parsed = parse_voila_tsv(opt$input)
+fwrite(parsed,opt$out)
