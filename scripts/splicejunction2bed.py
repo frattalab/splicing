@@ -66,8 +66,8 @@ def usage():
     print("\t-h, --help:\n\t\t show this help message and exit")
     print("\t-mf, --motifFilter:\n\t\t filter out splice junctions with \n\t\t non-canonical motifs")
     print("Mandatory:")
-    print("\t-i, --input:\n\t\t File with the regions in bed format")
-    print("\t-o, --output:\n\t\t Name of the gtf file output file. Directory where the file will be created should exist!")
+    print("\t-i, --input:\n\t\t STAR SJ.out.tab file")
+    print("\t-o, --output:\n\t\t path for the bed to be written to. Directory where the file will be created should exist!")
 
 
 def run(infile, outfile, motifON):
