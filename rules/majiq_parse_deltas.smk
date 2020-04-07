@@ -3,9 +3,9 @@ import os
 import subprocess
 import yaml
 
-configfile: "config/config.yaml"
+configfile: "../config/config.yaml"
 
-include: "scripts/helpers.py"
+include: "../scripts/helpers.py"
 
 #reading in the samples and dropping the samples to be excluded in order to get a list of sample names
 samples = pd.read_csv(config['sample_csv_path'])
