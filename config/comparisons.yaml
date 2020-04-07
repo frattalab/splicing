@@ -3,19 +3,10 @@
 #problems. I suggest camelCase names, but doesn't really matter as long as you can interpret them. Throughout the file they have to be unique.
 #each of these two items has as many idenitifiers as you like, but they must be
 #valid identifiers from the column_name column in the sample_csv. The first identifier is always the baseline group
-ctrlDisease:
+klimTDP:
   column_name:
-    - tdp_path
-  diseasesampleswithCryptic:
-    - theLGMD2A
-    - cryptic_cluster
-  diseasesampleswithoutCryptic:
-    - notaPath
-controlDiseaseTwo:
-  column_name:
-    - tdp_path
-  diseasesampleswithHighTE:
-    - theLGMD2A
-    - te_cluster
-  diseasesampleswithoutHighTE:
-    - notaPath
+    - group
+  control:
+    - control
+  tdpKD:
+    - tdpKD
