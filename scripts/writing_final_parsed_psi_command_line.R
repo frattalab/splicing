@@ -5,9 +5,9 @@ option_list = list(
     make_option(c("-f", "--folder"), type="character", default=NULL, 
                 help="folder with the parsed csvs", metavar="character"),
     make_option(c("-o", "--out"), type="character", default="out.txt", 
-                help="output file name [default= %default]", metavar="character"),
+                help="output file name", metavar="character"),
     make_option(c("-s", "--suffix"), type="character", default="out.txt", 
-                help="the suffix that everything gets appended with", metavar="character")
+                help="the suffix that everything gets appended with [default= '.Aligned.sorted.out_parsed.']", metavar="character")
 ); 
 
 opt_parser = OptionParser(option_list=option_list);
@@ -48,3 +48,6 @@ parse_all_the_parsed = function(folder,suffix,output){
     
 }
 
+parse_all_the_parsed()
+parsed = parse_all_the_parsed(folder = opt$input)
+fwrite(parsed,opt$out)
