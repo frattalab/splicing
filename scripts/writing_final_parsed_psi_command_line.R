@@ -20,7 +20,7 @@ parse_all_the_parsed = function(folder,suffix,output){
     # get all the files that end in out_parsed_csv
     files = list.files(folder,full.names = TRUE,pattern = "out_parsed.csv")
     # everything has a suffix that we define, use this for removing later
-    suffix = suffix + "out_parsed.csv"
+    suffix = paste0(suffix,  "out_parsed.csv")
     # using something I found on the Google's
     mydata = tibble(File = files) %>%
         mutate(Data = lapply(File, read_csv)) %>%
