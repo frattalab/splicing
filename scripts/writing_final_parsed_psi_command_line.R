@@ -48,6 +48,5 @@ parse_all_the_parsed = function(folder,suffix,output){
     
 }
 
-parse_all_the_parsed()
-parsed = parse_all_the_parsed(folder = opt$input)
-fwrite(parsed,opt$out)
+
+parse_all_the_parsed(folder = opt$folder, suffix = opt$suffix, output = opt$out)
