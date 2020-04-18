@@ -8,7 +8,6 @@ strand_code: none
 endtype: pe
 sample_csv_path: /SAN/vyplab/alb_projects/data/combined_muscle_ibm_bams_linked/full_muscle_sample_table.csv
 group_column: group
-
 #directory of all the already aligned bam files, this is necessary for building the majic data index from this data
 bam_dir: /SAN/vyplab/alb_projects/data/combined_muscle_ibm_bams_linked/linked_bams/
 run_name: all_muscle_and_ko

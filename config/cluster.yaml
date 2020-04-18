@@ -31,6 +31,14 @@ majiq_delta_psi_tsv:
     h_rt: 72:00:00
     pe: smp 2
     R:  y
+majiq_psi_parse:
+    h_vmem:   1G
+    tmem:   1G
+    h_rt: 72:00:00
+star_tabs_to_beds:
+    h_vmem:   1G
+    tmem:   1G
+    h_rt: 72:00:00
 build_whippet_index:
     h_vmem:   6G
     tmem:   6G

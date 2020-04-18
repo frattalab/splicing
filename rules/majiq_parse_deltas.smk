@@ -3,38 +3,56 @@ import os
 import subprocess
 import yaml
 
-configfile: "../config/config.yaml"
+configfile: "config/config.yaml"
 
-include: "../scripts/helpers.py"
+include: "helpers.py"
 
 #reading in the samples and dropping the samples to be excluded in order to get a list of sample names
+
 samples = pd.read_csv(config['sample_csv_path'])
 samples2 = samples.loc[samples.exclude_sample_downstream_analysis != 1]
 SAMPLE_NAMES = list(set(samples2['sample_name'] + config['bam_suffix']))
+SJ_NAMES  = list(set(samples2['sample_name']))
+
 GROUPS = list(set(samples2['group']))
 
 BASES, CONTRASTS = return_bases_and_contrasts()
-print(BASES)
-print(CONTRASTS)
 
 rule all:
     input:
-        # expand(config['majiq_top_level'] + "delta_psi/" + "{bse}_{contrast}" + ".deltapsi.tsv",zip, bse = BASES,contrast = CONTRASTS),
-        # expand(os.path.join(config['majiq_top_level'],"delta_psi_voila_tsv","{bse}_{contrast}" + ".psi.tsv"),zip, bse = BASES,contrast = CONTRASTS),
-        # config['majiq_top_level'] + config['run_name'] + "_majiqConfig.tsv",
-        # expand(os.path.join(config['majiq_top_level'],"builder",'{name}' + ".majiq"),name = SAMPLE_NAMES),
-        # expand(os.path.join(config['majiq_top_level'],"psi",'{group}' + ".psi.voila"),group = GROUPS),
-        expand(os.path.join(config['majiq_top_level'],"star_beds",'{name}' + ".bed"),name = SAMPLE_NAMES)
+        expand(os.path.join(config['majiq_top_level'],"psi_voila_tsv_single",'{sample}' + "_parsed.csv"), sample = SAMPLE_NAMES),
+        expand(os.path.join(config['majiq_top_level'],"star_beds",'{sjname}' + ".bed"),sjname = SJ_NAMES)
 
 rule star_tabs_to_beds:
     input:
-        sj_tab = lambda wildcards: os.path.join(config['bam_dir'],"{name}" + ".SJ.out.tab")
+        sj_tab = os.path.join(config['bam_dir'],"{sjname}" + ".SJ.out.tab")
+    params:
+        out_folder = config['majiq_top_level'] + "star_beds/"
     output:
-        bed = os.path.join(config['majiq_top_level'],"star_beds",'{name}' + ".bed")
+        bed = os.path.join(config['majiq_top_level'],"star_beds",'{sjname}' + ".bed")
     shell:
         """
-        mkdir -p {config['majiq_top_level']}/star_beds/
+        mkdir -p {params.out_folder}
         python3 ./scripts/splicejunction2bed.py -i {input.sj_tab} -o {output.bed}
+        """
+rule majiq_psi_parse:
+    input:
+        psi_voila_tsv = lambda wildcards: os.path.join(config['majiq_top_level'],"psi_voila_tsv_single",'{sample}' + ".psi.tsv")
+    output:
+        parsed_csv = os.path.join(config['majiq_top_level'],"psi_voila_tsv_single",'{sample}' + "_parsed.csv")
+    shell:
+        """
+        Rscript scripts/parsing_psi_command_line.R --input {input.psi_voila_tsv} -o {output.parsed_csv}
+        """
+        scripts/writing_final_parsed_psi_command_line.R
+rule combine_psi_per_sample:
+    input:
+        all_parsed_csvs =
+    output:
+        parsed_csv = os.path.join(config['majiq_top_level'],"psi_voila_tsv_single",'{sample}' + "_parsed.csv")
+    shell:
+        """
+        Rscript scripts/writing_final_parsed_psi_command_line.R --folder {input.psi_voila_tsv} --out {output.parsed_csv}
         """
 # rule majiq_delta_psi_tsv:
 #     input:
