@@ -28,7 +28,9 @@ CLASS2_BAM = expand(config['bam_dir'] + '{sample}' + config['bam_suffix'] + '.ba
 rule all:
     input:
         config['bam_dir'] + 'cufflinks_merged/' + 'merged.gtf',
-        config['bam_dir'] + 'cufflinks_merged/' + 'comparison/all.stats'
+        config['bam_dir'] + 'cufflinks_merged/' + 'comparison/all.stats',
+        config['bam_dir'] + 'diffexp/gene_exp.diff',
+        config['bam_dir'] + 'diffexp/isoform_exp.diff'
 
 
 rule assembly:
@@ -61,7 +63,7 @@ rule compose_merge:
 
 rule merge_assemblies:
     input:
-        'assembly/assemblies.txt'
+        config['bam_dir'] + 'cufflinks_merged/' + 'assemblies.txt'
     output:
         config['bam_dir'] + 'cufflinks_merged/' + 'merged.gtf'
     params:
@@ -86,9 +88,10 @@ rule diffexp:
     input:
         class1=CLASS1_BAM,
         class2=CLASS2_BAM,
-        gtf='assembly/merged/merged.gtf'
+        gtf=config['bam_dir'] + 'cufflinks_merged/' + 'merged.gtf'
     output:
-        'diffexp/gene_exp.diff', 'diffexp/isoform_exp.diff'
+        config['bam_dir'] + 'diffexp/gene_exp.diff',
+        config['bam_dir'] + 'diffexp/isoform_exp.diff'
     params:
         class1=",".join(CLASS1_BAM),
         class2=",".join(CLASS2_BAM)
