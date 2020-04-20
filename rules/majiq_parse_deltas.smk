@@ -13,7 +13,7 @@ samples = pd.read_csv(config['sample_csv_path'])
 samples2 = samples.loc[samples.exclude_sample_downstream_analysis != 1]
 SAMPLE_NAMES = list(set(samples2['sample_name'] + config['bam_suffix']))
 SJ_NAMES  = list(set(samples2['sample_name']))
-
+print(SAMPLE_NAMES)
 GROUPS = list(set(samples2['group']))
 
 BASES, CONTRASTS = return_bases_and_contrasts()
