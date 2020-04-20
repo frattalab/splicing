@@ -143,6 +143,16 @@ def get_single_psi_parsed_files():
 
     return(parsed_psi_files)
 
+# takes the featurcounts strand and returns the interpretation for kallisto_output_folder
+def get_cuff_strand(fcStrand):
+    if fcStrand == "none":
+        return("fr-unstranded")
+    elif fcStrand == "forward":
+        return("fr-secondstrand")
+    elif fcStrand == "reverse":
+        return("fr-firststrand")
+
+
 # def get_lib_size(sample_name):
 #     """
 #     reads the star log files to find the library size for SGSeq

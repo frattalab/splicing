@@ -42,13 +42,15 @@ rule assembly:
         sample="|".join(SAMPLES)
     params:
         outdir = config['bam_dir'] + '{sample}',
-        outmerged = config['bam_dir'] + 'cufflinks_merged/'
+        outmerged = config['bam_dir'] + 'cufflinks_merged/',
+        strandness =
     threads: 4
     shell:
-        'mkdir -p {params.outmerged}'
-        'mkdir -p {params.outdir}'
-        'cufflinks --num-threads {threads} -o {params.outdir} '
-        '--frag-bias-correct {REF} {input}'
+        """
+        mkdir -p {params.outmerged}
+        mkdir -p {params.outdir}
+        cufflinks --num-threads {threads} -o {params.outdir} --frag-bias-correct {REF} {input}
+        """
 
 
 rule compose_merge:
@@ -69,8 +71,10 @@ rule merge_assemblies:
     params:
         dir=config['bam_dir'] + 'cufflinks_merged/'
     shell:
-        'mkdir -p {params.dir}'
-        'cuffmerge -o {params.dir} -s {REF} {input}'
+        """
+        mkdir -p {params.dir}
+        cuffmerge -o {params.dir} -s {REF} {input}
+        """
 
 
 rule compare_assemblies:
@@ -97,4 +101,4 @@ rule diffexp:
         class2=",".join(CLASS2_BAM)
     threads: 8
     shell:
-        'cuffdiff --num-threads {threads} {gtf} {params.class1} {params.class2}'
+        'cuffdiff --num-threads {threads} {input.gtf} {params.class1} {params.class2}'
