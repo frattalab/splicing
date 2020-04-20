@@ -39,6 +39,28 @@ star_tabs_to_beds:
     h_vmem:   1G
     tmem:   1G
     h_rt: 72:00:00
+assembly:
+    h_vmem:   1G
+    tmem:   1G
+    h_rt: 72:00:00
+    pe: smp 4
+    R:  y
+compare_assemblies:
+    h_vmem:   1G
+    tmem:   1G
+    h_rt: 72:00:00
+merge_assemblies:
+    h_vmem:   1G
+    tmem:   1G
+    h_rt: 72:00:00
+    pe: 
+    R:  y
+diffexp:
+    h_vmem:   1G
+    tmem:   1G
+    h_rt: 72:00:00
+    pe: smp 8
+    R:  y
 build_whippet_index:
     h_vmem:   6G
     tmem:   6G

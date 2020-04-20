@@ -43,7 +43,7 @@ rule assembly:
     params:
         outdir = config['bam_dir'] + '{sample}',
         outmerged = config['bam_dir'] + 'cufflinks_merged/',
-        strandness = get_cuff_strand(config['fasta'])
+        strandness = get_cuff_strand(config['strand_code'])
     threads: 4
     shell:
         """
