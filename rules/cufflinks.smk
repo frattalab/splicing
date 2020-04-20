@@ -14,15 +14,17 @@ samples2 = samples.loc[samples.exclude_sample_downstream_analysis != 1]
 SAMPLES = list(set(samples2['sample_name'] + config['bam_suffix']))
 GROUPS = list(set(samples2['group']))
 
+print(SAMPLES)
 
-CLASS1 = samples.loc[samples.group == GROUPS[0]]['sample_name'].tolist()
-CLASS2 = samples.loc[samples.group == GROUPS[1]]['sample_name'].tolist()
+CLASS1 = samples2.loc[samples.group == GROUPS[0]]['sample_name'].tolist()
+CLASS2 = samples2.loc[samples.group == GROUPS[1]]['sample_name'].tolist()
 
 # path to bam files
 CLASS1_BAM = expand(config['bam_dir'] + '{sample}' + config['bam_suffix'] + '.bam', sample=CLASS1)
 CLASS2_BAM = expand(config['bam_dir'] + '{sample}' + config['bam_suffix'] + '.bam', sample=CLASS2)
 
 print(CLASS1_BAM)
+
 rule all:
     input:
         'diffexp/isoform_exp.diff',
@@ -31,9 +33,11 @@ rule all:
 
 rule assembly:
     input:
-        config['bam_dir'] + '{sample}' + config['bam_suffix'] + '.bam'
+        config['bam_dir'] + '{sample}' + '.bam'
     output:
         config['bam_dir'] + '{sample}/transcripts.gtf'
+    wildcard_constraints:
+        sample="|".join(SAMPLES)
     params:
         outdir = config['bam_dir'] + '{sample}'
     threads: 4
