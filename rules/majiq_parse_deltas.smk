@@ -21,6 +21,7 @@ BASES, CONTRASTS = return_bases_and_contrasts()
 rule all:
     input:
         expand(os.path.join(config['majiq_top_level'],"psi_voila_tsv_single",'{sample}' + "_parsed.csv"), sample = SAMPLE_NAMES),
+        os.path.join(config['majiq_top_level'],"psi_voila_tsv_single/" + "full_PSI.csv")
         # expand(os.path.join(config['majiq_top_level'],"star_beds",'{sjname}' + ".bed"),sjname = SJ_NAMES)
 
 # rule star_tabs_to_beds:
@@ -49,7 +50,7 @@ rule combine_psi_per_sample:
     input:
         all_parsed_csvs = get_single_psi_parsed_files()
     output:
-        parsed_csv = os.path.join(config['majiq_top_level'],"psi_voila_tsv_single",'{sample}' + "_parsed.csv")
+        parsed_csv = os.path.join(config['majiq_top_level'],"psi_voila_tsv_single/" + "full_PSI.csv")
     params:
         psi_folder = os.path.join(config['majiq_top_level'],"psi_voila_tsv_single")
     shell:
