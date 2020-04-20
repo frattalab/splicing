@@ -47,7 +47,7 @@ rule assembly:
     shell:
         'mkdir -p {params.outmerged}'
         'mkdir -p {params.outdir}'
-        'cufflinks --num-threads {threads} -o {output.dir} '
+        'cufflinks --num-threads {threads} -o {params.dir} '
         '--frag-bias-correct {REF} {input}'
 
 
