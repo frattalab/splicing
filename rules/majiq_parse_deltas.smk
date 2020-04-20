@@ -40,7 +40,7 @@ rule majiq_psi_parse:
     input:
         psi_voila_tsv = lambda wildcards: os.path.join(config['majiq_top_level'],"psi_voila_tsv_single",'{sample}' + ".psi.tsv")
     wildcard_constraints:
-        name="|".join(SAMPLE_NAMES)
+        sample="|".join(SAMPLE_NAMES)
     output:
         parsed_csv = os.path.join(config['majiq_top_level'],"psi_voila_tsv_single",'{sample}' + "_parsed.csv")
     shell:
