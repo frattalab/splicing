@@ -23,12 +23,12 @@ CLASS2 = samples2.loc[samples.group == GROUPS[1]]['sample_name'].tolist()
 CLASS1_BAM = expand(config['bam_dir'] + '{sample}' + config['bam_suffix'] + '.bam', sample=CLASS1)
 CLASS2_BAM = expand(config['bam_dir'] + '{sample}' + config['bam_suffix'] + '.bam', sample=CLASS2)
 
-print(CLASS1_BAM)
+
 
 rule all:
     input:
-        'diffexp/isoform_exp.diff',
-        'assembly/comparison'
+        config['bam_dir'] + 'cufflinks_merged/' + 'merged.gtf',
+        config['bam_dir'] + 'cufflinks_merged/' + 'comparison/all.stats'
 
 
 rule assembly:
@@ -39,9 +39,11 @@ rule assembly:
     wildcard_constraints:
         sample="|".join(SAMPLES)
     params:
-        outdir = config['bam_dir'] + '{sample}'
+        outdir = config['bam_dir'] + '{sample}',
+        outmerged = config['bam_dir'] + 'cufflinks_merged/'
     threads: 4
     shell:
+        'mkdir -p {params.outmerged}'
         'mkdir -p {params.outdir}'
         'cufflinks --num-threads {threads} -o {output.dir} '
         '--frag-bias-correct {REF} {input}'
@@ -51,7 +53,7 @@ rule compose_merge:
     input:
         expand(config['bam_dir'] + '{sample}/transcripts.gtf', sample=SAMPLES)
     output:
-        txt='assembly/assemblies.txt'
+        txt=config['bam_dir'] + 'cufflinks_merged/' + 'assemblies.txt'
     run:
         with open(output.txt, 'w') as out:
             print(*input, sep="\n", file=out)
@@ -61,19 +63,23 @@ rule merge_assemblies:
     input:
         'assembly/assemblies.txt'
     output:
-        'assembly/merged/merged.gtf', dir='assembly/merged'
+        config['bam_dir'] + 'cufflinks_merged/' + 'merged.gtf'
+    params:
+        dir=config['bam_dir'] + 'cufflinks_merged/'
     shell:
-        'cuffmerge -o {output.dir} -s {REF} {input}'
+        'mkdir -p {params.dir}'
+        'cuffmerge -o {params.dir} -s {REF} {input}'
 
 
 rule compare_assemblies:
     input:
-        'assembly/merged/merged.gtf'
+        config['bam_dir'] + 'cufflinks_merged/' + 'merged.gtf'
     output:
-        'assembly/comparison/all.stats',
-        dir='assembly/comparison'
+        config['bam_dir'] + 'cufflinks_merged/' + 'comparison/all.stats'
+    params:
+        dir='assembly/comparison/'
     shell:
-        'cuffcompare -o {output.dir}all -s {REF} -r {TRACK} {input}'
+        'cuffcompare -o {params.dir}all -s {REF} -r {TRACK} {input}'
 
 
 rule diffexp:
