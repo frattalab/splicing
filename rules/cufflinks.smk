@@ -34,7 +34,7 @@ rule assembly:
         config['bam_dir'] + '{sample}' + config['bam_suffix'] + '.bam'
     output:
         config['bam_dir'] + '{sample}/transcripts.gtf'
-    params
+    params:
         outdir = config['bam_dir'] + '{sample}'
     threads: 4
     shell:
