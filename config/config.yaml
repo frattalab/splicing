@@ -4,7 +4,7 @@ species: human
 library_type: fr-secondstrand
 read_len: 76
 genome_refcode: hg38
-strand_code: none
+strand_code: forward
 endtype: pe
 sample_csv_path: /home/annbrown/data/ward_bams/ward_bams.csv
 group_column: group
