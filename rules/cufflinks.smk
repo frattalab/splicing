@@ -31,19 +31,21 @@ rule all:
 
 rule assembly:
     input:
-        config['bam_dir'] + '{sample}.bam'
+        config['bam_dir'] + '{sample}' + config['bam_suffix'] + '.bam'
     output:
-        'assembly/{sample}/transcripts.gtf',
-        dir='assembly/{sample}'
+        config['bam_dir'] + '{sample}/transcripts.gtf'
+    params
+        outdir = config['bam_dir'] + '{sample}'
     threads: 4
     shell:
+        'mkdir -p {params.outdir}'
         'cufflinks --num-threads {threads} -o {output.dir} '
         '--frag-bias-correct {REF} {input}'
 
 
 rule compose_merge:
     input:
-        expand('assembly/{sample}/transcripts.gtf', sample=SAMPLES)
+        expand(config['bam_dir'] + '{sample}/transcripts.gtf', sample=SAMPLES)
     output:
         txt='assembly/assemblies.txt'
     run:
