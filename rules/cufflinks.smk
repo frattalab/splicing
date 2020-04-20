@@ -3,7 +3,7 @@ import os
 import subprocess
 
 configfile: "config/config.yaml"
-
+include: "helpers.py"
 # path to track and reference
 TRACK   = config['gtf']
 REF     = config['fasta']
@@ -43,13 +43,13 @@ rule assembly:
     params:
         outdir = config['bam_dir'] + '{sample}',
         outmerged = config['bam_dir'] + 'cufflinks_merged/',
-        strandness =
+        strandness = get_cuff_strand(config['fasta'])
     threads: 4
     shell:
         """
         mkdir -p {params.outmerged}
         mkdir -p {params.outdir}
-        cufflinks --num-threads {threads} -o {params.outdir} --frag-bias-correct {REF} {input}
+        cufflinks --num-threads {threads} -o {params.outdir} --library-type {params.strandness} --frag-bias-correct {REF} {input}
         """
 
 
