@@ -19,8 +19,8 @@ CLASS1 = samples.loc[samples.group == GROUPS[0]]['sample_name'].tolist()
 CLASS2 = samples.loc[samples.group == GROUPS[1]]['sample_name'].tolist()
 
 # path to bam files
-CLASS1_BAM = expand(config['bam_dir'] + '{sample}.bam', sample=CLASS1)
-CLASS2_BAM = expand(config['bam_dir'] + '{sample}.bam', sample=CLASS2)
+CLASS1_BAM = expand(config['bam_dir'] + '{sample}' + config['bam_suffix'] + '.bam', sample=CLASS1)
+CLASS2_BAM = expand(config['bam_dir'] + '{sample}' + config['bam_suffix'] + '.bam', sample=CLASS2)
 
 print(CLASS1_BAM)
 rule all:
