@@ -44,15 +44,17 @@ rule majiq_psi_parse:
         """
         Rscript scripts/parsing_psi_command_line.R --input {input.psi_voila_tsv} -o {output.parsed_csv}
         """
-        scripts/writing_final_parsed_psi_command_line.R
+
 rule combine_psi_per_sample:
     input:
-        all_parsed_csvs =
+        all_parsed_csvs = get_single_psi_parsed_files()
     output:
         parsed_csv = os.path.join(config['majiq_top_level'],"psi_voila_tsv_single",'{sample}' + "_parsed.csv")
+    params:
+        psi_folder = os.path.join(config['majiq_top_level'],"psi_voila_tsv_single")
     shell:
         """
-        Rscript scripts/writing_final_parsed_psi_command_line.R --folder {input.psi_voila_tsv} --out {output.parsed_csv}
+        Rscript scripts/writing_final_parsed_psi_command_line.R --folder {params.psi_folder} --out {output.parsed_csv}
         """
 # rule majiq_delta_psi_tsv:
 #     input:

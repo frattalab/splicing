@@ -131,6 +131,17 @@ def return_bases_and_contrasts():
                 contrast_keys.append(k2)
     return(base_keys,contrast_keys)
 
+def get_single_psi_parsed_files():
+    """
+    return a list of files that will exist
+    """
+    samples = pd.read_csv(config['sample_csv_path'])
+    #there should be a column which allows you to exclude samples
+    samples2 = samples.loc[samples.exclude_sample_downstream_analysis != 1]
+
+    parsed_psi_files = [os.path.join(config['majiq_top_level'],"psi_voila_tsv_single",x) for x in list(samples2.loc[samples2.group == grp].sample_name + config['bam_suffix'] + "._parsed.csv")]
+
+    return(parsed_psi_files)
 
 # def get_lib_size(sample_name):
 #     """
