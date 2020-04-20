@@ -21,20 +21,20 @@ BASES, CONTRASTS = return_bases_and_contrasts()
 rule all:
     input:
         expand(os.path.join(config['majiq_top_level'],"psi_voila_tsv_single",'{sample}' + "_parsed.csv"), sample = SAMPLE_NAMES),
-        expand(os.path.join(config['majiq_top_level'],"star_beds",'{sjname}' + ".bed"),sjname = SJ_NAMES)
+        # expand(os.path.join(config['majiq_top_level'],"star_beds",'{sjname}' + ".bed"),sjname = SJ_NAMES)
 
-rule star_tabs_to_beds:
-    input:
-        sj_tab = os.path.join(config['bam_dir'],"{sjname}" + ".SJ.out.tab")
-    params:
-        out_folder = config['majiq_top_level'] + "star_beds/"
-    output:
-        bed = os.path.join(config['majiq_top_level'],"star_beds",'{sjname}' + ".bed")
-    shell:
-        """
-        mkdir -p {params.out_folder}
-        python3 ./scripts/splicejunction2bed.py -i {input.sj_tab} -o {output.bed}
-        """
+# rule star_tabs_to_beds:
+#     input:
+#         sj_tab = os.path.join(config['bam_dir'],"{sjname}" + ".SJ.out.tab")
+#     params:
+#         out_folder = config['majiq_top_level'] + "star_beds/"
+#     output:
+#         bed = os.path.join(config['majiq_top_level'],"star_beds",'{sjname}' + ".bed")
+#     shell:
+#         """
+#         mkdir -p {params.out_folder}
+#         python3 ./scripts/splicejunction2bed.py -i {input.sj_tab} -o {output.bed}
+#         """
 rule majiq_psi_parse:
     input:
         psi_voila_tsv = lambda wildcards: os.path.join(config['majiq_top_level'],"psi_voila_tsv_single",'{sample}' + ".psi.tsv")
