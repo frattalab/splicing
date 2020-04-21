@@ -86,8 +86,11 @@ rule compare_assemblies:
     params:
         dir=config['bam_dir'] + 'cufflinks_merged/' + 'comparison/
     shell:
-        'cuffcompare -o {params.dir}all -s {REF} -r {TRACK} {input}'
-
+        """
+        source /share/apps/source_files/python/python-2.7.16.source
+        mkdir -p {params.dir}
+        cuffcompare -o {params.dir}all -s {REF} -r {TRACK} {input}
+        """
 
 rule diffexp:
     input:
@@ -102,4 +105,8 @@ rule diffexp:
         class2=",".join(CLASS2_BAM)
     threads: 8
     shell:
-        'cuffdiff --num-threads {threads} {input.gtf} {params.class1} {params.class2}'
+        """
+        source /share/apps/source_files/python/python-2.7.16.source
+        mkdir -p {params.dir}
+        cuffdiff --num-threads {threads} {input.gtf} {params.class1} {params.class2}
+        """
