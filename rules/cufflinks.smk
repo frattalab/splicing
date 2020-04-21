@@ -72,6 +72,7 @@ rule merge_assemblies:
         dir=config['bam_dir'] + 'cufflinks_merged/'
     shell:
         """
+        source /share/apps/source_files/python/python-2.7.16.source
         mkdir -p {params.dir}
         cuffmerge -o {params.dir} -s {REF} {input}
         """
@@ -83,7 +84,7 @@ rule compare_assemblies:
     output:
         config['bam_dir'] + 'cufflinks_merged/' + 'comparison/all.stats'
     params:
-        dir='assembly/comparison/'
+        dir=config['bam_dir'] + 'cufflinks_merged/' + 'comparison/
     shell:
         'cuffcompare -o {params.dir}all -s {REF} -r {TRACK} {input}'
 
