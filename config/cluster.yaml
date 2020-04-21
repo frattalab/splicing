@@ -1,12 +1,12 @@
 __default__:
     h_vmem: 2G
     h_rt:   1:0:0
+    pe: -pe smp 1
 majiq_build:
     h_vmem:   2G
     tmem:   2G
-    pe: smp 4
+    pe: -pe smp 4 -R y
     h_rt: 72:00:00
-    R:  y
 majiq_psi:
     h_vmem:   2G
     tmem:   2G
@@ -40,11 +40,15 @@ star_tabs_to_beds:
     tmem:   1G
     h_rt: 72:00:00
 assembly:
+    h_vmem:   2G
+    tmem:   2G
+    h_rt: 72:00:00
+    pe: -pe smp 4 -R y
+compose_merge:
     h_vmem:   1G
     tmem:   1G
     h_rt: 72:00:00
-    pe: smp 4
-    R:  y
+    pe: -pe smp 1
 compare_assemblies:
     h_vmem:   1G
     tmem:   1G
@@ -53,14 +57,11 @@ merge_assemblies:
     h_vmem:   1G
     tmem:   1G
     h_rt: 72:00:00
-    pe: 
-    R:  y
 diffexp:
     h_vmem:   1G
     tmem:   1G
     h_rt: 72:00:00
-    pe: smp 8
-    R:  y
+    pe: -pe smp 8 -R y
 build_whippet_index:
     h_vmem:   6G
     tmem:   6G
