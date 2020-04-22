@@ -84,7 +84,7 @@ rule compare_assemblies:
     output:
         config['bam_dir'] + 'cufflinks_merged/' + 'comparison/all.stats'
     params:
-        dir=config['bam_dir'] + 'cufflinks_merged/' + 'comparison/
+        dir=config['bam_dir'] + 'cufflinks_merged/' + 'comparison/'
     shell:
         """
         source /share/apps/source_files/python/python-2.7.16.source
