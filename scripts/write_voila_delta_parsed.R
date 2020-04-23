@@ -84,4 +84,4 @@ opt = parse_args(opt_parser);
 
 output = parse_voila_delta_tsv(opt$deltafile)
 
-fwrite(output = opt$out)
+fwrite(output, opt$out)
