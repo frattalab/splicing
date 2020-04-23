@@ -67,7 +67,7 @@ rule combine_psi_per_sample:
 
 rule majiq_finish_deltas:
     input:
-        tsv = lambda wildcards: os.path.join(os.path.join(config['majiq_top_level'],"delta_psi_voila_tsv","{bse}_{contrast}" + ".psi.tsv")
+        tsv = lambda wildcards: os.path.join(config['majiq_top_level'],"delta_psi_voila_tsv","{bse}_{contrast}" + ".psi.tsv")
     output:
         parsed_tsv = os.path.join(config['majiq_top_level'],"delta_psi_voila_tsv","{bse}_{contrast}" + "_parsed_psi.tsv")
     params:
