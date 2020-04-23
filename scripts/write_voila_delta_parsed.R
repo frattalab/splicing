@@ -75,7 +75,7 @@ option_list = list(
     make_option(c("-d", "--deltafile"), type="character", default=NULL,
                 help="a majiq delta psi file", metavar="character"),
     make_option(c("-o", "--out"), type="character", default="out.txt",
-                help="output file name", metavar="character"),
+                help="output file name", metavar="character")
 );
 
 opt_parser = OptionParser(option_list=option_list);
