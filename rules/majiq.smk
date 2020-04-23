@@ -21,7 +21,6 @@ rule all:
         expand(config['majiq_top_level'] + "delta_psi/" + "{bse}_{contrast}" + ".deltapsi.tsv",zip, bse = BASES,contrast = CONTRASTS),
 
 
-
 rule majiq_delta_psi:
     input:
         majiq_config_file = config['majiq_top_level'] + config['run_name'] + "_majiqConfig.tsv",
