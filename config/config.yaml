@@ -33,7 +33,9 @@ gff3: /SAN/vyplab/vyplab_reference_genomes/annotation/human/GRCh38/gencode.v31.a
 
 #scallop configurations
 scallop_path: /SAN/vyplab/alb_projects/tools/scallop-0.10.4/src/scallop
-
+scallop_extra_parameters:
+  library_type: first
+  min_transcript_length_increase: 25
 
 
 
