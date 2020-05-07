@@ -18,7 +18,7 @@ rule all_scallop:
 
 rule scallop_per_samp:
     input:
-        bam_file = lambda wildcards: config['bam_dir'] + '{sample}' + "_majiqConfig.tsv"
+        bam_file = lambda wildcards: config['bam_dir'] + '{sample}' + config['bam_suffix'] + ".bam"
     output:
         os.path.join(config['majiq_top_level'],"scallop_output/",'{sample}' + ".gtf")
     params:
