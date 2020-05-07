@@ -12,12 +12,15 @@ samples2 = samples.loc[samples.exclude_sample_downstream_analysis != 1]
 SAMPLE_NAMES = list(set(samples2['sample_name'] + config['bam_suffix']))
 GROUPS = list(set(samples2['group']))
 
+rule all_scallop:
+    input:
+        expand(os.path.join(config['majiq_top_level'],"scallop_output/",'{sample}' + ".gtf"), sample = SAMPLE_NAMES)
 
 rule scallop_per_samp:
     input:
-        bam_file = config['bam_dir'] + '{name}' + "_majiqConfig.tsv"
+        bam_file = lambda wildcards: config['bam_dir'] + '{sample}' + "_majiqConfig.tsv"
     output:
-        expand(os.path.join(config['majiq_top_level'],"scallop_output/",'{name}' + ".gtf"),name = SAMPLE_NAMES)
+        os.path.join(config['majiq_top_level'],"scallop_output/",'{sample}' + ".gtf")
     params:
         scallop_path = config['scallop_path'],
         scallop_out_folder = os.path.join(config['majiq_top_level'],"scallop_output/"),
