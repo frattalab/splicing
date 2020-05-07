@@ -31,5 +31,5 @@ rule scallop_per_samp:
     shell:
         """
         mkdir -p {params.scallop_out_folder}
-        {scallop_path} -i {input.bam_file} -o {output} {params.scallop_extra_config}
+        {params.scallop_path} -i {input.bam_file} -o {output} {params.scallop_extra_config}
         """
