@@ -11,6 +11,7 @@ samples = pd.read_csv(config['sample_csv_path'])
 samples2 = samples.loc[samples.exclude_sample_downstream_analysis != 1]
 SAMPLE_NAMES = list(set(samples2['sample_name'] + config['bam_suffix']))
 GROUPS = list(set(samples2['group']))
+print(SAMPLE_NAMES)
 
 rule all_scallop:
     input:
@@ -19,6 +20,8 @@ rule all_scallop:
 rule scallop_per_samp:
     input:
         bam_file = lambda wildcards: config['bam_dir'] + '{sample}' + config['bam_suffix'] + ".bam"
+    wildcard_constraints:
+        sample="|".join(SAMPLE_NAMES)
     output:
         os.path.join(config['majiq_top_level'],"scallop_output/",'{sample}' + ".gtf")
     params:
