@@ -20,7 +20,7 @@ rule scallop_per_samp:
         expand(os.path.join(config['majiq_top_level'],"scallop_output/",'{name}' + ".gtf"),name = SAMPLE_NAMES)
     params:
         scallop_path = config['scallop_path'],
-        scallop_out_folder = os.path.join(config['majiq_top_level'],"scallop_output/")
+        scallop_out_folder = os.path.join(config['majiq_top_level'],"scallop_output/"),
         scallop_extra_config = return_parsed_extra_params(config['scallop_extra_parameters'])
     shell:
         """
