@@ -62,11 +62,8 @@ diffexp:
     tmem:   1G
     h_rt: 72:00:00
     pe: -pe smp 8 -R y
-build_whippet_index:
-    h_vmem:   6G
-    tmem:   6G
+merge_scallop_gtfs:
+    h_vmem:   1G
+    tmem:   1G
     h_rt: 72:00:00
-whippet_psi:
-    h_vmem:   6G
-    tmem:   6G
-    h_rt: 72:00:00
+    pe: -pe smp 2 -R y
