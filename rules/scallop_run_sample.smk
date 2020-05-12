@@ -35,7 +35,7 @@ rule scallop_per_samp:
 
 rule compose_gtf_list:
     input:
-        expand(os.path.join(config['majiq_top_level'],"scallop_output/",'{sample}.gtf'), sample=SAMPLES)
+        expand(os.path.join(config['majiq_top_level'],"scallop_output/",'{sample}.gtf'), sample=SAMPLE_NAMES)
     output:
         txt = os.path.join(config['majiq_top_level'],"scallop_output/","gtf_list.txt")
     run:
