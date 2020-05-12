@@ -14,7 +14,8 @@ print(SAMPLE_NAMES)
 
 rule all_scallop:
     input:
-        expand(os.path.join(config['majiq_top_level'],"scallop_output/",'{sample}' + ".gtf"), sample = SAMPLE_NAMES)
+        expand(os.path.join(config['majiq_top_level'],"scallop_output/",'{sample}' + ".gtf"), sample = SAMPLE_NAMES),
+        os.path.join(config['majiq_top_level'],"scallop_output/","scallop_merged.gtf")
 
 rule scallop_per_samp:
     input:
