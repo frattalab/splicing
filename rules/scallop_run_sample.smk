@@ -2,7 +2,6 @@ import pandas as pd
 import os
 import subprocess
 import yaml
-# note to self - probaly should not be hard coding threads like i do
 configfile: "config/config.yaml"
 include: "helpers.py"
 
@@ -32,4 +31,24 @@ rule scallop_per_samp:
         """
         mkdir -p {params.scallop_out_folder}
         {params.scallop_path} -i {input.bam_file} -o {output} {params.scallop_extra_config}
+        """
+
+rule compose_gtf_list:
+    input:
+        expand(os.path.join(config['majiq_top_level'],"scallop_output/",'{sample}.gtf'), sample=SAMPLES)
+    output:
+        txt = os.path.join(config['majiq_top_level'],"scallop_output/","gtf_list.txt")
+    run:
+        with open(output.txt, 'w') as out:
+            print(*input, sep="\n", file=out)
+rule merge_scallop_gtfs
+    input:
+        gtf_list = os.path.join(config['majiq_top_level'],"scallop_output/","gtf_list.txt")
+    output:
+        merged_gtf = os.path.join(config['majiq_top_level'],"scallop_output/","scallop_merged.gtf")
+    params:
+        gtfmerge = '/SAN/vyplab/alb_projects/tools/rnaseqtools-1.0.3/gtfmerge/gtfmerge'
+    shell:
+        """
+        {params.gtfmerge} union {input.gtf_list} {output.merged_gtf} -t 2 -n
         """
