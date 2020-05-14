@@ -60,7 +60,7 @@ rule compare_reference:
     input:
         merged_gtf = os.path.join(config['majiq_top_level'],"scallop_output/","scallop_merged.gtf")
     output:
-        os.path.join(config['majiq_top_level'],"scallop_output/","gffall.scallop_merged.gtf.map")
+        os.path.join(config['majiq_top_level'],"scallop_output/","gffall.scallop_merged.gtf.tmap")
     params:
         ref_gtf = config['gtf'],
         gffcompare = "/SAN/vyplab/alb_projects/tools/gffcompare-0.11.6.Linux_x86_64/gffcompare"
