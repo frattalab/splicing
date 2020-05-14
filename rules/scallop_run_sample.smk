@@ -54,3 +54,15 @@ rule merge_scallop_gtfs:
         """
         {params.gtfmerge} union {input.gtf_list} {output.merged_gtf} -t 2 -n
         """
+rule compare_reference:
+    input:
+        merged_gtf = os.path.join(config['majiq_top_level'],"scallop_output/","scallop_merged.gtf")
+    output:
+        os.path.join(config['majiq_top_level'],"scallop_output/","gffall.scallop_merged.gtf.map")
+    params:
+        ref_gtf = config['gtf'],
+        gffcompare = "/SAN/vyplab/alb_projects/tools/gffcompare-0.11.6.Linux_x86_64/gffcompare"
+    shell:
+        """
+        {params.gffcompare} -o gffall -r {params.ref_gtf} {input.merged_gtf}
+        """
