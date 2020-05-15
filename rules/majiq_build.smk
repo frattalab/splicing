@@ -12,16 +12,11 @@ samples2 = samples.loc[samples.exclude_sample_downstream_analysis != 1]
 SAMPLE_NAMES = list(set(samples2['sample_name'] + config['bam_suffix']))
 GROUPS = list(set(samples2['group']))
 
-BASES, CONTRASTS = return_bases_and_contrasts()
-print(BASES)
-print(CONTRASTS)
 
 rule all:
     input:
-        expand(os.path.join(config['majiq_top_level'],"delta_psi_voila_tsv","{bse}_{contrast}" + ".psi.tsv"),zip, bse = BASES,contrast = CONTRASTS),
         config['majiq_top_level'] + config['run_name'] + "_majiqConfig.tsv",
         expand(os.path.join(config['majiq_top_level'],"builder",'{name}' + ".majiq"),name = SAMPLE_NAMES),
-        expand(os.path.join(config['majiq_top_level'],"psi",'{group}' + ".psi.voila"),group = GROUPS)
 
 # # this rule creats the majiq configuration file that is required uses a helper function
 rule create_majiq_config_file:
@@ -62,22 +57,4 @@ rule majiq_build:
         """
         mkdir -p {params.majiq_builder_output}
         {params.majiq_path} build {params.gff3} -c {input.majiq_config_file} -j {threads} -o {params.majiq_builder_output}{params.majiq_extra_parameters}
-        """
-
-rule majiq_psi:
-    input:
-    #this is always calling from the column named 'group' in the sample csv file
-        group_majiq = lambda wildcards: majiq_files_by_group(wildcards.group)
-    output:
-        voila = os.path.join(config['majiq_top_level'],"psi",'{group}' + ".psi.voila"),
-        tsv = os.path.join(config['majiq_top_level'],"psi",'{group}' + ".psi.tsv")
-    params:
-        majiq_path = config['majiq_path'],
-        psi_output_folder = os.path.join(config['majiq_top_level'],"psi"),
-    threads:
-        16
-    shell:
-        """
-        mkdir -p {params.psi_output_folder}
-        {params.majiq_path} psi {input.group_majiq} -j {threads} -o {params.psi_output_folder} -n {wildcards.group}
         """
