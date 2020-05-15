@@ -10,27 +10,23 @@ majiq_build:
 majiq_psi:
     h_vmem:   2G
     tmem:   2G
-    pe: smp 2
     h_rt: 72:00:00
-    R:  y
+    pe: -pe smp 2 -R y
 majiq_psi_tsv:
     h_vmem:   1G
     tmem:   1G
-    pe: smp 2
+    pe: -pe smp 2 -R y
     h_rt: 72:00:00
-    R:  y
 majiq_delta_psi:
     h_vmem:   4G
     tmem:   4G
     h_rt: 72:00:00
-    pe: smp 2
-    R:  y
+    pe: -pe smp 2 -R y
 majiq_delta_psi_tsv:
     h_vmem:   1G
     tmem:   1G
     h_rt: 72:00:00
-    pe: smp 2
-    R:  y
+    pe: -pe smp 2 -R y
 majiq_psi_parse:
     h_vmem:   1G
     tmem:   1G
