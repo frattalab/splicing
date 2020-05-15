@@ -12,6 +12,10 @@ samples2 = samples.loc[samples.exclude_sample_downstream_analysis != 1]
 SAMPLE_NAMES = list(set(samples2['sample_name'] + config['bam_suffix']))
 GROUPS = list(set(samples2['group']))
 
+BASES, CONTRASTS = return_bases_and_contrasts()
+print(BASES)
+print(CONTRASTS)
+
 rule all:
     input:
         expand(os.path.join(config['majiq_top_level'],"delta_psi_voila_tsv","{bse}_{contrast}" + ".psi.tsv"),zip, bse = BASES,contrast = CONTRASTS),
