@@ -16,7 +16,7 @@ BASES, CONTRASTS = return_bases_and_contrasts()
 print(BASES)
 print(CONTRASTS)
 
-rule all:
+rule allPSI:
     input:
         expand(os.path.join(config['majiq_top_level'],"delta_psi_voila_tsv","{bse}_{contrast}" + ".psi.tsv"),zip, bse = BASES,contrast = CONTRASTS),
         expand(os.path.join(config['majiq_top_level'],"psi",'{group}' + ".psi.voila"),group = GROUPS),

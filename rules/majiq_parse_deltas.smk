@@ -18,7 +18,7 @@ GROUPS = list(set(samples2['group']))
 
 BASES, CONTRASTS = return_bases_and_contrasts()
 
-rule all:
+rule allParse:
     input:
         expand(os.path.join(config['majiq_top_level'],"psi_voila_tsv_single",'{sample}' + "_parsed.csv"), sample = SAMPLE_NAMES),
         os.path.join(config['majiq_top_level'],"psi_voila_tsv_single/" + "full_PSI.csv"),
@@ -61,8 +61,6 @@ rule combine_psi_per_sample:
         """
         Rscript scripts/writing_final_parsed_psi_command_line.R --folder {params.psi_folder} --out {output.parsed_csv}
         """
-
-
 
 
 rule majiq_finish_deltas:
