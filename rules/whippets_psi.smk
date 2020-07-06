@@ -21,7 +21,7 @@ SAMPLE_NAMES = SAMPLES['sample_name'].tolist()
 ###make the whippet output final FOLDERR
 output_dir = os.path.join(config['top_level_project_folder'],config['whippet_output_path'])
 whippet_psi_path = os.path.join(config['top_level_project_folder'], config['whippet_output_path'], "psi/")
-
+whippet_index_path = config['whippet_indicies'] + config['whippet_index_name']
 #make sure the output folder for Whippets exists before running anything
 os.system("mkdir -p {0}".format(output_dir))
 os.system("mkdir -p {0}".format(whippet_psi_path))
