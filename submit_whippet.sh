@@ -22,10 +22,10 @@ FOLDER=submissions/$(date +"%Y%m%d%H%M")
 mkdir -p $FOLDER
 cp config/config.yaml $FOLDER/$RUN_NAME"_config.yaml"
 
-snakemake -s rules/whippet.smk \
+snakemake -s rules/whippets_psi.smk \
 --jobscript cluster_qsub.sh \
 --cluster-config config/cluster.yaml \
---cluster-sync "qsub -R y -l h_vmem={cluster.h_vmem},h_rt={cluster.h_rt} -o $FOLDER" \
+--cluster-sync "qsub -l h_vmem={cluster.h_vmem},h_rt={cluster.h_rt} -o $FOLDER" \
 -j 50 \
 --nolock \
 --rerun-incomplete \
