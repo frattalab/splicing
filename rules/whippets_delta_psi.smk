@@ -16,28 +16,27 @@ BASES, CONTRASTS = return_bases_and_contrasts()
 print(BASES)
 print(CONTRASTS)
 
-whippet_delta_psi_output_folder = os.path.join(config['top_level_project_folder'],\
-                                               config['whippet_output_path'],"delta_psi/")
+whippet_folder = os.path.join(config['top_level_project_folder'],config['whippet_output_path'])
 
-rule allPSI:
+rule allWhippetDeltaPSI:
     input:
-        expand(whippet_delta_psi_output_folder,"{bse}_{contrast}" + ".diff.gz"),zip, bse = BASES,contrast = CONTRASTS)
+        expand(whippet_folder + "deltapsi/","{bse}_{contrast}" + ".diff.gz"),zip, bse = BASES,contrast = CONTRASTS)
 
 rule whippet_delta_psi:
     input:
-        base_group_majiq = lambda wildcards: whippets_psi_files_from_contrast(wildcards.bse,top_level_folder),
-        contrast_group_majiq = lambda wildcards: whippets_psi_files_from_contrast(wildcards.contrast,top_level_folder)
+        base_group_whipp = lambda wildcards: whippets_psi_files_from_contrast(wildcards.bse,whippet_psi_output_folder),
+        contrast_group_whipp = lambda wildcards: whippets_psi_files_from_contrast(wildcards.contrast,whippet_psi_output_folder)
     output:
-        os.path.join(config['majiq_top_level'],"delta_psi","{bse}_{contrast}" + ".deltapsi.tsv"),
-        os.path.join(config['majiq_top_level'],"delta_psi","{bse}_{contrast}" + ".deltapsi.voila")
+        whippet_folder + "deltapsi/" + "{bse}_{contrast}" + ".diff.gz"
     params:
-        majiq_path = config['majiq_path'],
-        delta_psi_output_folder = os.path.join(config['majiq_top_level'],"delta_psi"),
-        majiq_psi_extra_parameters = return_parsed_extra_params(config['majiq_psi_extra_parameters'])
-    threads:
-        8
+        julia = config['julia'],
+        whippet_quant = config['whippet_bin'] + "whippet-delta.jl",
+        output_path = whippet_folder + "deltapsi/" + "{bse}_{contrast}"
     shell:
         """
+        export JULIA_PKGDIR=/SAN/vyplab/alb_projects/tools/julia_pkgdir/v0.6/
         mkdir -p {params.delta_psi_output_folder}
-        {params.majiq_path} deltapsi -grp1 {input.base_group_majiq} -grp2 {input.contrast_group_majiq} -j {threads} -o {params.delta_psi_output_folder}{params.majiq_psi_extra_parameters} --name {wildcards.bse} {wildcards.contrast}
+        {params.julia} {params.whippet_quant}
+        -a {input.base_group_whipp}, -b {input.contrast_group_whipp}, \
+        --out {params.output_path}
         """
