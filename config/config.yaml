@@ -1,15 +1,16 @@
 
 # ########IBM GEO information
-species: mouse
+species: human
 library_type: fr-secondstrand
 read_len: 75
 genome_refcode: mm10
 strand_code: none
-endtype: se
+endtype: pe
 sample_csv_path: /home/annbrown/data/linked_bams_agaribotag/sample_listing.csv
 group_column: group
 ######TOP LEVEL PROJECT FOLDER
-top_level_project_folder: /SAN/vyplab/alb_projects/data/linked_bams_agaribotag/
+top_level_project_folder: /SAN/vyplab/alb_projects/data/ipsc_neuron_comparison/
+fastp_trimmed_output_folder: merged_fastqs/
 whippet_output_path: whippets/
 whippet_index_name: gencode.v34
 #directory of all the already aligned bam files, this is necessary for building the majic data index from this data
