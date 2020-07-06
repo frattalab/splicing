@@ -45,7 +45,8 @@ rule majiq_build:
         majiq_config_file = config['majiq_top_level'] + config['run_name'] + "_majiqConfig.tsv"
     output:
         expand(os.path.join(config['majiq_top_level'],"builder",'{name}' + ".majiq"),name = SAMPLE_NAMES),
-        os.path.join(config['majiq_top_level'],"builder/splicegraph.sql")
+        os.path.join(config['majiq_top_level'],"builder/splicegraph.sql"),
+        os.path.join(config['majiq_top_level'],"builder/builder_done")
     threads:
             4
     params:
@@ -57,4 +58,5 @@ rule majiq_build:
         """
         mkdir -p {params.majiq_builder_output}
         {params.majiq_path} build {params.gff3} -c {input.majiq_config_file} -j {threads} -o {params.majiq_builder_output}{params.majiq_extra_parameters}
+        touch {params.majiq_builder_output}/builder_done
         """

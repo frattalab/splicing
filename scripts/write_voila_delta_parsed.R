@@ -48,7 +48,6 @@ parse_voila_delta_tsv = function(file_path){
     # helpful columns
     voila_melt[,junc_dist := abs(as.numeric(junc_start) - as.numeric(junc_end))]
     voila_melt[,paste_into_igv_junction := paste0(chr, ":",junc_start, "-",junc_end)]
-    voila_melt[,paste_into_igv_exon := paste0(chr, ":",exon_start, "-",exon_end)]
 
     voila_melt[,exon_length :=abs(as.numeric(exon_start) - as.numeric(exon_end))]
     voila_melt[,exon_mod_3 := exon_length %% 3]
