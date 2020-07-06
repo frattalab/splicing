@@ -176,6 +176,17 @@ def get_cuff_strand(fcStrand):
     elif fcStrand == "reverse":
         return("fr-firststrand")
 
+#get fastq name from config
+def return_fastq(sample_name,unit, first_pair = True):
+    SAMPLES = pd.read_csv(config["sample_csv_path"])
+    SAMPLES = SAMPLES.replace(np.nan, '', regex=True)
+    SAMPLES['fast1_name'] = [strpd.rpartition('/')[2].split(".")[0] for strpd in SAMPLES['fast1'].tolist()]
+
+    if first_pair:
+        return(SAMPLES.loc[(SAMPLES['sample_name'] == sample_name) & (SAMPLES['unit'] == unit)]["fast1"].values[0])
+    else:
+        return(SAMPLES.loc[(SAMPLES['sample_name'] == sample_name) & (SAMPLES['unit'] == unit)]["fast2"].values[0])
+
 
 # def get_lib_size(sample_name):
 #     """
