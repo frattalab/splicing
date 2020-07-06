@@ -64,6 +64,6 @@ merge_scallop_gtfs:
     h_rt: 72:00:00
     pe: -pe smp 2 -R y
 whippet_psi:
-    h_vmem:   2G
-    tmem:   2G
+    h_vmem:   16G
+    tmem:   16G
     h_rt: 72:00:00
