@@ -18,10 +18,11 @@ SAMPLES = pd.read_csv(config["sample_csv_path"], sep = ",")
 SAMPLES = SAMPLES.replace(np.nan, '', regex=True)
 SAMPLE_NAMES = SAMPLES['sample_name'].tolist()
 
+merged_fastq_folder =  os.path.join(config['top_level_project_folder'],config['fastp_trimmed_output_folder'])
 ###make the whippet output final FOLDERR
 output_dir = os.path.join(config['top_level_project_folder'],config['whippet_output_path'])
 whippet_psi_path = os.path.join(config['top_level_project_folder'], config['whippet_output_path'], "psi/")
-whippet_index_path = config['whippet_indicies'] + config['whippet_index_name']
+whippet_index_path = config['whippet_indicies'] + config['whippet_index_name'] + ".jls"
 #make sure the output folder for Whippets exists before running anything
 os.system("mkdir -p {0}".format(output_dir))
 os.system("mkdir -p {0}".format(whippet_psi_path))
@@ -38,14 +39,17 @@ if config['endtype'] == "pe":
     rule whippet_psi:
         input:
             #fq = config['fastq_files'] + "{sample}_1.merged.fastq.gz",
-            index = os.path.join(whippet_index_path, "{sample}" + ".jls"),
-            fast1 = lambda wildcards: return_fastq(wildcards.name,wildcards.unit,first_pair = True),
-            fast2 = lambda wildcards: return_fastq(wildcards.name,wildcards.unit,first_pair = False),
+            index = whippet_index_path,
+            # fast1 = lambda wildcards: return_fastq(wildcards.name,wildcards.unit,first_pair = True),
+            # fast2 = lambda wildcards: return_fastq(wildcards.name,wildcards.unit,first_pair = False),
+            fast1 = merged_fastq_folder + "{sample}_1.merged.fastq.gz",
+            fast2 = merged_fastq_folder + "{sample}_2.merged.fastq.gz",
+
 
         output:
             psi = os.path.join(whippet_psi_path,"{sample}.psi.gz"),
             jnc_file = os.path.join(whippet_psi_path,"{sample}.jnc.gz"),
-            sam_file = temp(os.path.join(whippet_psi_path,"{sample}.sam"))
+            # sam_file = temp(os.path.join(whippet_psi_path,"{sample}.sam"))
 
         params:
             julia = config['julia'],
@@ -67,13 +71,14 @@ if config['endtype'] == "pe":
 elif config['endtype'] == "se":
     rule whippet_psi:
         input:
-            fastq = lambda wildcards: return_fastq(wildcards.name,wildcards.unit,first_pair = True),
-            index = os.path.join(whippet_index_path, "{sample}" + ".jls"),
+            fast1 = merged_fastq_folder + "{sample}_1.merged.fastq.gz",
+            # fastq = lambda wildcards: return_fastq(wildcards.name,wildcards.unit,first_pair = True),
+            index = whippet_index_path
 
         output:
             psi = os.path.join(whippet_psi_path,"{sample}.psi.gz"),
             jnc_file = os.path.join(whippet_psi_path,"{sample}.jnc.gz"),
-            sam_file = temp(os.path.join(whippet_psi_path,"{sample}.sam"))
+            # sam_file = temp(os.path.join(whippet_psi_path,"{sample}.sam"))
 
         params:
             julia = config['julia'],
