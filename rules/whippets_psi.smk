@@ -60,7 +60,6 @@ if config['endtype'] == "pe":
 
         shell:
             """
-            export JULIA_PKGDIR=/SAN/vyplab/alb_projects/tools/julia_pkgdir/v0.6/
             {params.julia} {params.quant_script} \
             {input.fast1} \
             {input.fast2} \
@@ -89,7 +88,6 @@ elif config['endtype'] == "se":
 
         shell:
             """
-            export JULIA_PKGDIR=/SAN/vyplab/alb_projects/tools/julia_pkgdir/v0.6/
             {params.julia} {params.quant_script} \
             {input.fastq} \
             -x {input.index} \
