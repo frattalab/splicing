@@ -108,6 +108,30 @@ def majiq_files_from_contrast(grp):
     majiq_files = list(set(majiq_files))
     return(majiq_files)
 
+def whippets_psi_files_from_contrast(grp,top_level_folder,suffix = ""):
+    """
+    given a contrast name or list of groups return a list of the files in that group
+    """
+    #reading in the samples
+    samples = pd.read_csv(config['sample_csv_path'])
+    #there should be a column which allows you to exclude samples
+    samples2 = samples.loc[samples.exclude_sample_downstream_analysis != 1]
+    #read in the comparisons and make a dictionary of comparisons, comparisons needs to be in the config file
+    compare_dict = load_comparisons()
+    #go through the values of the dictionary and break when we find the right groups in that contrast
+    grps, comparison_column = return_sample_names_group(grp)
+    #take the sample names corresponding to those groups
+    if comparison_column == "":
+        print(grp)
+        return([""])
+    grp_samples = list(set(list(samples2[samples2[comparison_column].isin(grps)].sample_name)))
+
+    #build a list with the full path from those sample names
+    whippet_files = [os.path.join(top_level_folder,x + suffix + ".psi.gz") \
+                   for x in grp_samples]
+    whippet_files = list(set(whippet_files))
+    return(whippet_files)
+
 def return_bases_and_contrasts():
     """
     returns all the bases and contrasts from the comparisons.yaml

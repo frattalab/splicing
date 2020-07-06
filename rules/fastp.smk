@@ -2,10 +2,10 @@
 configfile: "config/config.yaml"
 include: "helpers.py"
 
-
+fastp_trimmed_output_folder = os.path.join(config["top_level_project_folder"],config["fastp_trimmed_output_folder"])
 
 #make sure the output folder for fastptrimming exists before running anything
-os.system("mkdir -p {0}".format(config["fastp_trimmed_output_folder"]))
+os.system("mkdir -p {0}".format())
 #read in a samples table
 SAMPLES = pd.read_csv(config["sampleCSVpath"], sep = ",")
 SAMPLES = SAMPLES.replace(np.nan, '', regex=True)
