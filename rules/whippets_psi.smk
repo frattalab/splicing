@@ -1,4 +1,5 @@
 import os
+import numpy as np
 configfile: "config/config.yaml"
 cluster_config: "config/cluster.yaml"
 include: "helpers.py"
