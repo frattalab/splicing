@@ -27,24 +27,28 @@ rule all_whip:
     wildcard_constraints:
         sample="|".join(SAMPLE_NAMES)
 
-
-rule whippet_psi:
-    input:
-        fast1 = fastq_dir  + "{sample}_1.merged.fastq.gz",
-        fast2 = fastq_dir  + "{sample}_2.merged.fastq.gz",
-    output:
-        output_dir + "{sample}/" + "quant.sf"
-    params:
-        output_dir + "{sample}"
-    threads: 2
-    shell:
-        """
-        /share/apps/julia-0.6.3/bin/julia /SAN/vyplab/alb_projects/tools/julia_pkgdir/v0.6/Whippet/bin/whippet-quant.jl \
-        {input.fast1} \
-        {input.fast2} \
-        -x /home/annbrown/data/ward_bams/whippets/scallop_merged_first.jls\
-        --out {params}
-         """
+if config['endtype'] == "se":
+    rule whippet_psi:
+        input:
+            fq = config['fastq_files'] + "{sample}_1.merged.fastq.gz",
+            index = os.path.join(whippet_index_path + "{sample}" + ".jls")
+    rule whippet_psi:
+        input:
+            fast1 = fastq_dir  + "{sample}_1.merged.fastq.gz",
+            fast2 = fastq_dir  + "{sample}_2.merged.fastq.gz",
+        output:
+            output_dir + "{sample}/" + "quant.sf"
+        params:
+            output_dir + "{sample}"
+        threads: 2
+        shell:
+            """
+            /share/apps/julia-0.6.3/bin/julia /SAN/vyplab/alb_projects/tools/julia_pkgdir/v0.6/Whippet/bin/whippet-quant.jl \
+            {input.fast1} \
+            {input.fast2} \
+            -x /home/annbrown/data/ward_bams/whippets/scallop_merged_first.jls\
+            --out {params}
+             """
 
 #$ -l tmem=16G
 #$ -l h_vmem=16G
