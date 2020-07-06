@@ -13,7 +13,7 @@ include: "helpers.py"
 # 	ruleorder: run_star_se > run_star_pe
 
 
-SAMPLES = pd.read_csv(config["sampleCSVpath"], sep = ",")
+SAMPLES = pd.read_csv(config["sample_csv_path"], sep = ",")
 SAMPLES = SAMPLES.replace(np.nan, '', regex=True)
 SAMPLE_NAMES = SAMPLES['sample_name'].tolist()
 
