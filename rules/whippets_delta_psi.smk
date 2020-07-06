@@ -35,8 +35,9 @@ rule whippet_delta_psi:
     shell:
         """
         export JULIA_PKGDIR=/SAN/vyplab/alb_projects/tools/julia_pkgdir/v0.6/
+
         mkdir -p {params.delta_psi_output_folder}
-        {params.julia} {params.whippet_quant}
+        {params.julia} {params.whippet_quant} \
         -a {input.base_group_whipp}, -b {input.contrast_group_whipp}, \
         --out {params.output_path}
         """
