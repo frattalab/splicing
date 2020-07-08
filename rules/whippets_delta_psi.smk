@@ -18,9 +18,10 @@ print(CONTRASTS)
 
 whippet_folder = os.path.join(config['top_level_project_folder'],config['whippet_output_path'])
 whippet_psi_output_folder = os.path.join(config['top_level_project_folder'],config['whippet_output_path'],'psi/')
+
 rule allWhippetDeltaPSI:
     input:
-        expand(whippet_folder + "deltapsi/","{bse}_{contrast}" + ".diff.gz"),zip, bse = BASES,contrast = CONTRASTS)
+        expand(whippet_folder + "deltapsi/" + "{bse}_{contrast}" + ".diff.gz"),zip, bse = BASES,contrast = CONTRASTS)
 
 rule whippet_delta_psi:
     input:
