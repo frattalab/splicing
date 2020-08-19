@@ -25,7 +25,7 @@ parse_all_the_parsed = function(folder,suffix,output){
     mydata = tibble(File = files) %>%
         mutate(Data = lapply(File, read_csv)) %>%
         unnest(Data) %>% 
-        mutate(sample = stringr::str_split_fixed(File, "//", 2)[,2]) %>% 
+        mutate(sample = stringr::str_split_fixed(File, "psi_voila_tsv_single/", 2)[,2]) %>% 
         mutate(sample = gsub(suffix,"",sample)) %>% 
         dplyr::select(-File) 
     # doing this as 2 tables because I want to keep variance, but I don't
