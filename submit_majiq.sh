@@ -23,10 +23,10 @@ mkdir -p $FOLDER
 cp config/config.yaml $FOLDER/$RUN_NAME"_config.yaml"
 cp config/comparisons.yaml $FOLDER/$RUN_NAME"_comparisons.yaml"
 
-snakemake -s rules/majiq.smk \
+snakemake -s rules/majiq_psi.smk \
 --jobscript cluster_qsub.sh \
 --cluster-config config/cluster.yaml \
---cluster-sync "qsub -R y -l h_vmem={cluster.h_vmem},h_rt={cluster.h_rt} -pe {cluster.pe} -o $FOLDER" \
+--cluster-sync "qsub -l h_vmem={cluster.h_vmem},h_rt={cluster.h_rt} {cluster.pe} -o $FOLDER" \
 -j 500 \
 --nolock \
 --rerun-incomplete \
