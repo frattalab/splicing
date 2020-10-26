@@ -27,6 +27,6 @@ rule fullmajiq:
 
 
 
-include: "rules/majiq_build.smk"
+#include: "rules/majiq_build.smk"
 include: "rules/majiq_psi.smk"
 include: "rules/majiq_parse_deltas.smk"

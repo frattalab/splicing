@@ -16,7 +16,7 @@ GROUPS = list(set(samples2['group']))
 rule all:
     input:
         config['majiq_top_level'] + config['run_name'] + "_majiqConfig.tsv",
-        expand(os.path.join(config['majiq_top_level'],"builder",'{name}' + ".majiq"),name = SAMPLE_NAMES),
+        expand(os.path.join(config['majiq_top_level'],"builder",'{name}' + ".majiq"),name = SAMPLE_NAMES)
 
 # # this rule creats the majiq configuration file that is required uses a helper function
 rule create_majiq_config_file:
@@ -32,7 +32,7 @@ rule create_majiq_config_file:
             "readlen=" + str(config['read_len']),
             "bamdirs=" + config['bam_dir'],
             "genome=" + config['genome_refcode'],
-            "strandness=" + config['strand_code'],
+            "strandness=none",
             "[experiments]"]
 
         options += conditions_bams_parsed
