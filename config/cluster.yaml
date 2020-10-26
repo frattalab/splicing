@@ -1,11 +1,7 @@
-__default__:
-    h_vmem: 2G
-    h_rt:   1:0:0
-    pe: -pe smp 1
 majiq_build:
+    submission_string: "-pe smp 4 -R y"
     h_vmem:   2G
     tmem:   2G
-    pe: -pe smp 4 -R y
     h_rt: 72:00:00
 majiq_psi:
     h_vmem:   2G
@@ -15,18 +11,18 @@ majiq_psi:
 majiq_psi_tsv:
     h_vmem:   1G
     tmem:   1G
-    pe: -pe smp 2 -R y
+    submission_string: "-pe smp 4 -R y"
     h_rt: 72:00:00
 majiq_delta_psi:
     h_vmem:   4G
     tmem:   4G
     h_rt: 72:00:00
-    pe: -pe smp 2 -R y
+    submission_string: "-pe smp 2 -R y"
 majiq_delta_psi_tsv:
     h_vmem:   1G
     tmem:   1G
     h_rt: 72:00:00
-    pe: -pe smp 2 -R y
+    submission_string: "-pe smp 2 -R y"
 majiq_psi_parse:
     h_vmem:   1G
     tmem:   1G
@@ -44,25 +40,27 @@ compose_merge:
     h_vmem:   1G
     tmem:   1G
     h_rt: 72:00:00
-    pe: -pe smp 1
+    submission_string: " "
 compare_assemblies:
     h_vmem:   1G
     tmem:   1G
     h_rt: 72:00:00
+    submission_string: " "
 merge_assemblies:
     h_vmem:   1G
     tmem:   1G
     h_rt: 72:00:00
+    submission_string: " "
 diffexp:
     h_vmem:   1G
     tmem:   1G
     h_rt: 72:00:00
-    pe: -pe smp 8 -R y
+    submission_string: "-pe smp 8 -R y"
 merge_scallop_gtfs:
     h_vmem:   1G
     tmem:   1G
     h_rt: 72:00:00
-    pe: -pe smp 2 -R y
+    submission_string: "-pe smp 2 -R y"
 whippet_psi:
     h_vmem:   16G
     tmem:   16G
