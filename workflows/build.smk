@@ -13,7 +13,7 @@ SAMPLE_NAMES = list(set(samples2['sample_name'] + config['bam_suffix']))
 GROUPS = list(set(samples2['group']))
 
 
-rule all:
+rule allBuild:
     input:
         config['majiq_top_level'] + config['run_name'] + "_majiqConfig.tsv",
         expand(os.path.join(config['majiq_top_level'],"builder",'{name}' + ".majiq"),name = SAMPLE_NAMES)
