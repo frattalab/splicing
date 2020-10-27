@@ -73,5 +73,5 @@ rule majiq_finish_deltas:
     shell:
         """
         mkdir -p {params.psi_output_folder}
-        Rscript scripts/write_voila_delta_parsed.R --deltafile {input.tsv} --out {output.parsed_tsv}
+        Rscript scripts/write_voila_delta_parsed.R --deltafile {input.tsv} --out {params.psi_output_folder}
         """
