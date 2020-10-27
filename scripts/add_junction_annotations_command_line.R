@@ -2,6 +2,61 @@
 
 library("optparse")
 library(GenomicRanges)
+library(tidyverse)
+####util funcitons####
+#' Splits a \code{GRanges} object by it's start and end.
+#'
+#' \code{.get_gr_for_start_end} takes a \code{GRanges} object and generates 2,
+#' one containing only the start co-ordinate and the other, the end.
+#'
+#' @param gr Any \code{GRanges} object.
+#'
+#' @return list of 2 grs, each with 1 range corresponding to every range in the
+#'   input. One contains start positions, the other ends.
+.get_gr_for_start_end <- function(gr){
+    
+    gr_start <- gr
+    end(gr_start) <- start(gr_start)
+    
+    gr_end <- gr
+    start(gr_end) <- end(gr_end)
+    
+    gr_start_end_list <- list(start = gr_start,
+                              end = gr_end)
+    
+    return(gr_start_end_list)
+    
+}
+
+#' Merges two Characterlists into one with element-wise concatenation of the
+#' vectors inside each list
+#'
+#' \code{.merge_lists}
+#'
+#' @param x CharacterList
+#' @param y CharacterList
+#'
+#' @return
+.merge_lists <- function(x, y){
+    
+    if(!identical(names(x), names(y))) stop("names of x and y lists should be identical!")
+    
+    x_y <- c(x, y) %>% unlist()
+    
+    x_y_merged <-
+        x_y %>%
+        unname() %>%
+        split(f = names(x_y) %>%
+                  factor(levels = names(x))) %>% # required to keep all levels/names
+        CharacterList() %>%
+        unique()
+    
+    return(x_y_merged)
+    
+}
+
+#####
+
 ####Start of the helper functions####
 #' Annotate junctions using reference annotation
 #'
@@ -57,7 +112,7 @@ annotate_junc_ref <- function(junc_metadata, gtf){
     # ref_exons <- ref@ev$gtf[ref@ev$gtf$feature == "exon",] %>% GRanges()
     # ref_junc <- refGenome::getSpliceTable(ref)
     # ref_junc <- ref_junc@ev$gtf
-    ref_exons <- exonsBy(gtf,'tx',use.name = TRUE) ##get the exons by the transcript
+    ref_exons <- GenomicFeatures::exonsBy(gtf,'tx',use.name = TRUE) ##get the exons by the transcript
     
     ref_junc <- BiocGenerics::setdiff(range(ref_exons), ref_exons) ### junctions are just teh range of eeach transcript minus where the exons are
     ##### Obtain annotation through overlapping exons #####
@@ -186,7 +241,7 @@ annotate_junc_ref <- function(junc_metadata, gtf){
     ref_exons = unlist(ref_exons)
     ref_exons$transcript_id = names(ref_exons) #add on the transcript_id to the flattened list
     #unlist the exons
-    tx_by_gene = unlist(transcriptsBy(gtf,'gene'))
+    tx_by_gene = unlist(GenomicFeatures::transcriptsBy(gtf,'gene'))
     tx_by_gene$gene_id = names(tx_by_gene)
     tx_by_gene$transcript_id  = tx_by_gene$tx_name
     tx_by_gene$tx_name  = NULL
@@ -307,28 +362,18 @@ annotate_junc_ref <- function(junc_metadata, gtf){
 
 
 
-####end of the helper functions####
-option_list = list(
-    make_option(c("-d", "--deltapsi"), type="character", default=NULL, 
-                help="parsed deltaPSI table produced by parse_voila_delta_tsv script", metavar="character"),
-    make_option(c("-o", "--out"), type="character", default=".", 
-                help="output file name", metavar="character"),
-    make_option(c("-g", "--gtf"), type="character", default=NULL, 
-                help="the GTF to annotate to", metavar="character")
-); 
 
-opt_parser = OptionParser(option_list=option_list);
-opt = parse_args(opt_parser);
-
-annotate_junctions <- function(parsed_file,output_filepath,gtf){
-    ####tessst####
+final_annotate_junctions <- function(parsed_file,output_filepath,gtf){
+    ####read in the final parsed files####
     parsed_splicing = data.table::fread(parsed_file)
-    txdb_gtf =  GenomicFeatures::makeTxDbFromGFF(gtf,format = 'gtf') #do we need this still???
+    print(stringr::str_c(Sys.time(), " - Reading in the GTF as a TxDb..."))
+    
+    txdb_gtf =  GenomicFeatures::makeTxDbFromGFF(gtf,format = 'gtf') 
     
     # use this superset of all the exons either identified by Whippets
     # or identified by Scallop
     # use a function from splicejam to find the exons which end on any of the junctions
-    parsed_granges = makeGRangesFromDataFrame(ward_splicing,
+    parsed_granges = makeGRangesFromDataFrame(parsed_splicing,
                                             start.field = "junc_start",
                                             end.field = "junc_end",
                                             keep.extra.columns = TRUE)
@@ -340,7 +385,24 @@ annotate_junctions <- function(parsed_file,output_filepath,gtf){
     #####put the coordinates back
     start(annotated_junctions) <- start(annotated_junctions) - 1 #the annotate junc ref tool is based on STAR SJ's so there's an internal -1, +1 that happens
     end(annotated_junctions) <- end(annotated_junctions) + 1
-    
-
+    #####write out as a gff3
+    rtracklayer::export.gff3(annotated_junctions,paste0(output_filepath,".gff3"))
+    data.table::fwrite(data.table::as.data.table(annotated_junctions),paste0(output_filepath,".csv"))
 
 }
+
+
+####end of the helper functions####
+option_list = list(
+    make_option(c("-d", "--deltapsi"), type="character", default=NULL, 
+                help="parsed deltaPSI table produced by parse_voila_delta_tsv script", metavar="character"),
+    make_option(c("-o", "--out"), type="character", default=".", 
+                help="output file name - no extension 2 files will be written", metavar="character",default = "annotated_junctions"),
+    make_option(c("-g", "--gtf"), type="character", default=NULL, 
+                help="the GTF to annotate to", metavar="character")
+); 
+
+opt_parser = OptionParser(option_list=option_list);
+opt = parse_args(opt_parser);
+
+final_annotate_junctions()
