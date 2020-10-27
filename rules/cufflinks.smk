@@ -27,10 +27,10 @@ CLASS2_BAM = expand(config['bam_dir'] + '{sample}' + config['bam_suffix'] + '.ba
 
 rule all:
     input:
-        config['bam_dir'] + 'cufflinks_merged/' + 'merged.gtf',
-        config['bam_dir'] + 'cufflinks_merged/' + 'comparison/all.stats',
-        config['bam_dir'] + 'diffexp/gene_exp.diff',
-        config['bam_dir'] + 'diffexp/isoform_exp.diff'
+        config['top_level_project_folder'] + 'cufflinks_merged/' + 'merged.gtf',
+        config['top_level_project_folder'] + 'cufflinks_merged/' + 'comparison/all.stats',
+        config['top_level_project_folder'] + 'diffexp/gene_exp.diff',
+        config['top_level_project_folder'] + 'diffexp/isoform_exp.diff'
 
 
 rule assembly:
