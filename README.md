@@ -3,9 +3,10 @@ Splicing done with MAJIQ tool - This is very bare bones implentation as it stand
 
 
 
-To run the full build, simply call in order
-submit_majiq_build.sh *runname* 
-
+1. Build step
+source submit.sh build run_name
+2. PSI step
+source submit.sh psi run_name
 with whatever run name you'd like
 
 Change line 26 in in submit_majiq.sh to rules/majiq_psi.smk
