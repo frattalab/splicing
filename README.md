@@ -2,6 +2,7 @@
 Splicing done with MAJIQ tool - This is very bare bones implentation as it stands is a **work in progress**, 
 
 
+## Submitting on SGE
 
 1. Build step
 source submit.sh build run_name
@@ -9,14 +10,14 @@ source submit.sh build run_name
 source submit.sh psi run_name
 with whatever run name you'd like
 
-Change line 26 in in submit_majiq.sh to rules/majiq_psi.smk
+## Submitting on Slurm
 
-And then run submit_majiq.sh
+1. Build step
+source submit_slurm.sh build run_name
+2. PSI step
+source submit_slurm.sh psi run_name
+with whatever run name you'd like
 
-And finally
-submit_majiq_parse.sh
- 
-To run the majiq PSI with each sample as it's own group "submit_majiq_single.sh runname"
 
 The scripts folder as of 2020-02-27 contains a series of half-functional things. Be cautious.
 
