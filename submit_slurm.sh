@@ -2,7 +2,7 @@
 # this file is snakemake.sh
 module load snakemake  || exit 1
 module load majiq
-
+module load R
 
 WORKFLOW="workflows/${1}.smk"
 
@@ -21,8 +21,8 @@ snakemake -s ${WORKFLOW} \
 -pr \
 --keep-going \
 --cluster-config config/cluster_slurm.yaml \
---cluster "sbatch -p {cluster.partition} --mem={cluster.mem} -t {cluster.time} -c {cluster.ncpus} -n {cluster.ntasks} -o {cluster.output}"
--j 40 \
+--cluster "sbatch -p {cluster.partition} --mem={cluster.mem} -t {cluster.time} -c {cluster.ncpus} -n {cluster.ntasks} -o {cluster.output}"\
+--jobs 40 \
 --nolock \
 --rerun-incomplete \
 --latency-wait 100
