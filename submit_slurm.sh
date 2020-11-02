@@ -19,7 +19,6 @@ cp config/config.yaml ${FOLDER}/${RUN_NAME}_config.yaml
 
 snakemake -s ${WORKFLOW} \
 -pr \
---local-cores $SLURM_CPUS_PER_TASK \
 --jobs 40 \
 --keep-going \
 --cluster-config config/cluster_slurm.yaml \
