@@ -19,10 +19,11 @@ cp config/config.yaml ${FOLDER}/${RUN_NAME}_config.yaml
 
 snakemake -s ${WORKFLOW} \
 -pr \
+--local-cores $SLURM_CPUS_PER_TASK \
+--jobs 40 \
 --keep-going \
 --cluster-config config/cluster_slurm.yaml \
---cluster "sbatch -p {cluster.partition} --mem={cluster.mem} -t {cluster.time} -c {cluster.ncpus} -n {cluster.ntasks} -o {cluster.output}"\
---jobs 40 \
+--cluster "sbatch -p {cluster.partition} --mem={cluster.mem} -t {cluster.time} -c {cluster.ncpus} -n {cluster.ntasks} -o {cluster.output}" \
 --nolock \
 --rerun-incomplete \
 --latency-wait 100
