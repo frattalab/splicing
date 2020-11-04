@@ -6,7 +6,7 @@
 compareControls:
   column_name:
     - group
-  tdp43Positive:
-    - positive
-  tdp43Negative:
-    - negative
+  control:
+    - CTR
+  hnRNPKKD:
+    - hnRNPK

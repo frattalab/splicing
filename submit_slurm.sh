@@ -22,7 +22,7 @@ snakemake -s ${WORKFLOW} \
 --jobs 40 \
 --keep-going \
 --cluster-config config/cluster_slurm.yaml \
---cluster "sbatch -p {cluster.partition} --mem={cluster.mem} -t {cluster.time} -c {cluster.ncpus} -n {cluster.ntasks} -o {cluster.output}" \
+--cluster "sbatch -p {cluster.partition} --mem={cluster.mem} -t {cluster.time} -c {cluster.ncpus}" \
 --nolock \
 --rerun-incomplete \
 --latency-wait 100
