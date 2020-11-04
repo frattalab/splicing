@@ -25,7 +25,8 @@ rule annotatate_delta:
     output:
         os.path.join(config['majiq_top_level'],"delta_psi_voila_tsv","{bse}_{contrast}_annotated_junctions.gff3")
     params:
-        gtf = config['gtf']
+        gtf = config['gtf'],
+        psi_output_folder = os.path.join(config['majiq_top_level'],"delta_psi_voila_tsv","{bse}_{contrast}_annotated_junctions")
     shell:
         """
         Rscript scripts/add_junction_annotations_command_line.R --deltapsi {input.tsv} --out {params.psi_output_folder} --gtf {params.gtf}
