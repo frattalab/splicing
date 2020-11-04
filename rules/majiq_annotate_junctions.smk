@@ -23,11 +23,12 @@ rule allAnnotated:
 
 rule annotatate_delta:
     input:
+        os.path.join(config['majiq_top_level'],"delta_psi_voila_tsv","{bse}_{contrast}_parsed_psi.tsv"
     output:
-        os.path.join(config['majiq_top_level'],"delta_psi_voila_tsv","{bse}_{contrast}"
+        os.path.join(config['majiq_top_level'],"delta_psi_voila_tsv","{bse}_{contrast}_annotated_junctions.tsv"
     params:
         gtf = config['gtf']
     shell:
-    """
-    Rscript scripts/add_junction_annotations_command_line.R --deltapsi {input.tsv} --out {params.psi_output_folder} --gtf {params.gtf}
-    """
+        """
+        Rscript scripts/add_junction_annotations_command_line.R --deltapsi {input.tsv} --out {params.psi_output_folder} --gtf {params.gtf}
+        """
