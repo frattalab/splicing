@@ -5,9 +5,9 @@ Splicing done with MAJIQ tool - This is very bare bones implentation as it stand
 ## Submitting on SGE
 
 1. Build step
-source submit.sh build run_name
+`source submit.sh build run_name`
 2. PSI step
-source submit.sh psi run_name
+`source submit.sh psi run_name`
 with whatever run name you'd like
 
 ## Submitting on Slurm
