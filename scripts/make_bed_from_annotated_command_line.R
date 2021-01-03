@@ -2,7 +2,7 @@ make_bed_from_annotated <- function(parsed_file,
                                     output_filepath,
                                     only_up_in_case = FALSE,
                                     cutoff = NULL,
-                                    junction_types = c("annotated", "none", "novel_acceptor", "novel_exon_skip", "novel_donor","ambig_gene","novel_combo")
+                                    junction_types = c("annotated", "none", "novel_acceptor", "novel_exon_skip", "novel_donor","ambig_gene","novel_combo"),
                                     trackname = "All junctions"){
     #make the bed header
     bed_header = glue::glue('track name="{trackname}" description="{trackname}" visibility=2 itemRgb="On"')
