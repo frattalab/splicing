@@ -43,7 +43,7 @@ rule write_junctions_beds:
         trackname = "{bse}_{contrast}.bed"
     shell:
         """
-        Rscript scripts/make_bed_from_annotated_command_line.R --parsed {input.ssv} \
+        Rscript scripts/make_bed_from_annotated_command_line.R --parsed {input.csv} \
         --out {params.psi_output_folder} \
-        {params.extra_junction_parameters} \
+        {params.extra_junction_parameters}
         """
