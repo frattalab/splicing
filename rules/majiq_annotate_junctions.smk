@@ -40,11 +40,10 @@ rule write_junctions_beds:
         os.path.join(config['majiq_top_level'],"delta_psi_voila_tsv","{bse}_{contrast}_annotated.junctions.bed")
     params:
         extra_junction_parameters = return_parsed_extra_params(config['annotated_junctions_extra_parameters']),
-        psi_output_folder = os.path.join(config['majiq_top_level'],"delta_psi_voila_tsv","{bse}_{contrast}_annotated_junctions"),
         trackname = "{bse}_{contrast}.bed"
     shell:
         """
         Rscript scripts/make_bed_from_annotated_command_line.R --parsed {input.csv} \
-        --out {params.psi_output_folder} \
+        --out {output} \
         {params.extra_junction_parameters}
         """
