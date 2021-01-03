@@ -30,7 +30,8 @@ rule allPSIwf:
         expand(os.path.join(config['majiq_top_level'],"psi_voila_tsv_single",'{sample}' + "_parsed.csv"), sample = SAMPLE_NAMES),
         os.path.join(config['majiq_top_level'],"psi_voila_tsv_single/" + "full_PSI.csv"),
         expand(os.path.join(config['majiq_top_level'],"delta_psi_voila_tsv","{bse}_{contrast}" + "_parsed_psi.tsv"),zip, bse = BASES,contrast = CONTRASTS),
-        expand(os.path.join(config['majiq_top_level'],"delta_psi_voila_tsv","{bse}_{contrast}" + "_annotated_junctions.gff3"),zip, bse = BASES,contrast = CONTRASTS)
+        expand(os.path.join(config['majiq_top_level'],"delta_psi_voila_tsv","{bse}_{contrast}" + "_annotated_junctions.gff3"),zip, bse = BASES,contrast = CONTRASTS),
+        expand(os.path.join(config['majiq_top_level'],"delta_psi_voila_tsv","{bse}_{contrast}_annotated.junctions.bed"),zip, bse = BASES,contrast = CONTRASTS)
 
 
 include: "../rules/majiq_psi.smk"
