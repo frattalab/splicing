@@ -1,13 +1,13 @@
-make_bed_from_annotated <- function(parsed_file, 
+make_bed_from_annotated <- function(parsed_file,
                                     output_filepath,
                                     only_up_in_case = FALSE,
                                     cutoff = NULL,
-                                    junction_types = c("annotated", "none", "novel_acceptor", "novel_exon_skip", "novel_donor", 
-                                                       "ambig_gene", "novel_combo")
+                                    junction_types = c("annotated", "none", "novel_acceptor", "novel_exon_skip", "novel_donor","ambig_gene","novel_combo")
                                     trackname = "All junctions"){
     #make the bed header
     bed_header = glue::glue('track name="{trackname}" description="{trackname}" visibility=2 itemRgb="On"')
-    #read in the file, 
+    #read in the file,
+    print(junction_types)
     annotated_junctions = data.table::fread(parsed_file)
     #keep only the junction types in the junction_types arguemnt
     if(only_up_in_case){
@@ -26,15 +26,15 @@ make_bed_from_annotated <- function(parsed_file,
     #add colors
     annotated_junctions[,color := ifelse(deltaPSI > 0, "255,0,0","0,0,255")]
     writeLines(bed_header, output_filepath)
-    write.table(annotated_junctions, output_filepath, 
-                col.names=FALSE, 
-                row.names=FALSE, 
+    write.table(annotated_junctions, output_filepath,
+                col.names=FALSE,
+                row.names=FALSE,
                 append=TRUE,sep = "\t",
                 quote = FALSE)
-    
-    
+
+
 )
-    
+
 }
 
 ####end of the helper functions####
@@ -54,8 +54,8 @@ option_list = list(
 opt_parser = OptionParser(option_list=option_list);
 opt = parse_args(opt_parser);
 
-make_bed_from_annotated(parsed_file = opt$parsed, 
-                        output_filepath = opt$out, 
+make_bed_from_annotated(parsed_file = opt$parsed,
+                        output_filepath = opt$out,
                         cutoff = opt$cutoff,
                         trackname = opt$trackname,
                         only_up_in_case = opt$upincase)
