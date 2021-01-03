@@ -33,3 +33,9 @@ exclude_sample_downstream_analysis
 unit, fast1, fast2 can be placeholders, they are to maintain the same sample sheet structure across my RNAseq alignment pipeline and the splicing pipeline
 
 exclude_sample_downstream_analysis should be present, if you want to exclude a sample it should be a 1
+
+## Annotation of splicing events
+Annotation is done with a function grabbed directly from source code here:
+https://github.com/dzhang32/dasper/
+
+Please cite ^ if you use this pipeline.

@@ -3,6 +3,10 @@ __default__:
     h_vmem:   1G
     tmem:   1G
     h_rt: 72:00:00
+annotatate_delta:
+    h_vmem:   24G
+    tmem:   24G
+    h_rt: 72:00:00
 majiq_build:
     submission_string: "-pe smp 4 -R y"
     h_vmem:   2G
