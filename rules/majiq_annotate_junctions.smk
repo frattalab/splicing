@@ -17,7 +17,8 @@ print(CONTRASTS)
 
 rule allAnnotated:
     input:
-        expand(os.path.join(config['majiq_top_level'],"delta_psi_voila_tsv","{bse}_{contrast}" + "_annotated_junctions.gff3"),zip, bse = BASES,contrast = CONTRASTS)
+        expand(os.path.join(config['majiq_top_level'],"delta_psi_voila_tsv","{bse}_{contrast}" + "_annotated_junctions.gff3"),zip, bse = BASES,contrast = CONTRASTS),
+        expand(os.path.join(config['majiq_top_level'],"delta_psi_voila_tsv","{bse}_{contrast}_annotated.junctions.bed"),zip, bse = BASES,contrast = CONTRASTS)
 
 rule annotatate_delta:
     input:
@@ -30,4 +31,19 @@ rule annotatate_delta:
     shell:
         """
         Rscript scripts/add_junction_annotations_command_line.R --deltapsi {input.tsv} --out {params.psi_output_folder} --gtf {params.gtf}
+        """
+
+rule write_junctions_beds:
+    input:
+        csv = os.path.join(config['majiq_top_level'],"delta_psi_voila_tsv","{bse}_{contrast}_annotated_junctions.csv")
+    output:
+        os.path.join(config['majiq_top_level'],"delta_psi_voila_tsv","{bse}_{contrast}_annotated.junctions.bed")
+    params:
+        extra_junction_parameters = return_parsed_extra_params(config['annotated_junctions_extra_parameters']),
+        trackname = "{bse}_{contrast}.bed"
+    shell:
+        """
+        Rscript scripts/make_bed_from_annotated_command_line.R --parsed {input.ssv} \
+        --out {params.psi_output_folder} \
+        {params.extra_junction_parameters} \
         """

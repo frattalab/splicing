@@ -24,6 +24,9 @@ majiq_extra_parameters:
 majiq_psi_extra_parameters:
 extra_voila_parameters:
   threshold: "0.1"
+#options are --cutoff deltaPSI cutoff for writing out junctions and upincase, T or False
+annotated_junctions_extra_parameters:
+  cutoff: 0.1
 
 # fasta: /SAN/vyplab/vyplab_reference_genomes/sequence/mouse/gencode/GRCm38.primary_assembly.genome.fa
 # gtf: /SAN/vyplab/vyplab_reference_genomes/annotation/mouse/gencode/gencode.vM22.annotation.gtf
