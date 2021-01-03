@@ -1,3 +1,7 @@
+library(optparse)
+
+
+
 make_bed_from_annotated <- function(parsed_file,
                                     output_filepath,
                                     only_up_in_case = FALSE,
@@ -7,7 +11,7 @@ make_bed_from_annotated <- function(parsed_file,
     #make the bed header
     bed_header = glue::glue('track name="{trackname}" description="{trackname}" visibility=2 itemRgb="On"')
     #read in the file,
-    print(junction_types)
+
     annotated_junctions = data.table::fread(parsed_file)
     #keep only the junction types in the junction_types arguemnt
     if(only_up_in_case){
@@ -33,8 +37,6 @@ make_bed_from_annotated <- function(parsed_file,
                 quote = FALSE)
 
 
-)
-
 }
 
 ####end of the helper functions####
@@ -44,16 +46,16 @@ option_list = list(
     make_option(c("-o", "--out"), type="character",
                 help="output file name - no extension 2 files will be written", metavar="character",default = "annotated_junctions_bedformat.junctions.bed"),
     make_option(c("-c", "--cutoff"), type="character", default=NULL,
-                help="deltaPSI cutoff for writing", metavar="character")
+                help="deltaPSI cutoff for writing", metavar="character"),
     make_option(c("-t", "--trackname"), type="character", default="All junctions",
-                help="name of the track on IGV", metavar="character")
+                help="name of the track on IGV", metavar="character"),
     make_option(c("-u", "--upincase"), type="character", default=FALSE,
                 help="only keep junctions that are increasing in the case")
 );
 
 opt_parser = OptionParser(option_list=option_list);
 opt = parse_args(opt_parser);
-print(opt)
+
 make_bed_from_annotated(parsed_file = opt$parsed,
                         output_filepath = opt$out,
                         cutoff = opt$cutoff,
