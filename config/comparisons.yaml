@@ -7,6 +7,6 @@ compareControls:
   column_name:
     - group
   control:
-    - CTR
-  hnRNPKKD:
-    - hnRNPK
+    - Ctrl
+  tdpKD:
+    - TDPKD
