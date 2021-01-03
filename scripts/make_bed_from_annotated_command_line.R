@@ -1,5 +1,6 @@
 make_bed_from_annotated <- function(parsed_file, 
-                                    output_filepath, 
+                                    output_filepath,
+                                    only_up_in_case = FALSE,
                                     cutoff = NULL,
                                     junction_types = c("annotated", "none", "novel_acceptor", "novel_exon_skip", "novel_donor", 
                                                        "ambig_gene", "novel_combo")
@@ -9,6 +10,10 @@ make_bed_from_annotated <- function(parsed_file,
     #read in the file, 
     annotated_junctions = data.table::fread(parsed_file)
     #keep only the junction types in the junction_types arguemnt
+    if(only_up_in_case){
+        #keep only the junctions increasing the case condition
+        annotated_junctions = annotated_junctions[deltaPSI >0]
+    }
     annotated_junctions = annotated_junctions[junc_cat %in% junction_types]
     #keep only the junctions with a abs(deltaPSI greater than cutoff)
     if(!is.null(cutoff)){
@@ -42,6 +47,8 @@ option_list = list(
                 help="deltaPSI cutoff for writing", metavar="character")
     make_option(c("-t", "--trackname"), type="character", default="All junctions",
                 help="name of the track on IGV", metavar="character")
+    make_option(c("-u", "--upincase"), type="character", default="All junctions",
+                help="name of the track on IGV", metavar="character")
 );
 
 opt_parser = OptionParser(option_list=option_list);
@@ -50,4 +57,5 @@ opt = parse_args(opt_parser);
 make_bed_from_annotated(parsed_file = opt$parsed, 
                         output_filepath = opt$out, 
                         cutoff = opt$cutoff,
-                        trackname = opt$trackname)
+                        trackname = opt$trackname,
+                        only_up_in_case = opt$upincase)
