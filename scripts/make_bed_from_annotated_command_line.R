@@ -47,13 +47,13 @@ option_list = list(
                 help="deltaPSI cutoff for writing", metavar="character")
     make_option(c("-t", "--trackname"), type="character", default="All junctions",
                 help="name of the track on IGV", metavar="character")
-    make_option(c("-u", "--upincase"), type="character", default="All junctions",
-                help="name of the track on IGV", metavar="character")
+    make_option(c("-u", "--upincase"), type="character", default=FALSE,
+                help="only keep junctions that are increasing in the case")
 );
 
 opt_parser = OptionParser(option_list=option_list);
 opt = parse_args(opt_parser);
-
+print(opt)
 make_bed_from_annotated(parsed_file = opt$parsed,
                         output_filepath = opt$out,
                         cutoff = opt$cutoff,
