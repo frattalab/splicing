@@ -17,14 +17,14 @@ print(CONTRASTS)
 
 rule allAnnotated:
     input:
-        expand(os.path.join(config['majiq_top_level'],"delta_psi_voila_tsv","{bse}_{contrast}" + "_annotated_junctions.gff3"),zip, bse = BASES,contrast = CONTRASTS),
+        expand(os.path.join(config['majiq_top_level'],"delta_psi_voila_tsv","{bse}_{contrast}" + "_annotated_junctions.csv"),zip, bse = BASES,contrast = CONTRASTS),
         expand(os.path.join(config['majiq_top_level'],"delta_psi_voila_tsv","{bse}_{contrast}_annotated.junctions.bed"),zip, bse = BASES,contrast = CONTRASTS)
 
 rule annotatate_delta:
     input:
         tsv = os.path.join(config['majiq_top_level'],"delta_psi_voila_tsv","{bse}_{contrast}" + "_parsed_psi.tsv")
     output:
-        os.path.join(config['majiq_top_level'],"delta_psi_voila_tsv","{bse}_{contrast}_annotated_junctions.gff3")
+        os.path.join(config['majiq_top_level'],"delta_psi_voila_tsv","{bse}_{contrast}_annotated_junctions.csv")
     params:
         gtf = config['gtf'],
         psi_output_folder = os.path.join(config['majiq_top_level'],"delta_psi_voila_tsv","{bse}_{contrast}_annotated_junctions")
