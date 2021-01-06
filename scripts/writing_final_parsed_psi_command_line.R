@@ -18,6 +18,9 @@ parse_all_the_parsed = function(folder,suffix,output){
     library(data.table)
     library(tidyverse)
     # get all the files that end in out_parsed_csv
+    test_files = list.files(folder,full.names = TRUE)
+    print("HEY GURL")
+    print(test_files)
     files = list.files(folder,full.names = TRUE,pattern = "out_parsed.csv")
     print(files)
     # everything has a suffix that we define, use this for removing later
