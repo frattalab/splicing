@@ -5,66 +5,66 @@ __default__:
 majiq_build:
     ncpus:  4
     mem:   2G
-    time: "24:00:00"
+    time: "72:00:00"
 majiq_psi:
     h_vmem:   2G
     mem:   2G
-    time: 72:00:00
+    time: "72:00:00"
     ncpus:  2
 majiq_psi_tsv:
     h_vmem:   1G
     mem:   1G
     ncpus:  4
-    time: 72:00:00
+    time: "72:00:00"
 majiq_delta_psi:
     h_vmem:   4G
     mem:   4G
-    time: 72:00:00
+    time: "72:00:00"
     ncpus:  2
 majiq_delta_psi_tsv:
     h_vmem:   1G
     mem:   1G
-    time: 72:00:00
+    time: "72:00:00"
     ncpus:  2
 majiq_psi_parse:
     h_vmem:   1G
     mem:   1G
-    time: 72:00:00
+    time: "72:00:00"
 star_tabs_to_beds:
     h_vmem:   1G
     mem:   1G
-    time: 72:00:00
+    time: "72:00:00"
 assembly:
     h_vmem:   2G
     mem:   2G
-    time: 72:00:00
+    time: "72:00:00"
     ncpus:  4
 compose_merge:
     h_vmem:   1G
     mem:   1G
-    time: 72:00:00
+    time: "72:00:00"
     submission_string: " "
 compare_assemblies:
     h_vmem:   1G
     mem:   1G
-    time: 72:00:00
+    time: "72:00:00"
     submission_string: " "
 merge_assemblies:
     h_vmem:   1G
     mem:   1G
-    time: 72:00:00
+    time: "72:00:00"
     submission_string: " "
 diffexp:
     h_vmem:   1G
     mem:   1G
-    time: 72:00:00
-    submission_string: "-pe smp 8 -R y"
+    time: "72:00:00"
+    submission_string: ""
 merge_scallop_gtfs:
     h_vmem:   1G
     mem:   1G
-    time: 72:00:00
+    time: "72:00:00"
     ncpus:  2
 whippet_psi:
     h_vmem:   16G
     mem:   16G
-    time: 72:00:00
+    time: "72:00:00"

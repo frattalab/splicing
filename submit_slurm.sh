@@ -7,9 +7,9 @@ module load R
 WORKFLOW="workflows/${1}.smk"
 
 if [ "$2" != "" ]; then
-    RUN_NAME=$1
+    RUN_NAME=$1_$2
 else
-    RUN_NAME=$"run_config"
+    RUN_NAME=$1
 fi
 
 FOLDER=submissions/$(date +"%Y%m%d%H%M")
