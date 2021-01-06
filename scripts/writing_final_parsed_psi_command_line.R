@@ -46,7 +46,7 @@ parse_all_the_parsed = function(folder,suffix,output){
 
     output_psi = file.path(output,"full_PSI.csv")
     output_var = file.path(output,"full_varPSI.csv")
-
+    print(head(psi))
     fwrite(psi,output_psi)
     fwrite(variance,output_var)
 
