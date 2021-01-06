@@ -6,7 +6,7 @@ option_list = list(
                 help="folder with the parsed csvs", metavar="character"),
     make_option(c("-o", "--out"), type="character", default="out.txt",
                 help="output file name", metavar="character"),
-    make_option(c("-s", "--suffix"), type="character", default="out.txt",
+    make_option(c("-s", "--suffix"), type="character", default=".Aligned.sorted.out",
                 help="the suffix that everything gets appended with [default= '.Aligned.sorted.out_parsed.']", metavar="character")
 );
 
@@ -21,10 +21,11 @@ parse_all_the_parsed = function(folder,suffix,output){
     test_files = list.files(folder,full.names = TRUE)
     print("HEY GURL")
     print(test_files)
-    files = list.files(folder,full.names = TRUE,pattern = "out_parsed.csv")
-    print(files)
     # everything has a suffix that we define, use this for removing later
-    suffix = paste0(suffix,  "out_parsed.csv")
+    suffix = paste0(suffix,  "_parsed.csv")
+    files = list.files(folder,full.names = TRUE,pattern = "_parsed.csv")
+    print(files)
+
     # using something I found on the Google's
     mydata = tibble(File = files) %>%
         mutate(Data = lapply(File, read_csv)) %>%
