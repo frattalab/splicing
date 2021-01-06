@@ -1,23 +1,23 @@
-
 #Info
 species: human
 read_len: 150
 genome_refcode: hg38
 endtype: pe
-sample_csv_path: /SAN/vyplab/alb_projects/data/4su_full_ward_tdp_kd_ipsc/ward_time_course_samples.csv
+sample_csv_path: /SAN/vyplab/alb_projects/data/linked_buratti_hnrnpk/hnRNPK_majiq.csv
 group_column: group
-bam_suffix: .Aligned.sorted.out
+bam_suffix: _unique_rg_fixed
 ######TOP LEVEL PROJECT FOLDER
-top_level_project_folder: /SAN/vyplab/alb_projects/data/4su_full_ward_tdp_kd_ipsc/
+top_level_project_folder: /SAN/vyplab/alb_projects/data/linked_buratti_hnrnpk/
 fastp_trimmed_output_folder: merged_fastqs/
 whippet_output_path: whippets/
 whippet_index_name: gencode.v34
 #directory of all the already aligned bam files, this is necessary for building the majic data index from this data
-bam_dir: /SAN/vyplab/alb_projects/data/4su_full_ward_tdp_kd_ipsc/STAR_aligned/
-run_name: foursuFullKD
+bam_dir: /SAN/vyplab/alb_projects/data/linked_buratti_hnrnpk/linked_bams/
+run_name: hnrnpk
 #folder where the fastq files are
 
-majiq_top_level: /SAN/vyplab/alb_projects/data/4su_full_ward_tdp_kd_ipsc/majiq/
+majiq_top_level: /SAN/vyplab/alb_projects/data/linked_buratti_hnrnpk/majiq/
+#folder where the fastq files are
 
 majiq_extra_parameters:
   simplify:
