@@ -13,6 +13,7 @@ bam_dir: /home/annbrown/data/tdp_ko_collection/bams/
 run_name: allmuscle
 #folder where the fastq files are
 majiq_top_level: /home/annbrown/data/tdp_ko_collection/majiq/
+bam_suffix: .Aligned.sorted.out
 
 #folder where the fastq files are
 
