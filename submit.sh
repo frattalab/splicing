@@ -23,6 +23,7 @@ FOLDER=submissions/$(date +"%Y%m%d%H%M")
 
 mkdir -p ${FOLDER}
 cp config/config.yaml ${FOLDER}/${RUN_NAME}_config.yaml
+cp config/comparisons.yaml ${FOLDER}/${RUN_NAME}_comparisons.yaml
 
 snakemake -s ${WORKFLOW} \
 --jobscript cluster_qsub.sh \
