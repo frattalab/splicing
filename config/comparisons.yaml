@@ -59,3 +59,10 @@ knockdownexperiment67:
     - control_MELAMED
   tdpKDMelamed:
     - tdpKD_MELAMED
+knockdownexperimentSHSY5Y:
+  column_name:
+    - comparesnp
+  controlSHSY5Y:
+    - control_BURATTI_new
+  tdpKDSHSY5Y:
+    - tdpKD_BURATTI_new
