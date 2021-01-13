@@ -12,7 +12,7 @@ output_the_psi_files = function(sample_name, sample_file, gtf, output_folder){
   output_filepath_normed = glue::glue("{output_folder}/{sample_name}_normalized_annotated.csv")
 
   ref =  GenomicFeatures::makeTxDbFromGFF(gtf,format = 'gtf')
-
+  # ref <- GenomicState::GenomicStateHub(version = "32", genome = "hg38", filetype = "TxDb")[[1]]
   junctions <-
       junction_load(
           junction_paths = sample_file
