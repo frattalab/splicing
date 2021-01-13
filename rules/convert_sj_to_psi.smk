@@ -27,7 +27,7 @@ rule normalize_annotate:
     output:
         output_dir + "{sample}" + "_normalized_annotated.csv"
     params:
-        gtf = config['gtf'],
+        gtf = gtf,
         output_folder = output_dir
     shell:
         """
