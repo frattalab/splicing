@@ -26,12 +26,11 @@ smoosh_psi = function(folder,output){
     for(f in 2:length(files)){
       t = fread(files[f])
       t = t %>% dplyr::select(-index,-clusters,-gene_id_junction)
-      mydata = full_join(mydata, t, by = c("seqnames","start","end","strand_junction","type"))
+      mydata = unique(full_join(mydata, t, by = c("seqnames","start","end","strand_junction","type")))
       rm(t)
     }
 
-    fwrite(psi,output_psi)
-    fwrite(variance,output_var)
+    fwrite(mydata,output)
 
 }
 
