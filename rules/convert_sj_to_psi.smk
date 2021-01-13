@@ -21,7 +21,7 @@ SAMPLES, = glob_wildcards(input_sj_folder + "{sample}" + sj_suffix)
 
 rule all_normalize_annotate:
     input:
-        output_dir + "{sample}" + "_normalized_annotated.csv"
+        expand(output_dir + "{sample}" + "_normalized_annotated.csv", sample = SAMPLE_NAMES)
 
 
 rule normalize_annotate:
