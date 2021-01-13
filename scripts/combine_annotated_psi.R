@@ -63,9 +63,8 @@ combine_annotated_psi(folder = opt$folder, output = opt$out)
 #     saveRDS(my_sparse_data,output)
 # }
 #
-#     fwrite(mydata,output)
 #
 # }
 #
 #
-# combine_annotated_psi(folder = opt$folder, output = opt$out)
+# combine_annotated_psi_long(folder = opt$folder, output = opt$out)

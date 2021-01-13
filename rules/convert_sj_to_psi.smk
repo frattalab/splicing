@@ -30,7 +30,9 @@ SAMPLES, = glob_wildcards(input_sj_folder + "{sample}" + sj_suffix)
 rule all_normalize_annotate:
     input:
         expand(output_dir + "{sample}" + "_normalized_annotated.csv", sample = SAMPLES),
-        os.path.join(output_dir, "normalized_annotated_combined_samples.csv")
+        os.path.join(output_dir, "normalized_annotated_combined_samples.csv"),
+        # os.path.join(output_dir, "normalized_annotated_combined_samples.csv")
+
 
 
 rule normalize_annotate:
@@ -65,3 +67,16 @@ rule squashed_normalize_annotate:
         --folder {params.dir_of_normed} \
         --out {output}
         """
+# rule squashed_normalize_annotate:
+#     input:
+#         all_parsed_csvs = get_single_psi_parsed_files_dasper(SAMPLES)
+#     output:
+#         os.path.join(output_dir, "normalized_annotated_combined_samples.RDS")
+#     params:
+#         dir_of_normed = output_dir
+#     shell:
+#         """
+#         Rscript scripts/combine_annotated_psi.R \
+#         --folder {params.dir_of_normed} \
+#         --out {output}
+#         """
