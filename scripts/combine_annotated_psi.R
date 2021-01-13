@@ -3,6 +3,7 @@
 library("optparse")
 library(data.table)
 library(tidyverse)
+library(tidytext)
 option_list = list(
     make_option(c("-f", "--folder"), type="character", default=NULL,
                 help="folder with the parsed csvs", metavar="character"),
@@ -56,6 +57,11 @@ combine_annotated_psi(folder = opt$folder, output = opt$out)
 #       mydata = rbind(mydata,t)
 #       rm(t)
 #     }
+#     mydata[,paste_into_igv_junction := paste0(seqnames, ":",start, "-",end)]
+#     my_sparse_data = cast_sparse(mydata, paste_into_igv_junction,sample, PSI)
+#
+#     saveRDS(my_sparse_data,output)
+# }
 #
 #     fwrite(mydata,output)
 #
