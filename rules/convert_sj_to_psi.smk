@@ -21,7 +21,6 @@ def get_single_psi_parsed_files_dasper(SAMPLES):
 
     parsed_psi_files = [os.path.join(output_dir,x + "_normalized_annotated.csv") for x in SAMPLES]
 
-    print(parsed_psi_files)
     return(parsed_psi_files)
 
 output_dir = os.path.join(input_sj_folder,out_spot)
