@@ -20,7 +20,7 @@ def get_single_psi_parsed_files_dasper(SAMPLES):
     """
 
     parsed_psi_files = [os.path.join(output_dir,x + "_normalized_annotated.csv") for x in SAMPLES]
-    
+
     print(parsed_psi_files)
     return(parsed_psi_files)
 
@@ -31,7 +31,7 @@ SAMPLES, = glob_wildcards(input_sj_folder + "{sample}" + sj_suffix)
 rule all_normalize_annotate:
     input:
         expand(output_dir + "{sample}" + "_normalized_annotated.csv", sample = SAMPLES),
-        os.path.join(output_dir, "combined_normalized_annotated.csv")
+        os.path.join(output_dir, "normalized_annotated_combined_samples.csv")
 
 
 rule normalize_annotate:
@@ -57,7 +57,7 @@ rule squashed_normalize_annotate:
     input:
         all_parsed_csvs = get_single_psi_parsed_files_dasper(SAMPLES)
     output:
-        os.path.join(output_dir, "combined_normalized_annotated.csv")
+        os.path.join(output_dir, "normalized_annotated_combined_samples.csv")
     params:
         dir_of_normed = output_dir
     shell:
