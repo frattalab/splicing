@@ -36,5 +36,9 @@ rule normalize_annotate:
     shell:
         """
         mkdir -p {output_dir}
-        Rscript scripts/convert_sj_to_psi.R --sample_name {params.sample_name} --sample_file {input} --gtf {params.gtf} --output_folder {params.output_folder}
+        Rscript scripts/convert_sj_to_psi.R \
+        --sample_name {params.sample_name} \
+        --sample_file {input} \
+        --gtf {params.gtf} \
+        --output_folder {params.output_folder}
         """
