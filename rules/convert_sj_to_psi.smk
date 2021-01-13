@@ -17,7 +17,7 @@ bedops_path = "/SAN/vyplab/alb_projects/tools/bedops/bin/"
 
 output_dir = os.path.join(input_sj_folder,out_spot)
 # print(bam_dir)
-SAMPLES, = glob_wildcards(bam_dir + "{sample}" + sj_suffix)
+SAMPLES, = glob_wildcards(input_sj_folder + "{sample}" + sj_suffix)
 
 
 
