@@ -16,7 +16,6 @@ input_sj_folder = "/SAN/vyplab/alb_projects/data/sinai_splice_junctions/all_bams
 bedops_path = "/SAN/vyplab/alb_projects/tools/bedops/bin/"
 
 output_dir = os.path.join(input_sj_folder,out_spot)
-bam_dir = os.path.join(project_dir,bam_spot)
 # print(bam_dir)
 SAMPLES, = glob_wildcards(bam_dir + "{sample}" + sj_suffix)
 
