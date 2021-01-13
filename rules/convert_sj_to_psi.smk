@@ -23,9 +23,9 @@ SAMPLES, = glob_wildcards(input_sj_folder + "{sample}" + sj_suffix)
 
 rule normalize_annotate:
     input:
-        os.path.join(bam_dir + "{sample}" + sj_suffix)
+        input_sj_folder + "{sample}" + sj_suffix
     output:
-        os.path.join(bam_dir + "{sample}" + "_normalized_annotated.csv")
+        output_dir + "{sample}" + "_normalized_annotated.csv"
     params:
         gtf = config['gtf'],
         output_folder = output_dir
