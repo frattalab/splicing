@@ -18,11 +18,9 @@ def get_single_psi_parsed_files_dasper(SAMPLES):
     """
     return a list of files that will exist
     """
-    samples = pd.read_csv(config['sample_csv_path'])
-    #there should be a column which allows you to exclude samples
-    samples2 = samples.loc[samples.exclude_sample_downstream_analysis != 1]
 
     parsed_psi_files = [os.path.join(output_dir,x + "_normalized_annotated.csv") for x in SAMPLES]
+    
     print(parsed_psi_files)
     return(parsed_psi_files)
 
