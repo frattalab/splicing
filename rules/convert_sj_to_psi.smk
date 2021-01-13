@@ -5,10 +5,10 @@ gtf = "/SAN/vyplab/vyplab_reference_genomes/annotation/human/GRCh38/gencode.v34.
 ####Folders and all the other stuff
 ####humans
 out_spot = "normalized_annotated/"
-# input_sj_folder = " /SAN/vyplab/alb_projects/data/sinai_splice_junctions/sinai_all_samples_renamed_sj_tabs/"
+input_sj_folder = " /SAN/vyplab/alb_projects/data/sinai_splice_junctions/sinai_all_samples_renamed_sj_tabs/"
 sj_suffix = ".SJ.out.tab"
 ####cell lines
-input_sj_folder = "/SAN/vyplab/alb_projects/data/sinai_splice_junctions/all_bams_kds_linked/sj_files_only/"
+# input_sj_folder = "/SAN/vyplab/alb_projects/data/sinai_splice_junctions/all_bams_kds_linked/sj_files_only/"
 
 
 
