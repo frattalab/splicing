@@ -14,7 +14,7 @@ opt_parser = OptionParser(option_list=option_list);
 opt = parse_args(opt_parser);
 
 
-smoosh_psi = function(folder,output){
+combine_annotated_psi = function(folder,output){
     suffix = "_normalized_annotated.csv"
     # everything has a suffix that we define, use this for removing later
     files = list.files(folder,full.names = TRUE,pattern = suffix)
@@ -35,4 +35,4 @@ smoosh_psi = function(folder,output){
 }
 
 
-smoosh_psi(folder = opt$folder, output = opt$out)
+combine_annotated_psi(folder = opt$folder, output = opt$out)
