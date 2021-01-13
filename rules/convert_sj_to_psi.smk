@@ -32,7 +32,8 @@ SAMPLES, = glob_wildcards(input_sj_folder + "{sample}" + sj_suffix)
 
 rule all_normalize_annotate:
     input:
-        expand(output_dir + "{sample}" + "_normalized_annotated.csv", sample = SAMPLES)
+        expand(output_dir + "{sample}" + "_normalized_annotated.csv", sample = SAMPLES),
+        os.path.join(output_dir, "combined_normalized_annotated.csv")
 
 
 rule normalize_annotate:
@@ -53,6 +54,7 @@ rule normalize_annotate:
         --gtf {params.gtf} \
         --output_folder {params.output_folder}
         """
+
 rule squashed_normalize_annotate:
     input:
         all_parsed_csvs = get_single_psi_parsed_files_dasper(SAMPLES)
