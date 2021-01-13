@@ -9,8 +9,8 @@ annotatate_delta:
     h_rt: 72:00:00
 normalize_annotate:
     submission_string: " "
-    h_vmem:   4G
-    tmem:   4G
+    h_vmem:   8G
+    tmem:   8G
     h_rt: 72:00:00
 majiq_build:
     submission_string: "-pe smp 4 -R y"
