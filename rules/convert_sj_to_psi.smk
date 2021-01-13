@@ -31,9 +31,10 @@ rule normalize_annotate:
         output_dir + "{sample}" + "_normalized_annotated.csv"
     params:
         gtf = gtf,
+        sample_name = "{sample}",
         output_folder = output_dir
     shell:
         """
         mkdir -p {output_dir}
-        Rscript scripts/convert_sj_to_psi.R --sample_name {sample} --sample_file {input} --gtf {params.gtf} --output_folder {params.output_folder}
+        Rscript scripts/convert_sj_to_psi.R --sample_name {params.sample_name} --sample_file {input} --gtf {params.gtf} --output_folder {params.output_folder}
         """
