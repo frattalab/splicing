@@ -1,6 +1,7 @@
 #!/usr/bin/env Rscript
 
 library("optparse")
+library(data.table)
 option_list = list(
     make_option(c("-f", "--folder"), type="character", default=NULL,
                 help="folder with the parsed csvs", metavar="character"),
@@ -27,7 +28,7 @@ parse_all_the_parsed = function(folder,suffix,output){
 
     # using something I found on the Google's
     mydata = tibble(File = files) %>%
-        mutate(Data = lapply(File, read_csv)) %>%
+        mutate(Data = lapply(File, fread)) %>%
         unnest(Data) %>%
         mutate(sample = stringr::str_split_fixed(File, "psi_voila_tsv_single/", 2)[,2]) %>%
         mutate(sample = gsub(suffix,"",sample)) %>%
