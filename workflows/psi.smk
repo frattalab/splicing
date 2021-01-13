@@ -5,7 +5,6 @@ import yaml
 # note to self - probaly should not be hard coding threads like i do
 configfile: "config/config.yaml"
 include: "../rules/helpers.py"
-localrules: create_majiq_config_file
 #reading in the samples and dropping the samples to be excluded in order to get a list of sample names
 samples = pd.read_csv(config['sample_csv_path'])
 samples2 = samples.loc[samples.exclude_sample_downstream_analysis != 1]

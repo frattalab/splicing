@@ -67,7 +67,6 @@ parse_voila_delta_tsv = function(file_path){
   }
 }
 
-#!/usr/bin/env Rscript
 
 library("optparse")
 option_list = list(
