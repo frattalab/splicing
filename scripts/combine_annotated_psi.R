@@ -21,13 +21,14 @@ combine_annotated_psi = function(folder,output){
 
 
     # using something I found on the Google's
-
+    pb = txtProgressBar(min = 2, max = length(files), initial = 2)
     mydata = fread(files[1])
     for(f in 2:length(files)){
       t = fread(files[f])
       t = t %>% dplyr::select(-index,-clusters,-gene_id_junction)
       mydata = unique(full_join(mydata, t, by = c("seqnames","start","end","strand_junction","type")))
       rm(t)
+      setTxtProgressBar(pb,f)
     }
 
     fwrite(mydata,output)

@@ -24,7 +24,7 @@ snakemake -s rules/convert_sj_to_psi.smk \
 --jobscript cluster_qsub.sh \
 --cluster-config config/cluster.yaml \
 --cluster-sync "qsub -l h_vmem={cluster.h_vmem},h_rt={cluster.h_rt} {cluster.pe} -o $FOLDER" \
--j 50 \
+-j 80 \
 --nolock \
 --rerun-incomplete \
 --latency-wait 100
