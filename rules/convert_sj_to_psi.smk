@@ -13,7 +13,18 @@ input_sj_folder = "/SAN/vyplab/alb_projects/data/sinai_splice_junctions/all_bams
 
 
 # =-------DON"T TOUCH ANYTHING PAST THIS POINT ----------------------------
-bedops_path = "/SAN/vyplab/alb_projects/tools/bedops/bin/"
+
+def get_single_psi_parsed_files_dasper(SAMPLES):
+    """
+    return a list of files that will exist
+    """
+    samples = pd.read_csv(config['sample_csv_path'])
+    #there should be a column which allows you to exclude samples
+    samples2 = samples.loc[samples.exclude_sample_downstream_analysis != 1]
+
+    parsed_psi_files = [os.path.join(output_dir,x + "_normalized_annotated.csv") for x in SAMPLES]
+    print(parsed_psi_files)
+    return(parsed_psi_files)
 
 output_dir = os.path.join(input_sj_folder,out_spot)
 # print(bam_dir)
@@ -44,17 +55,14 @@ rule normalize_annotate:
         """
 rule squashed_normalize_annotate:
     input:
-        output_dir + "{sample}" + "_normalized_annotated.csv"
+        all_parsed_csvs = get_single_psi_parsed_files_dasper(SAMPLES)
     output:
-        output_dir + "combined_normalized_annotated.csv"
+        os.path.join(output_dir, "combined_normalized_annotated.csv")
     params:
-        gtf = gtf,
-        sample_name = "{sample}",
-        output_folder = output_dir
+        dir_of_normed = output_dir
     shell:
         """
-        mkdir -p {output_dir}
         Rscript scripts/combine_annotated_psi.R \
-        --folder {params.sample_name} \
+        --folder {params.dir_of_normed} \
         --out {output}
         """

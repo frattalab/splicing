@@ -36,3 +36,29 @@ combine_annotated_psi = function(folder,output){
 
 
 combine_annotated_psi(folder = opt$folder, output = opt$out)
+
+# combine_annotated_psi_long = function(folder,output){
+#     suffix = "_normalized_annotated.csv"
+#     # everything has a suffix that we define, use this for removing later
+#     files = list.files(folder,full.names = TRUE,pattern = suffix)
+#
+#
+#     # using something I found on the Google's
+#
+#     mydata = fread(files[1])
+#     mydata$sample = colnames(mydata)[9]
+#     setnames(mydata,colnames(mydata)[9],"PSI")
+#     for(f in 2:length(files)){
+#       t = fread(files[f])
+#       t$sample = colnames(t)[9]
+#       setnames(t,colnames(t)[9],"PSI")
+#       mydata = rbind(mydata,t)
+#       rm(t)
+#     }
+#
+#     fwrite(mydata,output)
+#
+# }
+#
+#
+# combine_annotated_psi(folder = opt$folder, output = opt$out)
