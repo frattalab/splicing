@@ -17,6 +17,11 @@ majiq_build:
     h_vmem:   2G
     tmem:   2G
     h_rt: 72:00:00
+squashed_normalize_annotate:
+    submission_string: " "
+    h_vmem:   32G
+    tmem:   32G
+    h_rt: 72:00:00
 majiq_psi:
     h_vmem:   2G
     tmem:   2G
