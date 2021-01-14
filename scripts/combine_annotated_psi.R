@@ -50,12 +50,16 @@ combine_annotated_psi_long = function(folder,output){
     mydata = fread(files[1])
     mydata$sample = colnames(mydata)[9]
     setnames(mydata,colnames(mydata)[9],"PSI")
+    pb = txtProgressBar(min = 2, max = length(files), initial = 2)
+
     for(f in 2:length(files)){
       t = fread(files[f])
       t$sample = colnames(t)[9]
       setnames(t,colnames(t)[9],"PSI")
       mydata = rbind(mydata,t)
       rm(t)
+            setTxtProgressBar(pb,f)
+
     }
     mydata[,paste_into_igv_junction := paste0(seqnames, ":",start, "-",end)]
     # my_sparse_data = cast_sparse(mydata, paste_into_igv_junction,sample, PSI)
@@ -65,8 +69,6 @@ combine_annotated_psi_long = function(folder,output){
 
 }
 
-
-}
 
 
 combine_annotated_psi_long(folder = opt$folder, output = opt$out)
