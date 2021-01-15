@@ -7,7 +7,11 @@ library(data.table)
 library("optparse")
 
 
-output_the_psi_files = function(sample_name, sample_file, gtf, output_folder){
+output_the_psi_files = function(sample_name,
+  sample_file,
+  gtf,
+  output_folder,
+  mincount = 5){
   output_filepath_raw = glue::glue("{output_folder}/{sample_name}_annotated.csv")
   output_filepath_normed = glue::glue("{output_folder}/{sample_name}_normalized_annotated.csv")
 
@@ -21,7 +25,7 @@ output_the_psi_files = function(sample_name, sample_file, gtf, output_folder){
   junctions <- junction_annot(junctions, ref)
 
   junctions_filtered <- junction_filter(junctions,
-      count_thresh = c(raw = 5)
+      count_thresh = c(raw = mincount)
   ) %>% junction_norm()
 
   annotated_clustered= as.data.table(junctions_filtered@rowRanges) %>%
@@ -30,17 +34,11 @@ output_the_psi_files = function(sample_name, sample_file, gtf, output_folder){
   normed = as.data.table(SummarizedExperiment::assays(junctions_filtered)[["norm"]])
   normed$index = 1:nrow(normed)
 
-  raw = as.data.table(SummarizedExperiment::assays(junctions_filtered)[["raw"]])
-  raw$index = 1:nrow(normed)
-
-
   annotated_clustered_normed = annotated_clustered %>% left_join(normed,by = "index")
-  annotated_clustered_raw = annotated_clustered %>% left_join(raw,by = "index")
 
   setnames(annotated_clustered_normed,"count_1", sample_name)
-  setnames(annotated_clustered_raw,"count_1", sample_name)
 
-  fwrite(annotated_clustered_raw,output_filepath_raw)
+
   fwrite(annotated_clustered_normed,output_filepath_normed)
 
   print("File all written!")

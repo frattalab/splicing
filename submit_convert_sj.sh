@@ -18,6 +18,7 @@ else
 fi
 
 FOLDER=submissions/$(date +"%Y%m%d%H%M")
+mkdir -p ${FOLDER}
 
 
 snakemake -s rules/convert_sj_to_psi.smk \
