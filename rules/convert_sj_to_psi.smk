@@ -62,11 +62,12 @@ rule to_bed:
     output:
         output_dir  + "beds/" + "{sample}" + "_normalized_annotated.bed"
     params:
-        bed_dir = output_dir + "beds/"
+        bed_dir = output_dir + "beds/",
+        mincount = 1
     shell:
         """
         mkdir -p {params.bed_dir}
-        python3 scripts/splice_junction_psi_tobed.py -i {input} -o {output}
+        python3 scripts/splice_junction_psi_tobed.py -i {input} -o {output} -m {params.mincount}
         """
 
 

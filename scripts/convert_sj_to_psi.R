@@ -11,7 +11,7 @@ output_the_psi_files = function(sample_name,
   sample_file,
   gtf,
   output_folder,
-  mincount = 5){
+  mincount = 1){
 
   output_filepath_raw = glue::glue("{output_folder}/{sample_name}_annotated.csv")
   output_filepath_normed = glue::glue("{output_folder}/{sample_name}_normalized_annotated.csv")
@@ -59,6 +59,8 @@ option_list = list(
                 help="GTF to annotated against", metavar="character"),
     make_option(c("-o", "--output_folder"), type="character", default="out.txt",
                 help="output file name", metavar="character")
+    make_option(c("-m", "--mincount"), type="character", default=1
+                help="mincount to consider a junction", metavar="integer")
 );
 
 opt_parser = OptionParser(option_list=option_list);
