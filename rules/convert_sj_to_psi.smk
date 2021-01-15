@@ -62,7 +62,7 @@ rule to_bed:
     output:
         output_dir  + "beds/" + "{sample}" + "_normalized_annotated.bed"
     params:
-        bed_dir = output_dir "beds/"
+        bed_dir = output_dir + "beds/"
     shell:
         """
         mkdir -p {params.bed_dir}
