@@ -12,11 +12,12 @@ output_the_psi_files = function(sample_name,
   gtf,
   output_folder,
   mincount = 5){
+
   output_filepath_raw = glue::glue("{output_folder}/{sample_name}_annotated.csv")
   output_filepath_normed = glue::glue("{output_folder}/{sample_name}_normalized_annotated.csv")
 
   ref =  GenomicFeatures::makeTxDbFromGFF(gtf,format = 'gtf')
-  # ref <- GenomicState::GenomicStateHub(version = "32", genome = "hg38", filetype = "TxDb")[[1]]
+
   junctions <-
       junction_load(
           junction_paths = sample_file
@@ -25,14 +26,18 @@ output_the_psi_files = function(sample_name,
   junctions <- junction_annot(junctions, ref)
 
   junctions_filtered <- junction_filter(junctions,
-      count_thresh = c(raw = mincount)
-  ) %>% junction_norm()
+      count_thresh = c(raw = mincount)) %>% junction_norm()
 
   annotated_clustered= as.data.table(junctions_filtered@rowRanges) %>%
     dplyr::select(seqnames,start,end,strand_junction,type,gene_id_junction,index,clusters)
 
   normed = as.data.table(SummarizedExperiment::assays(junctions_filtered)[["norm"]])
   normed$index = 1:nrow(normed)
+
+
+  annotated_clustered_normed = annotated_clustered %>% left_join(normed,by = "index")
+g
+  setnames(annotated_clustered_normed,"count_1", sample_name)
 
   annotated_clustered_normed = annotated_clustered %>% left_join(normed,by = "index")
 
