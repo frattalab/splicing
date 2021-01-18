@@ -28,7 +28,7 @@ cp config/comparisons.yaml ${FOLDER}/${RUN_NAME}_comparisons.yaml
 snakemake -s ${WORKFLOW} \
 --jobscript cluster_qsub.sh \
 --cluster-config config/cluster.yaml \
---cluster-sync "qsub -l h_vmem={cluster.h_vmem},h_rt={cluster.h_rt} -o $FOLDER {cluster.submission_string}" \
+--cluster-sync "qsub -l tmem={cluster.tmem},h_vmem={cluster.h_vmem},h_rt={cluster.h_rt} -o $FOLDER {cluster.submission_string}" \
 -j 40 \
 --nolock \
 --rerun-incomplete \
