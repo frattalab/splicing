@@ -21,8 +21,9 @@ BASES, CONTRASTS = return_bases_and_contrasts()
 rule allParse:
     input:
         expand(os.path.join(config['majiq_top_level'],"psi_voila_tsv_single",'{sample}' + "_parsed.csv"), sample = SAMPLE_NAMES),
-        os.path.join(config['majiq_top_level'],"psi_voila_tsv_single/" + "full_PSI.csv"),
-        expand(os.path.join(config['majiq_top_level'],"delta_psi_voila_tsv","{bse}_{contrast}" + "_parsed_psi.tsv"),zip, bse = BASES,contrast = CONTRASTS)
+        expand(os.path.join(config['majiq_top_level'],"delta_psi_voila_tsv","{bse}_{contrast}" + "_parsed_psi.tsv"),zip, bse = BASES,contrast = CONTRASTS),
+        # os.path.join(config['majiq_top_level'],"psi_voila_tsv_single/" + "full_PSI.csv"),
+
 
         # expand(os.path.join(config['majiq_top_level'],"star_beds",'{sjname}' + ".bed"),sjname = SJ_NAMES)
 
@@ -50,18 +51,18 @@ rule majiq_psi_parse:
         Rscript scripts/parsing_psi_command_line.R --input {input.psi_voila_tsv} -o {output.parsed_csv}
         """
 
-rule combine_psi_per_sample:
-    input:
-        all_parsed_csvs = get_single_psi_parsed_files()
-    output:
-        parsed_csv = os.path.join(config['majiq_top_level'],"psi_voila_tsv_single/" + "full_PSI.csv")
-    params:
-        psi_folder = os.path.join(config['majiq_top_level'],"psi_voila_tsv_single")
-    shell:
-        """
-        Rscript scripts/writing_final_parsed_psi_command_line.R --folder {params.psi_folder} --out {output.parsed_csv}
-        """
-
+# rule combine_psi_per_sample:
+#     input:
+#         all_parsed_csvs = get_single_psi_parsed_files()
+#     output:
+#         parsed_csv = os.path.join(config['majiq_top_level'],"psi_voila_tsv_single/" + "full_PSI.csv")
+#     params:
+#         psi_folder = os.path.join(config['majiq_top_level'],"psi_voila_tsv_single")
+#     shell:
+#         """
+#         Rscript scripts/writing_final_parsed_psi_command_line.R --folder {params.psi_folder} --out {output.parsed_csv}
+#         """
+#
 
 rule majiq_finish_deltas:
     input:
