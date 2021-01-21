@@ -370,14 +370,14 @@ final_annotate_junctions <- function(parsed_file,output_filepath,gtf){
 
     txdb_gtf =  GenomicFeatures::makeTxDbFromGFF(gtf,format = 'gtf')
 
-    # use this superset of all the exons either identified by Whippets
-    # or identified by Scallop
-    # use a function from splicejam to find the exons which end on any of the junctions
+
     parsed_granges = makeGRangesFromDataFrame(parsed_splicing,
                                             start.field = "junc_start",
                                             end.field = "junc_end",
                                             keep.extra.columns = TRUE)
-
+    #remove any junctions with width less than 2
+    keep_rows = which(!(width(parsed_granges) < 2))
+    parsed_granges = parsed_granges[keep_rows]
     start(parsed_granges) <- start(parsed_granges) + 1 #the annotate junc ref tool is based on STAR SJ's so there's an internal -1, +1 that happens
     end(parsed_granges) <- end(parsed_granges) - 1
 
