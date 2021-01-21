@@ -28,7 +28,7 @@ make_bed_from_annotated <- function(parsed_file,
         annotated_junctions = annotated_junctions[abs(deltaPSI) > cutoff]
     }
     #make a column of gene name, the junction type, and the base psi
-    annotated_junctions[,name := paste0(gene_name,":",junc_cat,"_",get(base_psi))]
+    annotated_junctions[,name := paste0(gene_name,":",junc_cat,"|",get(base_psi))]
     #keep only the relevant things
     annotated_junctions = unique(annotated_junctions[,.(seqnames,start,end,name,deltaPSI,strand,start,end)])
     #add colors
