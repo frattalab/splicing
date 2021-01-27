@@ -1,12 +1,38 @@
 # splicing
-Splicing done with MAJIQ tool - This is very bare bones implentation as it stands is a **work in progress**, 
-
+Splicing done with MAJIQ tool **still a work in progress**
 The purpose of this pipeline is to be able to run MAJIQ using Snakemake. The aim is to make MAJIQ easier to run for non-bioinformaticians and it produces additional parsing and annotation to the MAJIQ output. 
 
 # Needed files
 1. Aligned, sorted, and indexed BAM files of RNA-seq. You will need .bam and .bai files for all your samples. 
 2. GFF3 and GTF of your species of interest
 3. A formatted sample sheet, see examples and explanation below
+# Get started
+
+After you've installed the necessary software, snakemake, R libraries, MAJIQ itself, you will need to do 3 things to get this pipeline going
+
+1. Set up a sample sheet
+2. Edit the config/comparisons.yaml 
+3. Edit the config/config.yaml
+
+## Making a sample sheet
+
+See example data for the formating of sample sheets.
+The following columns are mandatory:
+sample_name,
+unit,
+fast1,
+fast2,
+group
+exclude_sample_downstream_analysis
+
+unit, fast1, fast2 can be placeholders, they are to maintain the same sample sheet structure across my RNAseq alignment pipeline and the splicing pipeline
+
+exclude_sample_downstream_analysis should be present, if you want to exclude a sample it should be a 1
+
+After
+## Setting up your comparisons
+## Making the config
+
 # Final outputs
 Underneath the folder in 
 
@@ -84,18 +110,6 @@ If you don't have a cluster, you can run straight with snakemake
 
 
 
-See example data for the formating of sample sheets.
-The following columns are mandatory:
-sample_name,
-unit,
-fast1,
-fast2,
-group
-exclude_sample_downstream_analysis
-
-unit, fast1, fast2 can be placeholders, they are to maintain the same sample sheet structure across my RNAseq alignment pipeline and the splicing pipeline
-
-exclude_sample_downstream_analysis should be present, if you want to exclude a sample it should be a 1
 
 ## Annotation of splicing events
 Annotation is done with a function grabbed directly from source code here:
