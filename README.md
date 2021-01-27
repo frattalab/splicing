@@ -8,7 +8,10 @@ The purpose of this pipeline is to be able to run MAJIQ using Snakemake. The aim
 2. GFF3 and GTF of your species of interest
 3. A formatted sample sheet, see examples and explanation below
 # Final outputs
-Underneat the folder 
+Underneath the folder in 
+
+`majiq_top_level: /SAN/vyplab/alb_projects/data/linked_bams_f210i_brain/majiq/`
+```
 majiq
 ├── builder
 │   ├── wt_sample1.majiq
@@ -56,7 +59,7 @@ majiq
     ├── mut.psi.tsv
     ├── mut.psi.voila
     └── psi_majiq.log
-
+```
 ## Submitting on SGE
 
 1. Build step
@@ -75,10 +78,11 @@ with whatever run name you'd like
 with whatever run name you'd like
 ## Running without a cluster
 
+If you don't have a cluster, you can run straight with snakemake
+`snakemake -s workflows/build.smk`
+`snakemake -s workflows/psi.smk`
 
 
-
-The scripts folder as of 2020-11-05 contains semi-functional annotation scripts. Be cautious.
 
 See example data for the formating of sample sheets.
 The following columns are mandatory:
@@ -97,4 +101,4 @@ exclude_sample_downstream_analysis should be present, if you want to exclude a s
 Annotation is done with a function grabbed directly from source code here:
 https://github.com/dzhang32/dasper/
 
-Please cite ^ if you use this pipeline.
+Please cite Dasper, Snakemake, and of course MAJIQ if you use this pipeline.
