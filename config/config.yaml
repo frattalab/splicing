@@ -1,20 +1,22 @@
 
-species: human
-library_type: fr-secondstrand
+species: mouse
 read_len: 75
 genome_refcode: mm10
 endtype: pe
 sample_csv_path: /SAN/vyplab/alb_projects/data/m323k_adult_brain/m323k_adult_brain.csv
-group_column: group
+# group_column: group
 
 #directory of all the already aligned bam files, this is necessary for building the majic data index from this data
-bam_dir: /home/annbrown/data/tdp_ko_collection/bams/
-run_name: allmuscle
-#folder where the fastq files are
-majiq_top_level: /home/annbrown/data/tdp_ko_collection/majiq/
-bam_suffix: .Aligned.sorted.out
+bam_dir: /SAN/vyplab/alb_projects/data/m323k_adult_brain/linked_bams/
 
-#folder where the fastq files are
+run_name: allmuscle
+#the top level output folder where all the output files are going to be written
+#now it will sound insane, but I recommend you use full paths to preserve where the data is stored as configs are saved after runs
+majiq_top_level: /SAN/vyplab/alb_projects/data/m323k_adult_brain/majiq/
+#what's between the sample name and the end of the bam?
+#Mine all look like this M323K_HET_1_unique_rg_fixed.bam so my suffix is
+bam_suffix: _1_unique_rg_fixed
+
 
 majiq_extra_parameters:
   simplify:
@@ -22,16 +24,19 @@ majiq_psi_extra_parameters:
 extra_voila_parameters:
   threshold: "0.1"
 #options are --cutoff deltaPSI cutoff for writing out junctions and upincase, T or False
+# annotated_junctions_extra_parameters:
+#   cutoff: 0.15
+#   upincase: TRUE
 annotated_junctions_extra_parameters:
   cutoff: 0.1
 
-# fasta: /SAN/vyplab/vyplab_reference_genomes/sequence/mouse/gencode/GRCm38.primary_assembly.genome.fa
-# gtf: /SAN/vyplab/vyplab_reference_genomes/annotation/mouse/gencode/gencode.vM22.annotation.gtf
-# gff3: /SAN/vyplab/vyplab_reference_genomes/annotation/mouse/gencode/gencode.vM22.annotation.gff3
+fasta: /SAN/vyplab/vyplab_reference_genomes/sequence/mouse/gencode/GRCm38.primary_assembly.genome.fa
+gtf: /SAN/vyplab/vyplab_reference_genomes/annotation/mouse/gencode/gencode.vM22.annotation.gtf
+gff3: /SAN/vyplab/vyplab_reference_genomes/annotation/mouse/gencode/gencode.vM22.annotation.gff3
 
-fasta: /SAN/vyplab/vyplab_reference_genomes/sequence/human/gencode/GRCh38.primary_assembly.genome.fa
-gtf: /SAN/vyplab/vyplab_reference_genomes/annotation/human/GRCh38/gencode.v34.annotation.gtf
-gff3: /SAN/vyplab/vyplab_reference_genomes/annotation/human/GRCh38/gencode.v34.annotation.gff3
+# fasta: /SAN/vyplab/vyplab_reference_genomes/sequence/human/gencode/GRCh38.primary_assembly.genome.fa
+# gtf: /SAN/vyplab/vyplab_reference_genomes/annotation/human/GRCh38/gencode.v34.annotation.gtf
+# gff3: /SAN/vyplab/vyplab_reference_genomes/annotation/human/GRCh38/gencode.v34.annotation.gff3
 
 
 
