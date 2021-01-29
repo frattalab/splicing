@@ -1,9 +1,9 @@
 # splicing
 Splicing done with MAJIQ tool **still a work in progress**
-The purpose of this pipeline is to be able to run MAJIQ using Snakemake. The aim is to make MAJIQ easier to run for non-bioinformaticians and it produces additional parsing and annotation to the MAJIQ output. 
+The purpose of this pipeline is to be able to run MAJIQ using Snakemake. The aim is to make MAJIQ easier to run for non-bioinformaticians and it produces additional parsing and annotation to the MAJIQ output.
 
 # Needed files
-1. Aligned, sorted, and indexed BAM files of RNA-seq. You will need .bam and .bai files for all your samples. 
+1. Aligned, sorted, and indexed BAM files of RNA-seq. You will need .bam and .bai files for all your samples.
 2. GFF3 and GTF of your species of interest
 3. A formatted sample sheet, see examples and explanation below
 # Get started
@@ -11,7 +11,7 @@ The purpose of this pipeline is to be able to run MAJIQ using Snakemake. The aim
 After you've installed the necessary software, snakemake, R libraries, MAJIQ itself, you will need to do 3 things to get this pipeline going
 
 1. Set up a sample sheet
-2. Edit the config/comparisons.yaml 
+2. Edit the config/comparisons.yaml
 3. Edit the config/config.yaml
 
 ## Making a sample sheet
@@ -19,22 +19,50 @@ After you've installed the necessary software, snakemake, R libraries, MAJIQ its
 See example data for the formating of sample sheets.
 The following columns are mandatory:
 sample_name,
-unit,
-fast1,
-fast2,
-group
+group,
 exclude_sample_downstream_analysis
 
-unit, fast1, fast2 can be placeholders, they are to maintain the same sample sheet structure across my RNAseq alignment pipeline and the splicing pipeline
+exclude_sample_downstream_analysis should be present, if you want to exclude a sample it should be a 1, otherwise you can leave it blank
 
-exclude_sample_downstream_analysis should be present, if you want to exclude a sample it should be a 1
+After these 3 critical columns, you can include as many additional columns as you like
+
+Here is an example sample sheet where we have a het, hom, and wt of a mutant
+
+| sample_name | group | exclude_sample_downstream_analysis | litter |
+|-------------|-------|------------------------------------|--------|
+| M323K_HET_1 | het   |                                    | one    |
+| M323K_HET_2 | het   |                                    | two    |
+| M323K_HET_3 | het   |                                    | three  |
+| M323K_HET_4 | het   |                                    | four   |
+| M323K_HOM_1 | hom   |                                    | one    |
+| M323K_HOM_2 | hom   |                                    | two    |
+| M323K_HOM_3 | hom   |                                    | three  |
+| M323K_HOM_4 | hom   |                                    | four   |
+| M323K_HOM_5 | hom   |                                    | five   |
+| M323K_WT_1  | wt    |                                    | one    |
+| M323K_WT_2  | wt    |                                    | two    |
+| M323K_WT_3  | wt    |                                    | three  |
+
+My bams are named like this:
+
+`M323K_HET_1_unique_rg_fixed.bam`
+
+with all bams sharing the `_unique_rg_fixed` suffix, but I don't include that in the `sample_name`.
+
+I have three groups which I put in the group column, and then I don't have any reason to exclude any of the samples so I leave that blank as well.
+
+*Please* use syntactic names for `sample_name` and `group` (no spaces, don't start with a number, use underscores and not hyphens) I'm not totally sure if that leads to errors, but I would guess it will. 
+
+After that, I've included a column saying which litter the mice came from, but I could include as many additional columns as I like.
+
+
 
 After
 ## Setting up your comparisons
 ## Making the config
 
 # Final outputs
-Underneath the folder in 
+Underneath the folder in
 
 `majiq_top_level: /SAN/vyplab/alb_projects/data/linked_bams_f210i_brain/majiq/`
 ```
