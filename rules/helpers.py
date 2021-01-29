@@ -43,7 +43,7 @@ def parse_sample_csv_majiq(sample_csv_path):
     samples2 = samples.loc[samples.exclude_sample_downstream_analysis != 1]
     #we're making a dictionary here where each group is the key and all the sample_names
     #in that group are the items then we append the bam_suffix from the config
-    temp_dict = (samples2.groupby(config['group_column'])
+    temp_dict = (samples2.groupby('group')
               .apply(lambda x: set(x['sample_name'] + config['bam_suffix']))
               .to_dict())
     #now we make an empty list, and then fill it up with the values in the dictionary
