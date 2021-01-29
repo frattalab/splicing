@@ -9,7 +9,7 @@ sample_csv_path: /SAN/vyplab/alb_projects/data/m323k_adult_brain/m323k_adult_bra
 #directory of all the already aligned bam files, this is necessary for building the majic data index from this data
 bam_dir: /SAN/vyplab/alb_projects/data/m323k_adult_brain/linked_bams/
 
-run_name: allmuscle
+run_name: m323k_adult_brain
 #the top level output folder where all the output files are going to be written
 #now it will sound insane, but I recommend you use full paths to preserve where the data is stored as configs are saved after runs
 majiq_top_level: /SAN/vyplab/alb_projects/data/m323k_adult_brain/majiq/
@@ -34,6 +34,11 @@ fasta: /SAN/vyplab/vyplab_reference_genomes/sequence/mouse/gencode/GRCm38.primar
 gtf: /SAN/vyplab/vyplab_reference_genomes/annotation/mouse/gencode/gencode.vM22.annotation.gtf
 gff3: /SAN/vyplab/vyplab_reference_genomes/annotation/mouse/gencode/gencode.vM22.annotation.gff3
 
+#the path where your samtools is installed
+samtools_path: /share/apps/genomics/samtools-1.9/bin/samtools
+# cufflinks_path: /share/apps/genomics/cufflinks-2.2.1/bin/cufflinks
+majiq_path: /SAN/vyplab/alb_projects/tools/majiq_env/bin/python3 /SAN/vyplab/alb_projects/tools/majiq_env/bin/majiq
+voila_path: /SAN/vyplab/alb_projects/tools/majiq_env/bin/python3 /SAN/vyplab/alb_projects/tools/majiq_env/bin/voila
 # fasta: /SAN/vyplab/vyplab_reference_genomes/sequence/human/gencode/GRCh38.primary_assembly.genome.fa
 # gtf: /SAN/vyplab/vyplab_reference_genomes/annotation/human/GRCh38/gencode.v34.annotation.gtf
 # gff3: /SAN/vyplab/vyplab_reference_genomes/annotation/human/GRCh38/gencode.v34.annotation.gff3
@@ -41,27 +46,21 @@ gff3: /SAN/vyplab/vyplab_reference_genomes/annotation/mouse/gencode/gencode.vM22
 
 
 
-#scallop configurations
-scallop_path: /SAN/vyplab/alb_projects/tools/scallop-0.10.4/src/scallop
-scallop_extra_parameters:
-  library_type: first
-  min_transcript_length_increase: 25
+# #scallop configurations
+# scallop_path: /SAN/vyplab/alb_projects/tools/scallop-0.10.4/src/scallop
+# scallop_extra_parameters:
+#   library_type: first
+#   min_transcript_length_increase: 25
+#
 
 
-
-###### Whippets configurations
-# return of the whippets, whippets strikes back
-whippet_bin: /SAN/vyplab/alb_projects/tools/julia_pkgdir/v0.6/Whippet/bin/
-whippet_indicies: /SAN/vyplab/vyplab_reference_genomes/whippets_index/
-whippet_extra_parameters:
-  bam-min-reads: 10
-# -------------------------- Global configurations which shouldn't need to be
-# -------------------------- adjusted.
-
-julia: /SAN/vyplab/alb_projects/tools/julia-9d11f62bcb/bin/julia
-
-#the path where your samtools is installed
-samtools_path: /share/apps/genomics/samtools-1.9/bin/samtools
-cufflinks_path: /share/apps/genomics/cufflinks-2.2.1/bin/cufflinks
-majiq_path: /SAN/vyplab/alb_projects/tools/majiq_env/bin/python3 /SAN/vyplab/alb_projects/tools/majiq_env/bin/majiq
-voila_path: /SAN/vyplab/alb_projects/tools/majiq_env/bin/python3 /SAN/vyplab/alb_projects/tools/majiq_env/bin/voila
+# ###### Whippets configurations
+# # return of the whippets, whippets strikes back
+# whippet_bin: /SAN/vyplab/alb_projects/tools/julia_pkgdir/v0.6/Whippet/bin/
+# whippet_indicies: /SAN/vyplab/vyplab_reference_genomes/whippets_index/
+# whippet_extra_parameters:
+#   bam-min-reads: 10
+# # -------------------------- Global configurations which shouldn't need to be
+# # -------------------------- adjusted.
+#
+# julia: /SAN/vyplab/alb_projects/tools/julia-9d11f62bcb/bin/julia
