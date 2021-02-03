@@ -51,14 +51,41 @@ with all bams sharing the `_unique_rg_fixed` suffix, but I don't include that in
 
 I have three groups which I put in the group column, and then I don't have any reason to exclude any of the samples so I leave that blank as well.
 
-*Please* use syntactic names for `sample_name` and `group` (no spaces, don't start with a number, use underscores and not hyphens) I'm not totally sure if that leads to errors, but I would guess it will. 
+*Please* use syntactic names for `sample_name` and `group` (no spaces, don't start with a number, use underscores and not hyphens) I'm not totally sure if that leads to errors, but I would guess it will.
 
 After that, I've included a column saying which litter the mice came from, but I could include as many additional columns as I like.
 
-
-
-After
 ## Setting up your comparisons
+
+To compare groups, we need to go int the config/comparisons.yaml and edit it
+
+Here's an example from the sample sheet above
+
+knockdownexperiment:
+  column_name:
+    - group
+  wt:
+    - wt
+  hom:
+    - hom
+controlVersusHets:
+  column_name:
+    - group
+  wt:
+    - wt
+  het:
+    - het
+litterComparison:
+  column_name:
+    - litter
+  firstLitters:
+    - one
+    - two
+  secondLitters:
+    - three
+    - four
+    - five
+
 ## Making the config
 
 # Final outputs

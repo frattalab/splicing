@@ -7,23 +7,6 @@ knockdownexperiment:
   column_name:
     - group
   wt:
-    - wt
+    - positive
   hom:
-    - hom
-controlVersusHets:
-  column_name:
-    - group
-  wt:
-    - wt
-  het:
-    - het
-litterComparison:
-  column_name:
-    - litter
-  firstLitters:
-    - one
-    - two
-  secondLitters:
-    - three
-    - four
-    - five
+    - negative
