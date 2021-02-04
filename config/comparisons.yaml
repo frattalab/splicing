@@ -6,7 +6,7 @@
 knockdownexperiment:
   column_name:
     - group
-  wt:
+  tdp43positive:
     - positive
-  hom:
+  tdp43negative:
     - negative
