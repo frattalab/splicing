@@ -3,16 +3,16 @@ species: human
 read_len: 100
 genome_refcode: GRCh38
 endtype: pe
-sample_csv_path:  /SAN/vyplab/alb_projects/data/liu_facs_neurons/Liu_facs_samples.csv
+sample_csv_path:  /SAN/vyplab/alb_projects/data/tdp_ko_collection/all_the_kd_plus_muscles.csv
 # group_column: group
 
 #directory of all the already aligned bam files, this is necessary for building the majic data index from this data
 bam_dir: /SAN/vyplab/alb_projects/data/liu_facs_neurons/STAR_aligned/
 
-run_name: Liu_facs_samples
+run_name: allmuscle
 #the top level output folder where all the output files are going to be written
 #now it will sound insane, but I recommend you use full paths to preserve where the data is stored as configs are saved after runs
-majiq_top_level: /SAN/vyplab/alb_projects/data/liu_facs_neurons/majiq/
+majiq_top_level: /SAN/vyplab/alb_projects/data/tdp_ko_collection/majiq/
 #what's between the sample name and the end of the bam?
 #Mine all look like this M323K_HET_1_unique_rg_fixed.bam so my suffix is
 bam_suffix: .Aligned.sorted.out
