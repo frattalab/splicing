@@ -18,6 +18,17 @@ bam_dir: bam_files/
 run_name: wardTDPKD
 #for transcriptome primary_assembly
 scallop_output: scallop_output/
+#one of
+# if fcStrand == "-s 0":
+#     return "unstranded"
+#
+# elif fcStrand == "-s 1":
+#     return "second"
+#
+# elif fcStrand == "-s 2":
+#     return "first"
+scallop_strand: first
+
 
 #what's between the sample name and the end of the bam?
 #Mine all look like this M323K_HET_1_unique_rg_fixed.bam so my suffix is

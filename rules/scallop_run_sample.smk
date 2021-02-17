@@ -44,7 +44,7 @@ rule scallop_per_samp:
         verbose = 0,
         scallop_out_folder = scallop_outdir,
         scallop_extra_config = return_parsed_extra_params(config['scallop_extra_parameters']),
-        libtype = get_scallop_strand(config["feature_counts_strand_info"]),
+        libtype = config['scallop_strand']
     shell:
         """
         mkdir -p {params.scallop_out_folder}
