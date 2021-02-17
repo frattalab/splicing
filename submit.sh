@@ -27,6 +27,7 @@ cp config/comparisons.yaml ${FOLDER}/${RUN_NAME}_comparisons.yaml
 if [[ "$WORKFLOW" == "transcriptome_assembly" ]]
 then
   CONDATAG="--use-conda"
+  echo "penis"
 else
   CONDATAG=" "
 fi
