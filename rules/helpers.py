@@ -164,7 +164,7 @@ def get_single_psi_parsed_files():
     samples = pd.read_csv(config['sampleCSVpath'])
     #there should be a column which allows you to exclude samples
     samples2 = samples.loc[samples.exclude_sample_downstream_analysis != 1]
-        MAJIQ_DIR = get_output_dir(config['project_top_level'], config['majiq_top_level'])
+    MAJIQ_DIR = get_output_dir(config['project_top_level'], config['majiq_top_level'])
 
     parsed_psi_files = [os.path.join(MAJIQ_DIR,"psi_voila_tsv_single",x) for x in list(samples2.sample_name + config['bam_suffix'] + "_parsed.csv")]
 
