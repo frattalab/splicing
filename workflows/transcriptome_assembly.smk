@@ -3,7 +3,7 @@ import os
 import subprocess
 import yaml
 configfile: "config/config.yaml"
-include: "helpers.py"
+include: "../rules/helpers.py"
 localrules: compose_gtf_list
 ##############################
 ##### STOLEN FROM https://github.com/bioinformatics-core-shared-training/RNAseq_March_2019/tree/master/
