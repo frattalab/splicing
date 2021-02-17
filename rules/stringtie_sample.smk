@@ -29,7 +29,6 @@ print(stringtie_outdir)
 rule all_stringtie:
     input:
         expand(stringtie_outdir + "{sample}.assemble.gtf", sample = SAMPLE_NAMES),
-        expand(stringtie_outdir + "gffall.{sample}.gtf.tmap",sample = SAMPLE_NAMES),
         expand(stringtie_outdir + "{sample}.unique.gtf",sample = SAMPLE_NAMES),
         os.path.join(stringtie_outdir,"stringtie_merged.gtf")
 
@@ -49,7 +48,7 @@ rule compare_reference_stringtie:
     input:
         os.path.join(stringtie_outdir + "{sample}.assemble.gtf")
     output:
-        os.path.join(stringtie_outdir, "gffall.{sample}.gtf.tmap")
+        os.path.join(stringtie_outdir, "gffall.{sample}.assemble.gtf.tmap")
     params:
         ref_gtf = GTF,
         gffcompare = config['gffcompare']
@@ -60,7 +59,7 @@ rule compare_reference_stringtie:
 
 rule fetch_unique_stringtie:
     input:
-        sample_tmap = os.path.join(stringtie_outdir, "gffall.{sample}.gtf.tmap"),
+        sample_tmap = os.path.join(stringtie_outdir, "gffall.{sample}.assemble.gtf.tmap"),
         sample_gtf = os.path.join(stringtie_outdir,'{sample}' + ".assemble.gtf")
     output:
         os.path.join(stringtie_outdir, "{sample}.unique.gtf")
