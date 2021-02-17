@@ -24,12 +24,13 @@ FOLDER=submissions/$(date +"%Y%m%d%H%M")
 mkdir -p ${FOLDER}
 cp config/config.yaml ${FOLDER}/${RUN_NAME}_config.yaml
 cp config/comparisons.yaml ${FOLDER}/${RUN_NAME}_comparisons.yaml
-if [[ "$WORKFLOW" == "transcriptome_assembly" ]]
+if [[ ${1} == "transcriptome_assembly" ]]
 then
   CONDATAG="--use-conda"
   echo "fish"
 else
   echo "FISHYY"
+  echo "$WORKFLOW"
   CONDATAG=" "
 fi
 
