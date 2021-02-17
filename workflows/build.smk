@@ -11,11 +11,12 @@ samples = pd.read_csv(config['sampleCSVpath'])
 samples2 = samples.loc[samples.exclude_sample_downstream_analysis != 1]
 SAMPLE_NAMES = list(set(samples2['sample_name'] + config['bam_suffix']))
 GROUPS = list(set(samples2['group']))
+MAJIQ_DIR = get_output_dir(config['project_top_level'], config['majiq_top_level'])
 
 
 rule allBuild:
     input:
-        config['majiq_top_level'] + config['run_name'] + "_majiqConfig.tsv",
-        expand(os.path.join(config['majiq_top_level'],"builder",'{name}' + ".majiq"),name = SAMPLE_NAMES)
+        MAJIQ_DIR + config['run_name'] + "_majiqConfig.tsv",
+        expand(os.path.join(MAJIQ_DIR,"builder",'{name}' + ".majiq"),name = SAMPLE_NAMES)
 
 include: "../rules/majiq_build.smk"

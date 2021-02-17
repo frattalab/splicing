@@ -15,24 +15,25 @@ GROUPS = list(set(samples2['group']))
 BASES, CONTRASTS = return_bases_and_contrasts()
 print(BASES)
 print(CONTRASTS)
+MAJIQ_DIR = get_output_dir(config['project_top_level'], config['majiq_top_level'])
 
 rule allPSI:
     input:
-        expand(os.path.join(config['majiq_top_level'],"delta_psi_voila_tsv","{bse}_{contrast}" + ".psi.tsv"),zip, bse = BASES,contrast = CONTRASTS),
-        expand(os.path.join(config['majiq_top_level'],"psi",'{group}' + ".psi.voila"),group = GROUPS),
-        expand(os.path.join(config['majiq_top_level'],"psi_single",'{sample}' + ".psi.voila"),sample = SAMPLE_NAMES),
-        expand(os.path.join(config['majiq_top_level'],"psi_voila_tsv_single",'{sample}' + ".psi.tsv"), sample = SAMPLE_NAMES)
+        expand(os.path.join(MAJIQ_DIR,"delta_psi_voila_tsv","{bse}_{contrast}" + ".psi.tsv"),zip, bse = BASES,contrast = CONTRASTS),
+        expand(os.path.join(MAJIQ_DIR,"psi",'{group}' + ".psi.voila"),group = GROUPS),
+        expand(os.path.join(MAJIQ_DIR,"psi_single",'{sample}' + ".psi.voila"),sample = SAMPLE_NAMES),
+        expand(os.path.join(MAJIQ_DIR,"psi_voila_tsv_single",'{sample}' + ".psi.tsv"), sample = SAMPLE_NAMES)
 
 rule majiq_psi:
     input:
     #this is always calling from the column named 'group' in the sample csv file
         group_majiq = lambda wildcards: majiq_files_by_group(wildcards.group)
     output:
-        voila = os.path.join(config['majiq_top_level'],"psi",'{group}' + ".psi.voila"),
-        tsv = os.path.join(config['majiq_top_level'],"psi",'{group}' + ".psi.tsv")
+        voila = os.path.join(MAJIQ_DIR,"psi",'{group}' + ".psi.voila"),
+        tsv = os.path.join(MAJIQ_DIR,"psi",'{group}' + ".psi.tsv")
     params:
         majiq_path = config['majiq_path'],
-        psi_output_folder = os.path.join(config['majiq_top_level'],"psi"),
+        psi_output_folder = os.path.join(MAJIQ_DIR,"psi"),
     threads:
         16
     shell:
@@ -42,16 +43,16 @@ rule majiq_psi:
         """
 rule majiq_delta_psi:
     input:
-        majiq_config_file = config['majiq_top_level'] + config['run_name'] + "_majiqConfig.tsv",
-        finished_splicegraph = os.path.join(config['majiq_top_level'],"builder/splicegraph.sql"),
+        majiq_config_file = MAJIQ_DIR + config['run_name'] + "_majiqConfig.tsv",
+        finished_splicegraph = os.path.join(MAJIQ_DIR,"builder/splicegraph.sql"),
         base_group_majiq = lambda wildcards: majiq_files_from_contrast(wildcards.bse),
         contrast_group_majiq = lambda wildcards: majiq_files_from_contrast(wildcards.contrast)
     output:
-        os.path.join(config['majiq_top_level'],"delta_psi","{bse}_{contrast}" + ".deltapsi.tsv"),
-        os.path.join(config['majiq_top_level'],"delta_psi","{bse}_{contrast}" + ".deltapsi.voila")
+        os.path.join(MAJIQ_DIR,"delta_psi","{bse}_{contrast}" + ".deltapsi.tsv"),
+        os.path.join(MAJIQ_DIR,"delta_psi","{bse}_{contrast}" + ".deltapsi.voila")
     params:
         majiq_path = config['majiq_path'],
-        delta_psi_output_folder = os.path.join(config['majiq_top_level'],"delta_psi"),
+        delta_psi_output_folder = os.path.join(MAJIQ_DIR,"delta_psi"),
         majiq_psi_extra_parameters = return_parsed_extra_params(config['majiq_psi_extra_parameters'])
     threads:
         8
@@ -63,13 +64,13 @@ rule majiq_delta_psi:
 rule majiq_delta_psi_tsv:
     input:
     #this is always calling from the column named 'group' in the sample csv file
-        voila_file = lambda wildcards: os.path.join(config['majiq_top_level'],"delta_psi","{bse}_{contrast}" + ".deltapsi.voila")
+        voila_file = lambda wildcards: os.path.join(MAJIQ_DIR,"delta_psi","{bse}_{contrast}" + ".deltapsi.voila")
     output:
-        tsv = os.path.join(config['majiq_top_level'],"delta_psi_voila_tsv","{bse}_{contrast}" + ".psi.tsv")
+        tsv = os.path.join(MAJIQ_DIR,"delta_psi_voila_tsv","{bse}_{contrast}" + ".psi.tsv")
     params:
         voila_path = config['voila_path'],
-        psi_output_folder = os.path.join(config['majiq_top_level'],"delta_psi_voila_tsv"),
-        splice_graph = os.path.join(config['majiq_top_level'],"builder", "splicegraph.sql"),
+        psi_output_folder = os.path.join(MAJIQ_DIR,"delta_psi_voila_tsv"),
+        splice_graph = os.path.join(MAJIQ_DIR,"builder", "splicegraph.sql"),
         extra_voila_paramters = return_parsed_extra_params(config['extra_voila_parameters'])
     shell:
         """
@@ -79,13 +80,13 @@ rule majiq_delta_psi_tsv:
 
 rule majiq_single_psi:
     input:
-        group_majiq = lambda wildcards: os.path.join(config['majiq_top_level'],"builder",wildcards.sample + ".majiq")
+        group_majiq = lambda wildcards: os.path.join(MAJIQ_DIR,"builder",wildcards.sample + ".majiq")
     output:
-        voila = os.path.join(config['majiq_top_level'],"psi_single",'{sample}' + ".psi.voila"),
-        tsv = os.path.join(config['majiq_top_level'],"psi_single",'{sample}' + ".psi.tsv")
+        voila = os.path.join(MAJIQ_DIR,"psi_single",'{sample}' + ".psi.voila"),
+        tsv = os.path.join(MAJIQ_DIR,"psi_single",'{sample}' + ".psi.tsv")
     params:
         majiq_path = config['majiq_path'],
-        psi_output_folder = os.path.join(config['majiq_top_level'],"psi_single"),
+        psi_output_folder = os.path.join(MAJIQ_DIR,"psi_single"),
     threads:
         4
     shell:
@@ -96,13 +97,13 @@ rule majiq_single_psi:
 rule majiq_psi_tsv:
     input:
     #this is always calling from the column named 'group' in the sample csv file
-        voila_file = lambda wildcards: os.path.join(config['majiq_top_level'],"psi_single",'{sample}' + ".psi.voila")
+        voila_file = lambda wildcards: os.path.join(MAJIQ_DIR,"psi_single",'{sample}' + ".psi.voila")
     output:
-        tsv = os.path.join(config['majiq_top_level'],"psi_voila_tsv_single",'{sample}' + ".psi.tsv")
+        tsv = os.path.join(MAJIQ_DIR,"psi_voila_tsv_single",'{sample}' + ".psi.tsv")
     params:
         voila_path = config['voila_path'],
-        psi_output_folder = os.path.join(config['majiq_top_level'],"psi_voila_tsv_single"),
-        splice_graph = os.path.join(config['majiq_top_level'],"builder", "splicegraph.sql")
+        psi_output_folder = os.path.join(MAJIQ_DIR,"psi_voila_tsv_single"),
+        splice_graph = os.path.join(MAJIQ_DIR,"builder", "splicegraph.sql")
     shell:
         """
         mkdir -p {params.psi_output_folder}

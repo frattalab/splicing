@@ -79,8 +79,9 @@ def majiq_files_by_group(grp):
     samples2 = samples.loc[samples.exclude_sample_downstream_analysis != 1]
     #read in the comparisons and make a dictionary of comparisons, comparisons needs to be in the config file
     compare_dict = load_comparisons()
+    MAJIQ_DIR = get_output_dir(config['project_top_level'], config['majiq_top_level'])
 
-    majiq_files = [os.path.join(config['majiq_top_level'],"builder",x) for x in list(samples2.loc[samples2.group == grp].sample_name + config['bam_suffix'] + ".majiq")]
+    majiq_files = [os.path.join(MAJIQ_DIR,"builder",x) for x in list(samples2.loc[samples2.group == grp].sample_name + config['bam_suffix'] + ".majiq")]
 
     return(majiq_files)
 
@@ -101,9 +102,10 @@ def majiq_files_from_contrast(grp):
         print(grp)
         return([""])
     grp_samples = list(set(list(samples2[samples2[comparison_column].isin(grps)].sample_name)))
+    MAJIQ_DIR = get_output_dir(config['project_top_level'], config['majiq_top_level'])
 
     #build a list with the full path from those sample names
-    majiq_files = [os.path.join(config['majiq_top_level'],"builder",x + config['bam_suffix'] + ".majiq") \
+    majiq_files = [os.path.join(MAJIQ_DIR,"builder",x + config['bam_suffix'] + ".majiq") \
                    for x in grp_samples]
     majiq_files = list(set(majiq_files))
     return(majiq_files)
@@ -162,8 +164,9 @@ def get_single_psi_parsed_files():
     samples = pd.read_csv(config['sampleCSVpath'])
     #there should be a column which allows you to exclude samples
     samples2 = samples.loc[samples.exclude_sample_downstream_analysis != 1]
+        MAJIQ_DIR = get_output_dir(config['project_top_level'], config['majiq_top_level'])
 
-    parsed_psi_files = [os.path.join(config['majiq_top_level'],"psi_voila_tsv_single",x) for x in list(samples2.sample_name + config['bam_suffix'] + "_parsed.csv")]
+    parsed_psi_files = [os.path.join(MAJIQ_DIR,"psi_voila_tsv_single",x) for x in list(samples2.sample_name + config['bam_suffix'] + "_parsed.csv")]
 
     return(parsed_psi_files)
 
