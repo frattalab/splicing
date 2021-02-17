@@ -31,7 +31,7 @@ rule all_stringtie:
         expand(stringtie_outdir + "{sample}.assemble.gtf", sample = SAMPLE_NAMES),
         expand(stringtie_outdir + "gffall.{sample}.gtf.tmap",sample = SAMPLE_NAMES),
         expand(stringtie_outdir + "{sample}.unique.gtf",sample = SAMPLE_NAMES),
-        os.path.join(stringtie_outdir,"scallop_merged.gtf")
+        os.path.join(stringtie_outdir,"stringtie_merged.gtf")
 
 rule StringTie_Assemble:
     input:
@@ -85,7 +85,7 @@ rule merge_stringtie_gtfs:
     input:
         gtf_list = os.path.join(stringtie_outdir,"gtf_list.txt")
     output:
-        merged_gtf = os.path.join(stringtie_outdir,"scallop_merged.gtf")
+        merged_gtf = os.path.join(stringtie_outdir,"stringtie_merged.gtf")
     params:
         gtfmerge = config['gtfmerge']
     shell:
