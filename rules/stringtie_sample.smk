@@ -45,7 +45,7 @@ rule StringTie_Assemble:
         "stringtie {input.bam} -G {input.ref_gtf} -o {output}"
 
 
-rule compare_reference:
+rule compare_reference_stringtie:
     input:
         os.path.join(stringtie_outdir + "{sample}.assemble.gtf")
     output:
@@ -58,7 +58,7 @@ rule compare_reference:
         {params.gffcompare} -o gffall -r {params.ref_gtf} {input}
         """
 
-rule fetch_unique:
+rule fetch_unique_stringtie:
     input:
         sample_tmap = os.path.join(stringtie_outdir, "gffall.{sample}.gtf.tmap"),
         sample_gtf = os.path.join(stringtie_outdir,'{sample}' + ".assemble.gtf")
@@ -72,7 +72,7 @@ rule fetch_unique:
         {params.gtfcuff} puniq {input.sample_tmap} {input.sample_gtf} {params.ref_gtf} {output}
         """
 
-rule compose_gtf_list:
+rule compose_gtf_list_stringtie:
     input:
         expand(stringtie_outdir + "{sample}.unique.gtf", sample=SAMPLE_NAMES)
     output:
