@@ -73,6 +73,11 @@ compare_reference_stringtie:
     tmem:   4G
     h_rt: 12:00:00
     submission_string: " "
+fetch_unique_stringtie:
+    h_vmem:   4G
+    tmem:   4G
+    h_rt: 12:00:00
+    submission_string: " "
 merge_assemblies:
     h_vmem:   1G
     tmem:   1G
