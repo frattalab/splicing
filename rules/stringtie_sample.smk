@@ -18,10 +18,10 @@ SAMPLE_NAMES = list(set(samples2['sample_name']))
 print(SAMPLE_NAMES)
 
 SPECIES = config["species"]
-GTF = get_gtf(SPECIES)
+GTF = config['gtf']
 
 #make sure the output folder for STAR exists before running anything
-star_outdir = get_output_dir(config["project_top_level"], config['star_output_folder'])
+bam_dir = get_output_dir(config["project_top_level"], config['bam_dir'])
 stringtie_outdir = get_output_dir(config["project_top_level"], config['stringtie_output'])
 
 print(stringtie_outdir)
@@ -35,7 +35,7 @@ rule all_stringtie:
 
 rule StringTie_Assemble:
     input:
-        bam = lambda wildcards: star_outdir + '{sample}' + config['bam_suffix'],
+        bam = lambda wildcards: bam_dir + '{sample}' + config['bam_suffix'],
         ref_gtf = GTF
     output:
         stringtie_outdir + "{sample}.assemble.gtf"
