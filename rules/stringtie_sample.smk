@@ -35,7 +35,7 @@ rule all_stringtie:
 
 rule StringTie_Assemble:
     input:
-        bam = lambda wildcards: bam_dir + '{sample}' + config['bam_suffix'],
+        bam = lambda wildcards: bam_dir + '{sample}' + config['bam_suffix'] + '.bam',
         ref_gtf = GTF
     output:
         stringtie_outdir + "{sample}.assemble.gtf"
