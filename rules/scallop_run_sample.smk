@@ -16,13 +16,14 @@ SAMPLE_NAMES = list(set(samples2['sample_name']))
 
 print(SAMPLE_NAMES)
 
-SPECIES = config["species"]
-GTF = get_gtf(SPECIES)
+GTF = config['gtf']
 
 #make sure the output folder for STAR exists before running anything
-star_outdir = get_output_dir(config["project_top_level"], config['star_output_folder'])
+bam_dir = get_output_dir(config["project_top_level"], config['bam_dir'])
 scallop_outdir = get_output_dir(config["project_top_level"], config['scallop_output'])
+
 print(scallop_outdir)
+
 rule all_scallop:
     input:
         expand(scallop_outdir + '{sample}' + ".gtf", sample = SAMPLE_NAMES),
@@ -33,7 +34,7 @@ rule all_scallop:
 
 rule scallop_per_samp:
     input:
-        bam_file = lambda wildcards: star_outdir + '{sample}' + config['bam_suffix']
+        bam_file = lambda wildcards: bam_dir + '{sample}' + config['bam_suffix']
     wildcard_constraints:
         sample="|".join(SAMPLE_NAMES)
     output:
