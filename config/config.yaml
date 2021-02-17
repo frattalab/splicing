@@ -18,15 +18,7 @@ bam_dir: bam_files/
 run_name: wardTDPKD
 #for transcriptome primary_assembly
 scallop_output: scallop_output/
-#one of
-# if fcStrand == "-s 0":
-#     return "unstranded"
-#
-# elif fcStrand == "-s 1":
-#     return "second"
-#
-# elif fcStrand == "-s 2":
-#     return "first"
+#one of empty,unstranded, second, first
 scallop_strand: first
 
 
@@ -74,6 +66,13 @@ scallop_extra_parameters:
   min_transcript_length_base: 50
   min_transcript_length_increase: 10
   min_transcript_coverage: 0.01
+#########################
+##SCALLOP HELPER TOOLS PATHS######
+#########################
+gffcompare: /SAN/vyplab/alb_projects/tools/gffcompare-0.11.6.Linux_x86_64/gffcompare
+gtfcuff: /SAN/vyplab/alb_projects/tools/rnaseqtools-1.0.3/gtfcuff/gtfcuff
+gtfmerge: /SAN/vyplab/alb_projects/tools/rnaseqtools-1.0.3/gtfmerge/gtfmerge
+gffread: /SAN/vyplab/alb_projects/tools/gffread-0.11.8.Linux_x86_64/gffread
 
 
 # #scallop configurations
