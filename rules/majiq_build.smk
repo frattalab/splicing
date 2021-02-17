@@ -7,7 +7,7 @@ configfile: "config/config.yaml"
 include: "helpers.py"
 localrules: create_majiq_config_file
 #reading in the samples and dropping the samples to be excluded in order to get a list of sample names
-samples = pd.read_csv(config['sample_csv_path'])
+samples = pd.read_csv(config['sampleCSVpath'])
 samples2 = samples.loc[samples.exclude_sample_downstream_analysis != 1]
 SAMPLE_NAMES = list(set(samples2['sample_name'] + config['bam_suffix']))
 GROUPS = list(set(samples2['group']))
@@ -21,12 +21,12 @@ rule all:
 # # this rule creats the majiq configuration file that is required uses a helper function
 rule create_majiq_config_file:
     input:
-        config['sample_csv_path']
+        config['sampleCSVpath']
     output:
         majiq_config = config['majiq_top_level'] + config['run_name'] + "_majiqConfig.tsv"
     # use config.yaml and samples.tsv to make MAJIQ file
     run:
-        conditions_bams_parsed = parse_sample_csv_majiq(config['sample_csv_path'])
+        conditions_bams_parsed = parse_sample_csv_majiq(config['sampleCSVpath'])
         options = [
             "[info]",
             "readlen=" + str(config['read_len']),

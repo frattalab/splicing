@@ -9,7 +9,7 @@ TRACK   = config['gtf']
 REF     = config['fasta']
 
 #reading in the samples and dropping the samples to be excluded in order to get a list of sample names
-samples = pd.read_csv(config['sample_csv_path'])
+samples = pd.read_csv(config['sampleCSVpath'])
 samples2 = samples.loc[samples.exclude_sample_downstream_analysis != 1]
 SAMPLES = list(set(samples2['sample_name'] + config['bam_suffix']))
 GROUPS = list(set(samples2['group']))

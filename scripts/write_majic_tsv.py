@@ -2,7 +2,7 @@
 
 import argparse,csv, yaml
 CONFIGFILE = "/SAN/vyplab/alb_projects/pipelines/splicing/config/config.yaml"
-def parse_sample_csv_majiq(sample_csv_path):
+def parse_sample_csv_majiq(sampleCSVpath):
     """this function takes in the sample csv path and returns a string of
     group and samples with whatever the bam suffix is for the processed bams
     for building a majiq config file from the standard sample csv file used
@@ -13,7 +13,7 @@ def parse_sample_csv_majiq(sample_csv_path):
             config = yaml.safe_load(stream)
         except yaml.YAMLError as exc:
             print(exc)
-    samples = pd.read_csv(sample_csv_path)
+    samples = pd.read_csv(sampleCSVpath)
     #there should be a column which allows you to exclude samples
     samples2 = samples.loc[samples.exclude_sample_downstream_analysis != 1]
     #we're making a dictionary here where each group is the key and all the sample_names
@@ -35,7 +35,7 @@ def write_tsv_file(tsv_output_destination):
                 config = yaml.safe_load(stream)
             except yaml.YAMLError as exc:
                 print(exc)
-        conditions_bams_parsed = parse_sample_csv_majiq(config['sample_csv_path'])
+        conditions_bams_parsed = parse_sample_csv_majiq(config['sampleCSVpath'])
         options = [
             "[info]",
             "readlen=" + str(config['read_len']),
