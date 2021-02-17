@@ -29,7 +29,11 @@ rule all_scallop:
         expand(scallop_outdir + '{sample}' + ".gtf", sample = SAMPLE_NAMES),
         expand(scallop_outdir + "gffall.{sample}.gtf.tmap",sample = SAMPLE_NAMES),
         expand(scallop_outdir + "{sample}.unique.gtf",sample = SAMPLE_NAMES),
-        os.path.join(scallop_outdir,"scallop_merged.gtf")
+        os.path.join(scallop_outdir,"scallop_merged.gtf"),
+        expand(stringtie_outdir + "{sample}.assemble.gtf", sample = SAMPLE_NAMES),
+        expand(stringtie_outdir + "gffall.{sample}.gtf.tmap",sample = SAMPLE_NAMES),
+        expand(stringtie_outdir + "{sample}.unique.gtf",sample = SAMPLE_NAMES),
+        os.path.join(stringtie_outdir,"stringtie_merged.gtf")
 
 
 rule scallop_per_samp:
