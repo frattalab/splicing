@@ -26,14 +26,10 @@ print(scallop_outdir)
 
 rule all_scallop:
     input:
-        expand(scallop_outdir + '{sample}' + ".gtf", sample = SAMPLE_NAMES),
-        expand(scallop_outdir + "gffall.{sample}.gtf.tmap",sample = SAMPLE_NAMES),
-        expand(scallop_outdir + "{sample}.unique.gtf",sample = SAMPLE_NAMES),
-        os.path.join(scallop_outdir,"scallop_merged.gtf"),
-        expand(stringtie_outdir + "{sample}.assemble.gtf", sample = SAMPLE_NAMES),
-        expand(stringtie_outdir + "gffall.{sample}.gtf.tmap",sample = SAMPLE_NAMES),
-        expand(stringtie_outdir + "{sample}.unique.gtf",sample = SAMPLE_NAMES),
-        os.path.join(stringtie_outdir,"stringtie_merged.gtf")
+        expand(scallop_outdir + "{sample}.gtf", sample = SAMPLE_NAMES),
+        os.path.join(scallop_outdir, "scallop_merged.unique.gtf")
+        os.path.join(scallop_outdir, "gffall.scallop_merged.gtf.tmap")
+
 
 
 rule scallop_per_samp:
@@ -60,36 +56,9 @@ rule scallop_per_samp:
         {params.scallop_extra_config}
         """
 
-rule compare_reference:
-    input:
-        os.path.join(scallop_outdir,'{sample}' + ".gtf")
-    output:
-        os.path.join(scallop_outdir, "gffall.{sample}.gtf.tmap")
-    params:
-        ref_gtf = GTF,
-        gffcompare = config['gffcompare']
-    shell:
-        """
-        {params.gffcompare} -o gffall -r {params.ref_gtf} {input}
-        """
-
-rule fetch_unique:
-    input:
-        sample_tmap = os.path.join(scallop_outdir, "gffall.{sample}.gtf.tmap"),
-        sample_gtf = os.path.join(scallop_outdir,'{sample}' + ".gtf")
-    output:
-        os.path.join(scallop_outdir, "{sample}.unique.gtf")
-    params:
-        ref_gtf = GTF,
-        gtfcuff = config['gtfcuff']
-    shell:
-        """
-        {params.gtfcuff} puniq {input.sample_tmap} {input.sample_gtf} {params.ref_gtf} {output}
-        """
-
 rule compose_gtf_list:
     input:
-        expand(scallop_outdir + "{sample}.unique.gtf", sample=SAMPLE_NAMES)
+        expand(scallop_outdir + "{sample}.gtf", sample=SAMPLE_NAMES)
     output:
         txt = os.path.join(scallop_outdir,"gtf_list.txt")
     run:
@@ -106,4 +75,30 @@ rule merge_scallop_gtfs:
     shell:
         """
         {params.gtfmerge} union {input.gtf_list} {output.merged_gtf} -t 2 -n
+        """
+rule compare_reference:
+    input:
+        os.path.join(scallop_outdir,"scallop_merged.gtf")
+    output:
+        os.path.join(scallop_outdir, "gffall.scallop_merged.gtf.tmap")
+    params:
+        ref_gtf = GTF,
+        gffcompare = config['gffcompare']
+    shell:
+        """
+        {params.gffcompare} -o gffall -r {params.ref_gtf} {input}
+        """
+
+rule fetch_unique:
+    input:
+        sample_tmap = os.path.join(scallop_outdir,"scallop_merged.gtf"),
+        sample_gtf = os.path.join(scallop_outdir, "gffall.scallop_merged.gtf.tmap")
+    output:
+        os.path.join(scallop_outdir, "scallop_merged.unique.gtf")
+    params:
+        ref_gtf = GTF,
+        gtfcuff = config['gtfcuff']
+    shell:
+        """
+        {params.gtfcuff} puniq {input.sample_tmap} {input.sample_gtf} {params.ref_gtf} {output}
         """

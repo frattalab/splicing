@@ -17,8 +17,8 @@ majiq_top_level: majiq/
 bam_dir: bam_files/
 run_name: wardTDPKD
 #for transcriptome primary_assembly
-scallop_output: scallop_output/
-stringtie_output: stringtie_output/
+scallop_output: scallop_output_unique_on_merged/
+stringtie_output: stringtie_output_unique_on_merged/
 #one of empty,unstranded, second, first
 scallop_strand: first
 
