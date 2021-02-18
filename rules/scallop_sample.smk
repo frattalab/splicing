@@ -80,9 +80,9 @@ rule merge_scallop_gtfs:
         """
 rule compose_gtf_list_bases:
     input:
-        base_group_scallop = lambda wildcards: scallop_files_from_contrast(wildcards.bse)
+        base_group_scallop = lambda wildcards: file_path_list(wildcards.bse,scallop_outdir,".gtf")
     output:
-        txt = temp(os.path.join(scallop_outdir,"gtf_list.txt"))
+        txt = os.path.join(scallop_outdir,"{bse}.gtf_list.txt")
     run:
         with open(output.txt, 'w') as out:
             print(*input, sep="\n", file=out)
