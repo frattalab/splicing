@@ -43,7 +43,7 @@ rule assemble_all:
 rule compose_gtf_list_all_assemblers:
     input:
         os.path.join(stringtie_outdir,"stringtie_merged.gtf"),
-        os.path.join(scallop_outdir, "scallop_merged.unique.gtf"),
+        os.path.join(scallop_outdir, "scallop_merged.gtf"),
     output:
         txt = os.path.join(config["project_top_level"],"gtf_list_all_assemblers.txt")
     run:
