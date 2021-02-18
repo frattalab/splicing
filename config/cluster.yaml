@@ -63,6 +63,11 @@ scallop_per_samp:
     h_vmem:   8G
     tmem:   8G
     h_rt: 4:00:00
+fetch_unique:
+    h_vmem:   4G
+    tmem:   4G
+    h_rt: 12:00:00
+    submission_string: " "
 compare_reference:
     h_vmem:   8G
     tmem:   8G
