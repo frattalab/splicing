@@ -31,7 +31,7 @@ rule all_scallop:
         os.path.join(scallop_outdir, "scallop_merged.unique.gtf"),
         os.path.join(scallop_outdir, "gffall.scallop_merged.gtf.tmap"),
         expand(os.path.join(scallop_outdir,"{bse}.scallop_merged.gtf"), bse = BASES),
-        expand(os.path.join(scallop_outdir,"{contrast}.scallop_merged.gtf"), bse = CONTRASTS)
+        expand(os.path.join(scallop_outdir,"{contrast}.scallop_merged.gtf"), contrast = CONTRASTS)
 
 
 
