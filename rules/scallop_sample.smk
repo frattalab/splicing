@@ -34,7 +34,7 @@ rule all_scallop:
 
 rule scallop_per_samp:
     input:
-        bam_file = lambda wildcards: bam_dir + '{sample}' + config['bam_suffix']
+        bam_file = lambda wildcards: bam_dir + '{sample}' + config['bam_suffix'] + ".bam"
     wildcard_constraints:
         sample="|".join(SAMPLE_NAMES)
     output:
