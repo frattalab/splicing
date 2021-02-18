@@ -92,6 +92,8 @@ rule merge_scallop_gtfs_bases:
         gtf_list = os.path.join(scallop_outdir,"{bse}.gtf_list.txt")
     output:
         merged_gtf = os.path.join(scallop_outdir,"{bse}.scallop_merged.gtf")
+    wildcard_constraints:
+        bse="|".join(BASES)
     params:
         gtfmerge = config['gtfmerge']
     shell:
@@ -101,9 +103,10 @@ rule merge_scallop_gtfs_bases:
 rule merge_scallop_gtfs_contrasts:
     input:
         gtf_list = os.path.join(scallop_outdir,"{contrast}.gtf_list.txt")
-
     output:
         merged_gtf = os.path.join(scallop_outdir,"{contrast}.scallop_merged.gtf")
+    wildcard_constraints:
+        contrast="|".join(CONTRASTS)
     params:
         gtfmerge = config['gtfmerge']
     shell:
