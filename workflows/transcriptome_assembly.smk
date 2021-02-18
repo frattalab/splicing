@@ -37,7 +37,8 @@ rule assemble_all:
         os.path.join(scallop_outdir, "gffall.scallop_merged.gtf.tmap"),
         expand(stringtie_outdir + "{sample}.assemble.gtf", sample = SAMPLE_NAMES),
         os.path.join(stringtie_outdir, "stringtie_merged.unique.gtf"),
-        os.path.join(stringtie_outdir,"stringtie_merged.gtf")
+        os.path.join(stringtie_outdir,"stringtie_merged.gtf"),
+        os.path.join(config["project_top_level"],"all_assemblers_merged.gtf")
 
 rule compose_gtf_list_all_assemblers:
     input:
