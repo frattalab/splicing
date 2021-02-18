@@ -3,10 +3,66 @@
 #problems. I suggest camelCase names, but doesn't really matter as long as you can interpret them. Throughout the file they have to be unique.
 #each of these two items has as many idenitifiers as you like, but they must be
 #valid identifiers from the column_name column in the sample_csv. The first identifier is always the baseline group
-highTDPPath:
+knockdownexperiment:
   column_name:
-    - musclePathology
-  lowTDPPathEvidence:
-    - notHighCryptics
-  highTDPPath:
-    - tdpCryptics
+    - knockdown_experiment
+  controlHNRNPC:
+    - control_hnrnpc
+  hnrnPCKD:
+    - hnrnpc_kd
+knockdownexperiment22:
+  column_name:
+    - knockdown_experiment
+  controlTDPKD:
+    - control
+  tdpKD:
+    - tdp_kd
+knockdownexperiment2:
+  column_name:
+    - group
+  controlBuratti:
+    - control_BURATTI
+  tdpKDBuratti:
+    - tdpKD_BURATTI
+knockdownexperiment3:
+  column_name:
+    - group
+  controlFerg:
+    - control_FERGUSON
+  tdpKDFerg:
+    - tdpKD_FERGUSON
+knockdownexperiment4:
+  column_name:
+    - group
+  controlKlim:
+    - control_KLIM
+  tdpKDKlim:
+    - tdpKD_KLIM
+knockdownexperiment5:
+  column_name:
+    - group
+  controlWard:
+    - control_WARD
+  tdpKDWard:
+    - tdpKD_WARD
+knockdownexperiment6:
+  column_name:
+    - comparesnp
+  tdpKDBurattiSNP:
+    - tdpKD_BURATTI_old
+  tdpKDBurattiCellBank:
+    - tdpKD_BURATTI_new
+knockdownexperiment67:
+  column_name:
+    - group
+  controlMelamed:
+    - control_MELAMED
+  tdpKDMelamed:
+    - tdpKD_MELAMED
+knockdownexperimentSHSY5Y:
+  column_name:
+    - comparesnp
+  controlSHSY5Y:
+    - control_BURATTI_new
+  tdpKDSHSY5Y:
+    - tdpKD_BURATTI_new
