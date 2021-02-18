@@ -13,6 +13,7 @@ localrules: compose_gtf_list
 samples = pd.read_csv(config['sampleCSVpath'])
 samples2 = samples.loc[samples.exclude_sample_downstream_analysis != 1]
 SAMPLE_NAMES = list(set(samples2['sample_name']))
+BASES, CONTRASTS = return_bases_and_contrasts()
 
 print(SAMPLE_NAMES)
 
@@ -28,7 +29,8 @@ rule all_scallop:
     input:
         expand(scallop_outdir + "{sample}.gtf", sample = SAMPLE_NAMES),
         os.path.join(scallop_outdir, "scallop_merged.unique.gtf"),
-        os.path.join(scallop_outdir, "gffall.scallop_merged.gtf.tmap")
+        os.path.join(scallop_outdir, "gffall.scallop_merged.gtf.tmap"),
+        expand(os.path.join(scallop_outdir,"{bse}.scallop_merged.gtf"), bse = BASES)
 
 
 
@@ -70,6 +72,36 @@ rule merge_scallop_gtfs:
         gtf_list = os.path.join(scallop_outdir,"gtf_list.txt")
     output:
         merged_gtf = os.path.join(scallop_outdir,"scallop_merged.gtf")
+    params:
+        gtfmerge = config['gtfmerge']
+    shell:
+        """
+        {params.gtfmerge} union {input.gtf_list} {output.merged_gtf} -t 2 -n
+        """
+rule compose_gtf_list_bases:
+    input:
+        base_group_scallop = lambda wildcards: scallop_files_from_contrast(wildcards.bse)
+    output:
+        txt = temp(os.path.join(scallop_outdir,"gtf_list.txt"))
+    run:
+        with open(output.txt, 'w') as out:
+            print(*input, sep="\n", file=out)
+rule merge_scallop_gtfs_bases:
+    input:
+        gtf_list = os.path.join(scallop_outdir,"{bse}.gtf_list.txt")
+    output:
+        merged_gtf = os.path.join(scallop_outdir,"{bse}.scallop_merged.gtf")
+    params:
+        gtfmerge = config['gtfmerge']
+    shell:
+        """
+        {params.gtfmerge} union {input.gtf_list} {output.merged_gtf} -t 2 -n
+        """
+rule merge_scallop_gtfs_contrasts:
+    input:
+        gtf_list = os.path.join(scallop_outdir,"{contrast}.gtf_list.txt")
+    output:
+        merged_gtf = os.path.join(scallop_outdir,"{contrast}.scallop_merged.gtf")
     params:
         gtfmerge = config['gtfmerge']
     shell:
