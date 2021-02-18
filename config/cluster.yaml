@@ -59,6 +59,10 @@ star_tabs_to_beds:
     h_vmem:   1G
     tmem:   1G
     h_rt: 72:00:00
+scallop_per_samp:
+    h_vmem:   8G
+    tmem:   8G
+    h_rt: 4:00:00
 StringTie_Assemble:
     h_vmem:   8G
     tmem:   8G
