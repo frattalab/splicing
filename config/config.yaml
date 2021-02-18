@@ -25,7 +25,7 @@ scallop_strand: empty
 
 #what's between the sample name and the end of the bam?
 #Mine all look like this M323K_HET_1_unique_rg_fixed.bam so my suffix is
-bam_suffix: .pass2Aligned.sortedByCoord.out
+bam_suffix: .Aligned.sorted.out
 
 
 
