@@ -63,6 +63,10 @@ scallop_per_samp:
     h_vmem:   8G
     tmem:   8G
     h_rt: 4:00:00
+compare_reference:
+    h_vmem:   8G
+    tmem:   8G
+    h_rt: 4:00:00
 StringTie_Assemble:
     h_vmem:   8G
     tmem:   8G
