@@ -59,3 +59,4 @@ rule merge_all_assemblies:
     shell:
         """
         {params.gtfmerge} union {input.gtf_list} {output.merged_gtf} -t 2 -n
+        """
