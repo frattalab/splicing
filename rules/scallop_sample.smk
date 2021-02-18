@@ -30,7 +30,8 @@ rule all_scallop:
         expand(scallop_outdir + "{sample}.gtf", sample = SAMPLE_NAMES),
         os.path.join(scallop_outdir, "scallop_merged.unique.gtf"),
         os.path.join(scallop_outdir, "gffall.scallop_merged.gtf.tmap"),
-        expand(os.path.join(scallop_outdir,"{bse}.scallop_merged.gtf"), bse = BASES)
+        expand(os.path.join(scallop_outdir,"{bse}.scallop_merged.gtf"), bse = BASES),
+        expand(os.path.join(scallop_outdir,"{contrast}.scallop_merged.gtf"), bse = CONTRASTS)
 
 
 
@@ -100,6 +101,7 @@ rule merge_scallop_gtfs_bases:
 rule merge_scallop_gtfs_contrasts:
     input:
         gtf_list = os.path.join(scallop_outdir,"{contrast}.gtf_list.txt")
+
     output:
         merged_gtf = os.path.join(scallop_outdir,"{contrast}.scallop_merged.gtf")
     params:
