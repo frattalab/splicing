@@ -115,6 +115,8 @@ rule compose_gtf_list_contrast:
 rule merge_scallop_gtfs_contrasts:
     input:
         gtf_list = os.path.join(scallop_outdir,"{contrast}.gtf_list.txt")
+    wildcard_constraints:
+        contrast="|".join(CONTRASTS)
     output:
         merged_gtf = os.path.join(scallop_outdir,"{contrast}.scallop_merged.gtf")
     params:
