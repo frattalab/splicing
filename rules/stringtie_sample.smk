@@ -68,7 +68,7 @@ rule merge_stringtie_gtfs:
 ######### DOING THE SAME THING THREE TIMES NOW
 rule compose_gtf_list_bases_stringtie:
     input:
-        base_group_stringtie = lambda wildcards: file_path_list(wildcards.bse,stringtie_outdir,".gtf")
+        base_group_stringtie = lambda wildcards: file_path_list(wildcards.bse,stringtie_outdir,".assemble.gtf")
     wildcard_constraints:
         bse="|".join(BASES)
     output:
