@@ -32,13 +32,13 @@ def return_sample_names_group(grp):
             return(grp_names,column_name)
     return("","")
 
-def parse_sample_csv_majiq(sample_csv_path):
+def parse_sample_csv_majiq(sampleCSVpath):
     """this function takes in the sample csv path and returns a string of
     group and samples with whatever the bam suffix is for the processed bams
     for building a majiq config file from the standard sample csv file used
     by the rna seq pipeline
     """
-    samples = pd.read_csv(config['sample_csv_path'])
+    samples = pd.read_csv(config['sampleCSVpath'])
     #there should be a column which allows you to exclude samples
     samples2 = samples.loc[samples.exclude_sample_downstream_analysis != 1]
     #we're making a dictionary here where each group is the key and all the sample_names
@@ -74,13 +74,14 @@ def majiq_files_by_group(grp):
     """
     given a particular group, return all the majiq files for that group using the samples csv file
     """
-    samples = pd.read_csv(config['sample_csv_path'])
+    samples = pd.read_csv(config['sampleCSVpath'])
     #there should be a column which allows you to exclude samples
     samples2 = samples.loc[samples.exclude_sample_downstream_analysis != 1]
     #read in the comparisons and make a dictionary of comparisons, comparisons needs to be in the config file
     compare_dict = load_comparisons()
+    MAJIQ_DIR = get_output_dir(config['project_top_level'], config['majiq_top_level'])
 
-    majiq_files = [os.path.join(config['majiq_top_level'],"builder",x) for x in list(samples2.loc[samples2.group == grp].sample_name + config['bam_suffix'] + ".majiq")]
+    majiq_files = [os.path.join(MAJIQ_DIR,"builder",x) for x in list(samples2.loc[samples2.group == grp].sample_name + config['bam_suffix'] + ".majiq")]
 
     return(majiq_files)
 
@@ -89,7 +90,7 @@ def majiq_files_from_contrast(grp):
     given a contrast name or list of groups return a list of the files in that group
     """
     #reading in the samples
-    samples = pd.read_csv(config['sample_csv_path'])
+    samples = pd.read_csv(config['sampleCSVpath'])
     #there should be a column which allows you to exclude samples
     samples2 = samples.loc[samples.exclude_sample_downstream_analysis != 1]
     #read in the comparisons and make a dictionary of comparisons, comparisons needs to be in the config file
@@ -101,19 +102,44 @@ def majiq_files_from_contrast(grp):
         print(grp)
         return([""])
     grp_samples = list(set(list(samples2[samples2[comparison_column].isin(grps)].sample_name)))
+    MAJIQ_DIR = get_output_dir(config['project_top_level'], config['majiq_top_level'])
 
     #build a list with the full path from those sample names
-    majiq_files = [os.path.join(config['majiq_top_level'],"builder",x + config['bam_suffix'] + ".majiq") \
+    majiq_files = [os.path.join(MAJIQ_DIR,"builder",x + config['bam_suffix'] + ".majiq") \
                    for x in grp_samples]
     majiq_files = list(set(majiq_files))
     return(majiq_files)
+
+def sample_names_from_contrast(grp):
+    """
+    given a contrast name or list of groups return a list of the files in that group
+    """
+    #reading in the samples
+    samples = pd.read_csv(config['sampleCSVpath'])
+    #there should be a column which allows you to exclude samples
+    samples2 = samples.loc[samples.exclude_sample_downstream_analysis != 1]
+    #read in the comparisons and make a dictionary of comparisons, comparisons needs to be in the config file
+    compare_dict = load_comparisons()
+    #go through the values of the dictionary and break when we find the right groups in that contrast
+    grps, comparison_column = return_sample_names_group(grp)
+    #take the sample names corresponding to those groups
+    if comparison_column == "":
+        print(grp)
+        return([""])
+    grp_samples = list(set(list(samples2[samples2[comparison_column].isin(grps)].sample_name)))
+    return(grp_samples)
+
+def file_path_list(grp,folder,suffix):
+    grp_samples = sample_names_from_contrast(grp)
+    file_path_list = [os.path.join(folder,x + suffix) for x in grp_samples]
+    return(file_path_list)
 
 def whippets_psi_files_from_contrast(grp,top_level_folder,suffix = ""):
     """
     given a contrast name or list of groups return a list of the files in that group
     """
     #reading in the samples
-    samples = pd.read_csv(config['sample_csv_path'])
+    samples = pd.read_csv(config['sampleCSVpath'])
     #there should be a column which allows you to exclude samples
     samples2 = samples.loc[samples.exclude_sample_downstream_analysis != 1]
     #read in the comparisons and make a dictionary of comparisons, comparisons needs to be in the config file
@@ -159,11 +185,12 @@ def get_single_psi_parsed_files():
     """
     return a list of files that will exist
     """
-    samples = pd.read_csv(config['sample_csv_path'])
+    samples = pd.read_csv(config['sampleCSVpath'])
     #there should be a column which allows you to exclude samples
     samples2 = samples.loc[samples.exclude_sample_downstream_analysis != 1]
+    MAJIQ_DIR = get_output_dir(config['project_top_level'], config['majiq_top_level'])
 
-    parsed_psi_files = [os.path.join(config['majiq_top_level'],"psi_voila_tsv_single",x) for x in list(samples2.sample_name + config['bam_suffix'] + "_parsed.csv")]
+    parsed_psi_files = [os.path.join(MAJIQ_DIR,"psi_voila_tsv_single",x) for x in list(samples2.sample_name + config['bam_suffix'] + "_parsed.csv")]
 
     return(parsed_psi_files)
 
@@ -178,7 +205,7 @@ def get_cuff_strand(fcStrand):
 
 #get fastq name from config
 def return_fastq(sample_name,unit, first_pair = True):
-    SAMPLES = pd.read_csv(config["sample_csv_path"])
+    SAMPLES = pd.read_csv(config["sampleCSVpath"])
     SAMPLES = SAMPLES.replace(np.nan, '', regex=True)
     SAMPLES['fast1_name'] = [strpd.rpartition('/')[2].split(".")[0] for strpd in SAMPLES['fast1'].tolist()]
 
@@ -187,6 +214,21 @@ def return_fastq(sample_name,unit, first_pair = True):
     else:
         return(SAMPLES.loc[(SAMPLES['sample_name'] == sample_name) & (SAMPLES['unit'] == unit)]["fast2"].values[0])
 
+def get_output_dir(project_top_level, rule_output_path):
+    '''
+    Return path to output directory (with trailing slash)
+    if rule_output_path is relative, then it is appended to project_top_level
+    if rule_output_path is absolute then rule_output_path is returned
+    '''
+
+    if os.path.isabs(rule_output_path):
+        if rule_output_path.endswith('/'):
+            return rule_output_path
+        else:
+            return rule_output_path + "/"
+
+    else:
+        return os.path.join(project_top_level, rule_output_path, '')
 
 # def get_lib_size(sample_name):
 #     """

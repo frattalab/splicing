@@ -24,6 +24,15 @@ FOLDER=submissions/$(date +"%Y%m%d%H%M")
 mkdir -p ${FOLDER}
 cp config/config.yaml ${FOLDER}/${RUN_NAME}_config.yaml
 cp config/comparisons.yaml ${FOLDER}/${RUN_NAME}_comparisons.yaml
+if [[ ${1} == "transcriptome_assembly" ]]
+then
+  CONDATAG="--use-conda"
+  echo "fish"
+else
+  echo "FISHYY"
+  echo "$WORKFLOW"
+  CONDATAG=" "
+fi
 
 snakemake -s ${WORKFLOW} \
 --jobscript cluster_qsub.sh \
@@ -32,4 +41,5 @@ snakemake -s ${WORKFLOW} \
 -j 40 \
 --nolock \
 --rerun-incomplete \
---latency-wait 100
+--latency-wait 100 \
+$CONDATAG
