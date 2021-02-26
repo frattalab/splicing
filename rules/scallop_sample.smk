@@ -34,8 +34,6 @@ rule all_scallop:
         expand(os.path.join(scallop_outdir,"{bse}.scallop_merged.gtf"), bse = BASES),
         expand(os.path.join(scallop_outdir,"{contrast}.scallop_merged.gtf"), contrast = CONTRASTS)
 
-
-
 rule scallop_per_samp:
     input:
         bam_file = lambda wildcards: bam_dir + '{sample}' + config['bam_suffix'] + ".bam"
@@ -80,11 +78,12 @@ rule merge_scallop_gtfs:
         """
         {params.gtfmerge} union {input.gtf_list} {output.merged_gtf} -t 2 -n
         """
+######### DOING THE SAME THING THREE TIMES NOW
 rule compose_gtf_list_bases:
     input:
         base_group_scallop = lambda wildcards: file_path_list(wildcards.bse,scallop_outdir,".gtf")
     output:
-        txt = os.path.join(scallop_outdir,"{bse}.gtf_list.txt")
+        txt = temp(os.path.join(scallop_outdir,"{bse}.gtf_list.txt"))
     run:
         with open(output.txt, 'w') as out:
             print(*input, sep="\n", file=out)
@@ -101,6 +100,16 @@ rule merge_scallop_gtfs_bases:
         """
         {params.gtfmerge} union {input.gtf_list} {output.merged_gtf} -t 2 -n
         """
+
+rule compose_gtf_list_contrast:
+    input:
+        base_group_scallop = lambda wildcards: file_path_list(wildcards.contrast,scallop_outdir,".gtf")
+    output:
+        txt = temp(os.path.join(scallop_outdir,"{contrast}.gtf_list.txt"))
+    run:
+        with open(output.txt, 'w') as out:
+            print(*input, sep="\n", file=out)
+
 rule merge_scallop_gtfs_contrasts:
     input:
         gtf_list = os.path.join(scallop_outdir,"{contrast}.gtf_list.txt")
