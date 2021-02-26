@@ -15,8 +15,6 @@ samples2 = samples.loc[samples.exclude_sample_downstream_analysis != 1]
 SAMPLE_NAMES = list(set(samples2['sample_name']))
 BASES, CONTRASTS = return_bases_and_contrasts()
 
-print(BASES)
-print(CONTRASTS)
 
 GTF = config['gtf']
 
@@ -82,6 +80,8 @@ rule merge_scallop_gtfs:
 rule compose_gtf_list_bases:
     input:
         base_group_scallop = lambda wildcards: file_path_list(wildcards.bse,scallop_outdir,".gtf")
+    wildcard_constraints:
+        bse="|".join(BASES)
     output:
         txt = temp(os.path.join(scallop_outdir,"{bse}.gtf_list.txt"))
     run:
@@ -104,6 +104,8 @@ rule merge_scallop_gtfs_bases:
 rule compose_gtf_list_contrast:
     input:
         base_group_scallop = lambda wildcards: file_path_list(wildcards.contrast,scallop_outdir,".gtf")
+    wildcard_constraints:
+        bse="|".join(CONTRASTS)
     output:
         txt = temp(os.path.join(scallop_outdir,"{contrast}.gtf_list.txt"))
     run:
@@ -115,8 +117,6 @@ rule merge_scallop_gtfs_contrasts:
         gtf_list = os.path.join(scallop_outdir,"{contrast}.gtf_list.txt")
     output:
         merged_gtf = os.path.join(scallop_outdir,"{contrast}.scallop_merged.gtf")
-    wildcard_constraints:
-        contrast="|".join(CONTRASTS)
     params:
         gtfmerge = config['gtfmerge']
     shell:
