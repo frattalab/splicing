@@ -14,8 +14,8 @@ localrules: compose_gtf_list
 samples = pd.read_csv(config['sampleCSVpath'])
 samples2 = samples.loc[samples.exclude_sample_downstream_analysis != 1]
 SAMPLE_NAMES = list(set(samples2['sample_name']))
+BASES, CONTRASTS = return_bases_and_contrasts()
 
-print(SAMPLE_NAMES)
 
 SPECIES = config["species"]
 GTF = config['gtf']
@@ -29,7 +29,10 @@ rule all_stringtie:
     input:
         expand(stringtie_outdir + "{sample}.assemble.gtf", sample = SAMPLE_NAMES),
         os.path.join(stringtie_outdir, "stringtie_merged.unique.gtf"),
-        os.path.join(stringtie_outdir,"stringtie_merged.gtf")
+        os.path.join(stringtie_outdir,"stringtie_merged.gtf"),
+        expand(os.path.join(stringtie_outdir,"{bse}.stringtie_merged.gtf"), bse = BASES),
+        expand(os.path.join(stringtie_outdir,"{contrast}.stringtie_merged.gtf"), contrast = CONTRASTS)
+
 
 rule StringTie_Assemble:
     input:
@@ -72,6 +75,7 @@ rule compose_gtf_list_bases_stringtie:
         txt = temp(os.path.join(stringtie_outdir,"{bse}.gtf_list.txt"))
     run:
         with open(output.txt, 'w') as out:
+
 rule merge_stringtie_gtfs_bases:
     input:
         gtf_list = os.path.join(stringtie_outdir,"{bse}.gtf_list.txt")
