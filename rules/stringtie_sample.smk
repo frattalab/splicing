@@ -93,7 +93,7 @@ rule merge_stringtie_gtfs_bases:
 
 rule compose_gtf_list_contrast_stringtie:
     input:
-        base_group_stringtie = lambda wildcards: file_path_list(wildcards.contrast,stringtie_outdir,".gtf")
+        base_group_stringtie = lambda wildcards: file_path_list(wildcards.contrast,stringtie_outdir,".assemble.gtf")
     wildcard_constraints:
         contrast="|".join(CONTRASTS)
     output:
