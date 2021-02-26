@@ -105,7 +105,7 @@ rule compose_gtf_list_contrast:
     input:
         base_group_scallop = lambda wildcards: file_path_list(wildcards.contrast,scallop_outdir,".gtf")
     wildcard_constraints:
-        bse="|".join(CONTRASTS)
+        contrast="|".join(CONTRASTS)
     output:
         txt = temp(os.path.join(scallop_outdir,"{contrast}.gtf_list.txt"))
     run:
