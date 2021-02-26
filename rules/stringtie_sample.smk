@@ -24,7 +24,6 @@ GTF = config['gtf']
 bam_dir = get_output_dir(config["project_top_level"], config['bam_dir'])
 stringtie_outdir = get_output_dir(config["project_top_level"], config['stringtie_output'])
 
-print(stringtie_outdir)
 
 rule all_stringtie:
     input:
@@ -63,6 +62,55 @@ rule merge_stringtie_gtfs:
         """
         {params.gtfmerge} union {input.gtf_list} {output.merged_gtf} -t 2 -n
         """
+######### DOING THE SAME THING THREE TIMES NOW
+rule compose_gtf_list_bases_stringtie:
+    input:
+        base_group_stringtie = lambda wildcards: file_path_list(wildcards.bse,stringtie_outdir,".gtf")
+    wildcard_constraints:
+        bse="|".join(BASES)
+    output:
+        txt = temp(os.path.join(stringtie_outdir,"{bse}.gtf_list.txt"))
+    run:
+        with open(output.txt, 'w') as out:
+rule merge_stringtie_gtfs_bases:
+    input:
+        gtf_list = os.path.join(stringtie_outdir,"{bse}.gtf_list.txt")
+    output:
+        merged_gtf = os.path.join(stringtie_outdir,"{bse}.stringtie_merged.gtf")
+    wildcard_constraints:
+        bse="|".join(BASES)
+    params:
+        gtfmerge = config['gtfmerge']
+    shell:
+        """
+        {params.gtfmerge} union {input.gtf_list} {output.merged_gtf} -t 2 -n
+        """
+
+rule compose_gtf_list_contrast_stringtie:
+    input:
+        base_group_stringtie = lambda wildcards: file_path_list(wildcards.contrast,stringtie_outdir,".gtf")
+    wildcard_constraints:
+        contrast="|".join(CONTRASTS)
+    output:
+        txt = temp(os.path.join(stringtie_outdir,"{contrast}.gtf_list.txt"))
+    run:
+        with open(output.txt, 'w') as out:
+            print(*input, sep="\n", file=out)
+
+rule merge_stringtie_gtfs_contrasts:
+    input:
+        gtf_list = os.path.join(stringtie_outdir,"{contrast}.gtf_list.txt")
+    wildcard_constraints:
+        contrast="|".join(CONTRASTS)
+    output:
+        merged_gtf = os.path.join(stringtie_outdir,"{contrast}.stringtie_merged.gtf")
+    params:
+        gtfmerge = config['gtfmerge']
+    shell:
+        """
+        {params.gtfmerge} union {input.gtf_list} {output.merged_gtf} -t 2 -n
+        """
+
 
 rule compare_reference_stringtie:
     input:

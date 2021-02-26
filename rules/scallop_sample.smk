@@ -56,7 +56,7 @@ rule scallop_per_samp:
         {params.scallop_extra_config}
         """
 
-rule compose_gtf_list:
+rule compose_gtf_list_everyone:
     input:
         expand(scallop_outdir + "{sample}.gtf", sample=SAMPLE_NAMES)
     output:
@@ -65,7 +65,7 @@ rule compose_gtf_list:
         with open(output.txt, 'w') as out:
             print(*input, sep="\n", file=out)
 
-rule merge_scallop_gtfs:
+rule merge_scallop_gtfs_everyone:
     input:
         gtf_list = os.path.join(scallop_outdir,"gtf_list.txt")
     output:
