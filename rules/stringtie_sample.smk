@@ -75,6 +75,7 @@ rule compose_gtf_list_bases_stringtie:
         txt = temp(os.path.join(stringtie_outdir,"{bse}.gtf_list.txt"))
     run:
         with open(output.txt, 'w') as out:
+            print(*input, sep="\n", file=out)
 
 rule merge_stringtie_gtfs_bases:
     input:
