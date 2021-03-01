@@ -28,7 +28,7 @@ build_all_potential_exon_table = function(grange_object,exon_annotation){
         names(exon_annotation) = exon_annotation$exon_coords
     }
     ####build a table of all potential exons for all junctions####
-    splicejamobject = splicejam::closestExonToJunctions(
+    splicejamobject = splicejam_closestExonToJunctions(
         grange_object,
         exon_annotation,
         flipNegativeStrand = TRUE,
@@ -113,7 +113,7 @@ combine_exons_junctions = function(transcripts, junctions, output_name){
   ####read in the scallop GTF
   gtf = transcripts
   # gtf = "/Users/annaleigh/Downloads/gencode.v37.basic.annotation.gtf"
-  scallop_form =  GenomicFeatures::makeTxDbFromGFF(gtf,format = 'gtf')
+  gtf_txdb =  GenomicFeatures::makeTxDbFromGFF(gtf,format = 'gtf')
   ####read in the bed file
   bed_junctions = data.table::fread(junctions,skip = 1)
   bed_junctions = bed_junctions %>%
@@ -122,15 +122,15 @@ combine_exons_junctions = function(transcripts, junctions, output_name){
       separate(V4,into = c('gene_name','type'),sep = ":") %>%
       separate(type, into = "type",sep = "_0")
   #### get the junctions
-  # tx_jnc = as.data.table(intronsByTranscript(scallop_form,use.names=T))
+  # tx_jnc = as.data.table(intronsByTranscript(gtf_txdb,use.names=T))
   ### get the exons
-  exon_jnc = as.data.table(exonsBy(scallop_form,use.names=T,by = 'tx'))
+  exon_jnc = as.data.table(exonsBy(gtf_txdb,use.names=T,by = 'tx'))
   ### add an exon column
   exon_jnc[,paste_into_igv_exon := paste0(seqnames, ":",start, "-",end)]
   exon_jnc[,exon_name := paste0(group_name,":",exon_rank)]
 
   ##flatten the exons
-  scallop_exons_gr = makeGRangesFromDataFrame(exon_jnc,keep.extra.columns = T)
+  flattened_exons = makeGRangesFromDataFrame(exon_jnc,keep.extra.columns = T)
   bed_gf = makeGRangesFromDataFrame(bed_junctions,
                                     start.field = 'V2',
                                     end.field = 'V3',
@@ -138,7 +138,7 @@ combine_exons_junctions = function(transcripts, junctions, output_name){
                                     strand.field = 'V6',
                                     keep.extra.columns = T)
 
-  exons_on_junction_ends = build_all_potential_exon_table(bed_gf,scallop_exons_gr)
+  exons_on_junction_ends = build_all_potential_exon_table(bed_gf,flattened_exons)
 
   exons_on_junction_ends = annotate_all_possible_exon_table(exons_on_junction_ends,exon_jnc)
 
