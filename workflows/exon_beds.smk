@@ -14,6 +14,7 @@ print(SAMPLE_NAMES)
 SPECIES = config["species"]
 GTF = config['gtf']
 
+BASES, CONTRASTS = return_bases_and_contrasts()
 
 
 
