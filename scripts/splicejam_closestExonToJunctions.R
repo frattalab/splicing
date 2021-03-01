@@ -1,4 +1,23 @@
 
+###igrepHas
+igrepHas = function (pattern, x = NULL, ignore.case = TRUE, minCount = 1,
+    naToBlank = FALSE, ...)
+{
+    if (minCount < 0 || minCount > length(x)) {
+        minCount <- length(x)
+    }
+    if (length(x) == 0) {
+        return(FALSE)
+    }
+    else {
+        if (naToBlank && any(is.na(x))) {
+            x[is.na(x)] <- ""
+        }
+        length(grep(pattern = pattern, x = x, ignore.case = ignore.case,
+            ...)) >= as.integer(minCount)
+    }
+}
+
 ###pasteByRow
 
 pasteByRow = function (x, sep = "_", na.rm = TRUE, condenseBlanks = TRUE,
