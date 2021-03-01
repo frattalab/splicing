@@ -60,8 +60,8 @@ star_tabs_to_beds:
     tmem:   1G
     h_rt: 72:00:00
 scallop_per_samp:
-    h_vmem:   16G
-    tmem:   16G
+    h_vmem:   24G
+    tmem:   24G
     h_rt: 4:00:00
 fetch_unique:
     h_vmem:   4G
