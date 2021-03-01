@@ -126,6 +126,6 @@ whippet_psi:
     tmem:   16G
     h_rt: 72:00:00
 write_exon_beds:
-    h_vmem:   4G
-    tmem:   4G
+    h_vmem:   16G
+    tmem:   16G
     h_rt: 8:00:00
