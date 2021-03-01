@@ -1,11 +1,11 @@
 #!/share/apps/R-3.6.1/bin/Rscript
 # V0.001
 ## Usage write_voila_delta_parsed.R infile outfile
-## Produces list of cells that pass QC filter
 
-library(pacman)
-p_load("data.table","janitor","splitstackshape")
-
+library("optparse")
+library(data.table)
+library(splitstackshape)
+library(janitor)
 parse_voila_delta_tsv = function(file_path){
   ####this function takes the file path to a voila tsv and parses it using splitstackshape and then combines the lsv_id and junction coordinates to make a unique
   ###lsv_id_junction for each lsv to get a PSI per splice event in long format

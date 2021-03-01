@@ -87,6 +87,7 @@ rule compose_gtf_list_bases:
     run:
         with open(output.txt, 'w') as out:
             print(*input, sep="\n", file=out)
+
 rule merge_scallop_gtfs_bases:
     input:
         gtf_list = os.path.join(scallop_outdir,"{bse}.gtf_list.txt")
@@ -125,6 +126,7 @@ rule merge_scallop_gtfs_contrasts:
         """
         {params.gtfmerge} union {input.gtf_list} {output.merged_gtf} -t 2 -n
         """
+
 rule compare_reference:
     input:
         os.path.join(scallop_outdir,"scallop_merged.gtf")

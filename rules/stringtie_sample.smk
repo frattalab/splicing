@@ -14,8 +14,8 @@ localrules: compose_gtf_list
 samples = pd.read_csv(config['sampleCSVpath'])
 samples2 = samples.loc[samples.exclude_sample_downstream_analysis != 1]
 SAMPLE_NAMES = list(set(samples2['sample_name']))
+BASES, CONTRASTS = return_bases_and_contrasts()
 
-print(SAMPLE_NAMES)
 
 SPECIES = config["species"]
 GTF = config['gtf']
@@ -29,7 +29,10 @@ rule all_stringtie:
     input:
         expand(stringtie_outdir + "{sample}.assemble.gtf", sample = SAMPLE_NAMES),
         os.path.join(stringtie_outdir, "stringtie_merged.unique.gtf"),
-        os.path.join(stringtie_outdir,"stringtie_merged.gtf")
+        os.path.join(stringtie_outdir,"stringtie_merged.gtf"),
+        expand(os.path.join(stringtie_outdir,"{bse}.stringtie_merged.gtf"), bse = BASES),
+        expand(os.path.join(stringtie_outdir,"{contrast}.stringtie_merged.gtf"), contrast = CONTRASTS)
+
 
 rule StringTie_Assemble:
     input:
@@ -65,13 +68,15 @@ rule merge_stringtie_gtfs:
 ######### DOING THE SAME THING THREE TIMES NOW
 rule compose_gtf_list_bases_stringtie:
     input:
-        base_group_stringtie = lambda wildcards: file_path_list(wildcards.bse,stringtie_outdir,".gtf")
+        base_group_stringtie = lambda wildcards: file_path_list(wildcards.bse,stringtie_outdir,".assemble.gtf")
     wildcard_constraints:
         bse="|".join(BASES)
     output:
         txt = temp(os.path.join(stringtie_outdir,"{bse}.gtf_list.txt"))
     run:
         with open(output.txt, 'w') as out:
+            print(*input, sep="\n", file=out)
+
 rule merge_stringtie_gtfs_bases:
     input:
         gtf_list = os.path.join(stringtie_outdir,"{bse}.gtf_list.txt")
@@ -88,7 +93,7 @@ rule merge_stringtie_gtfs_bases:
 
 rule compose_gtf_list_contrast_stringtie:
     input:
-        base_group_stringtie = lambda wildcards: file_path_list(wildcards.contrast,stringtie_outdir,".gtf")
+        base_group_stringtie = lambda wildcards: file_path_list(wildcards.contrast,stringtie_outdir,".assemble.gtf")
     wildcard_constraints:
         contrast="|".join(CONTRASTS)
     output:

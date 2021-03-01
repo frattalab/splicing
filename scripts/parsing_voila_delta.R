@@ -1,5 +1,7 @@
-library(pacman)
-p_load("data.table","janitor","splitstackshape")
+library("optparse")
+library(data.table)
+library(splitstackshape)
+library(janitor)
 
 parse_voila_delta_tsv = function(file_path){
   ####this function takes the file path to a voila tsv and parses it using splitstackshape and then combines the lsv_id and junction coordinates to make a unique
@@ -71,7 +73,7 @@ parse_voila_tsv = function(file_path){
   if(file.exists(file_path)){
     voila_org =  as.data.table(clean_names(fread(file_path)))
     colsToSplit = c("e_psi_per_lsv_junction",
-                    "var_e_psi_per_lsv_junction", 
+                    "var_e_psi_per_lsv_junction",
                     "junctions_coords",
                     "exons_coords",
                     "de_novo_junctions")
@@ -85,7 +87,7 @@ parse_voila_tsv = function(file_path){
     # same with the junctions and the retained introns
     #now to make a unique identifier cmbined the lsv_id and junction coordinates
     voila_melt[,lsv_junc := paste(lsv_id, junctions_coords,sep = "_")]
-    
+
     voila_melt[,c("junc_start","junc_end") := tstrsplit(junctions_coords, "-")]
     voila_melt[,c("ir_start","ir_end") := tstrsplit(ir_coords, "-")]
     # I find this column irritating
@@ -100,11 +102,11 @@ parse_voila_tsv = function(file_path){
     # add on the target or source
     voila_melt[,exon_type := tstrsplit(lsv_type,"|")[1]]
     voila_melt[,exon_type := ifelse(exon_type == "t",'target',"source")]
-    
+
     # this is a useless column for us
     voila_melt$lsv_type = NULL
     setnames(voila_melt,"number_gene_name", "gene_name")
-    
+
     return(voila_melt)
   } else{
     print(file_path)
