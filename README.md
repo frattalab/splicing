@@ -7,6 +7,13 @@ The purpose of this pipeline is to be able to run MAJIQ using Snakemake. The aim
 2. GFF3 and GTF of your species of interest
 3. A formatted sample sheet, see examples and explanation below
 # Get started
+## Necessary R packages
+If you're just going to run the build + psi workflows you will need
+
+data.table
+tidyverse
+optparse
+glue
 
 After you've installed the necessary software, snakemake, R libraries, MAJIQ itself, you will need to do 3 things to get this pipeline going
 
