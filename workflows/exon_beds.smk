@@ -18,7 +18,6 @@ BASES, CONTRASTS = return_bases_and_contrasts()
 
 
 
-
 include: "../rules/create_cryptic_exons_majiq_deltas.smk"
 
 

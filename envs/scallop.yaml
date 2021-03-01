@@ -3,5 +3,5 @@ channels:
   - bioconda
   - defaults
 dependencies:
-  - stringtie
+  - scallop
   - gffcompare
