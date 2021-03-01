@@ -125,6 +125,7 @@ rule merge_scallop_gtfs_contrasts:
         """
         {params.gtfmerge} union {input.gtf_list} {output.merged_gtf} -t 2 -n
         """
+
 rule compare_reference:
     input:
         os.path.join(scallop_outdir,"scallop_merged.gtf")

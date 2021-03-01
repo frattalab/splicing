@@ -15,6 +15,8 @@ tidyverse
 optparse
 glue
 
+Alternatively, there is an environment provided with the necessary packages
+
 After you've installed the necessary software, snakemake, R libraries, MAJIQ itself, you will need to do 3 things to get this pipeline going
 
 1. Set up a sample sheet
