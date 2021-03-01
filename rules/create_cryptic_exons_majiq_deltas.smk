@@ -40,5 +40,6 @@ rule write_exon_beds:
         """
         Rscript scripts/extract_cryptic_exons_from_gtf.R \
         --transcripts {input.assembled_gtf} \
-        --deltabed {input.bed}
+        --deltabed {input.bed} \
+        --outputname {output}
         """
