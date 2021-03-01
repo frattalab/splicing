@@ -31,6 +31,8 @@ rule write_exon_beds:
         assembled_gtf =  os.path.join(config["project_top_level"],"all_assemblers_merged.gtf")
     output:
         os.path.join(MAJIQ_DIR,,"{bse}_{contrast}_cryptic_exons.bed")
+    conda:
+        "../envs/splicing_dependencies.yml"
     params:
         extra_junction_parameters = return_parsed_extra_params(config['annotated_junctions_extra_parameters']),
         trackname = "{bse}_{contrast}.bed"

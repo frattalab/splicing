@@ -26,6 +26,8 @@ rule annotatate_delta:
         tsv = os.path.join(MAJIQ_DIR,"delta_psi_voila_tsv","{bse}_{contrast}" + "_parsed_psi.tsv")
     output:
         os.path.join(MAJIQ_DIR,"delta_psi_voila_tsv","{bse}_{contrast}_annotated_junctions.csv")
+    conda:
+        "../envs/splicing_dependencies.yml"
     params:
         gtf = config['gtf'],
         psi_output_folder = os.path.join(MAJIQ_DIR,"delta_psi_voila_tsv","{bse}_{contrast}_annotated_junctions")
@@ -42,6 +44,8 @@ rule write_junctions_beds:
     params:
         extra_junction_parameters = return_parsed_extra_params(config['annotated_junctions_extra_parameters']),
         trackname = "{bse}_{contrast}.bed"
+    conda:
+        "../envs/splicing_dependencies.yml"
     shell:
         """
         Rscript scripts/make_bed_from_annotated_command_line.R --parsed {input.csv} \

@@ -4,6 +4,9 @@ library(tidyverse)
 library(data.table)
 library("optparse")
 # use a function from splicejam to find the exons which end on any of the junctions
+
+source("scripts/splicejam_closestExonToJunctions.R")
+
 build_all_potential_exon_table = function(grange_object,exon_annotation){
 
     ##check that exon_coords exists as a metadata column
