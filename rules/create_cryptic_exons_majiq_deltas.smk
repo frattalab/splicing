@@ -20,6 +20,7 @@ BASES, CONTRASTS = return_bases_and_contrasts()
 MAJIQ_DIR = get_output_dir(config['project_top_level'], config['majiq_top_level'])
 OUTPUT_CRYPTIC_EXONS = os.path.join(MAJIQ_DIR,"cryptic_exons_beds")
 os.system("mkdir -p {0}".format(OUTPUT_CRYPTIC_EXONS))
+stringtie_outdir = get_output_dir(config["project_top_level"], config['stringtie_output'])
 
 
 
