@@ -111,6 +111,11 @@ merge_scallop_gtfs:
     tmem:   1G
     h_rt: 72:00:00
     submission_string: "-pe smp 2 -R y"
+merge_scallop_gtfs_everyone:
+    h_vmem:   16G
+    tmem:   16G
+    h_rt: 72:00:00
+    submission_string: " "
 whippet_psi:
     h_vmem:   16G
     tmem:   16G
