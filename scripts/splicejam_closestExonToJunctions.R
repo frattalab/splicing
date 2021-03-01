@@ -1,3 +1,71 @@
+
+###pasteByRow
+
+pasteByRow = function (x, sep = "_", na.rm = TRUE, condenseBlanks = TRUE,
+    includeNames = FALSE, sepName = ":", blankGrep = "^[ ]*$",
+    verbose = FALSE, ...)
+{
+    sep <- head(sep, 1)
+    if (length(ncol(x)) == 0 || ncol(x) == 0) {
+        return(x)
+    }
+    if (igrepHas("matrix", class(x))) {
+        x <- as.data.frame(x)
+    }
+    for (iCol in seq_len(ncol(x))) {
+        if (igrepHas("factor", class(x[, iCol]))) {
+            x[, iCol] <- as.character(x[[iCol]])
+        }
+    }
+    getColVals <- function(x, i, includeNames, na.rm, sepName) {
+        xVals <- x[[i]]
+        isNa <- (is.na(xVals))
+        if (any(isNa)) {
+            if (na.rm) {
+                xVals[isNa] <- ""
+            }
+            else {
+                xVals[isNa] <- "NA"
+            }
+        }
+        if (condenseBlanks) {
+            isBlank <- grep(blankGrep, xVals)
+        }
+        if (includeNames) {
+            xVals <- paste0(colnames(x)[i], sepName, xVals)
+            if (condenseBlanks && length(isBlank) > 0) {
+                xVals[isBlank] <- ""
+            }
+        }
+        else {
+            if (condenseBlanks && length(isBlank) > 0) {
+                xVals[isBlank] <- ""
+            }
+        }
+        xVals
+    }
+    xVals <- getColVals(x, 1, includeNames, na.rm, sepName)
+    if (ncol(x) > 1) {
+        for (i1 in 2:ncol(x)) {
+            xVals1 <- getColVals(x, i1, includeNames, na.rm,
+                sepName)
+            if (condenseBlanks) {
+                isBlank1 <- (is.na(xVals1) | grepl(blankGrep,
+                  xVals1))
+                isBlank <- (is.na(xVals) | grepl(blankGrep, xVals))
+                sepV <- ifelse(isBlank | isBlank1, "", sep)
+            }
+            else {
+                sepV <- sep
+            }
+            xVals <- paste0(xVals, sepV, xVals1)
+        }
+    }
+    if (!is.null(rownames(x))) {
+        names(xVals) <- rownames(x)
+    }
+    return(xVals)
+}
 ###function taken from https://github.com/jmw86069/splicejam - please cite them!###
 splicejam_closestExonToJunctions = function (spliceGRgene, exonsGR, flipNegativeStrand = TRUE, sampleColname = "sample_id",
     reportActualCoords = FALSE, verbose = FALSE, ...)
