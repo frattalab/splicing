@@ -31,7 +31,8 @@ rule allParse:
 rule write_exon_beds:
     input:
         bed = os.path.join(MAJIQ_DIR,"delta_psi_voila_tsv","{bse}_{contrast}_annotated.junctions.bed"),
-        assembled_gtf =  os.path.join(stringtie_outdir,"stringtie_merged.gtf")
+        assembled_gtf =  os.path.join(config["project_top_level"],"all_assemblers_merged.gtf")
+        # assembled_gtf =  os.path.join(stringtie_outdir,"stringtie_merged.gtf")
     output:
         os.path.join(OUTPUT_CRYPTIC_EXONS,"{bse}_{contrast}_cryptic_exons.bed")
     conda:
