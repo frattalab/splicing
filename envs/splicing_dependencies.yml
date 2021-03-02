@@ -66,8 +66,6 @@ dependencies:
   - libedit=3.1.20191231
   - libev=4.33
   - libffi=3.3
-  - libgfortran=5.0.0
-  - libgfortran-devel_osx-64=9.3.0
   - libgfortran5=9.3.0
   - libglib=2.66.7
   - libiconv=1.16
