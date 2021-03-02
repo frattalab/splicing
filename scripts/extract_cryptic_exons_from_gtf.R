@@ -128,7 +128,7 @@ combine_exons_junctions = function(transcripts, junctions, output_name){
   ### add an exon column
   exon_jnc[,paste_into_igv_exon := paste0(seqnames, ":",start, "-",end)]
   exon_jnc[,exon_name := paste0(group_name,":",exon_rank)]
-
+  browser()
   ##flatten the exons
   flattened_exons = makeGRangesFromDataFrame(exon_jnc,keep.extra.columns = T)
   bed_gf = makeGRangesFromDataFrame(bed_junctions,
