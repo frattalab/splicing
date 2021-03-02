@@ -120,7 +120,7 @@ combine_exons_junctions = function(transcripts, junctions, output_name){
       mutate(control_psi = as.numeric(stringr::str_split(V4,"\\|",n = 2, simplify = T)[,2])) %>%
       mutate(control_psi = ifelse(is.na(control_psi),0,control_psi)) %>%
       separate(V4,into = c('gene_name','type'),sep = ":") %>%
-      separate(type, into = "type",sep = "_0")
+      separate(type, into = "type",sep = "\\|")
   #### get the junctions
   # tx_jnc = as.data.table(intronsByTranscript(gtf_txdb,use.names=T))
   ### get the exons
@@ -128,7 +128,7 @@ combine_exons_junctions = function(transcripts, junctions, output_name){
   ### add an exon column
   exon_jnc[,paste_into_igv_exon := paste0(seqnames, ":",start, "-",end)]
   exon_jnc[,exon_name := paste0(group_name,":",exon_rank)]
-  browser()
+
   ##flatten the exons
   flattened_exons = makeGRangesFromDataFrame(exon_jnc,keep.extra.columns = T)
   bed_gf = makeGRangesFromDataFrame(bed_junctions,
