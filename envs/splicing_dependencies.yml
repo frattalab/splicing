@@ -5,11 +5,11 @@ channels:
   - conda-forge
 dependencies:
   - _r-mutex=1.0.0=anacondar_1
-  - bioconductor-annotationdbi=1.52.0=r40_0
-  - bioconductor-biobase=2.50.0=r40h8909d69_0
-  - bioconductor-biocfilecache=1.14.0=r40_0
-  - bioconductor-biocgenerics=0.36.0=r40_0
-  - bioconductor-biocparallel=1.24.0=r40h64ad5ed_0
+  - bioconductor-annotationdbi=1.52.0
+  - bioconductor-biobase=2.50.0
+  - bioconductor-biocfilecache=1.14.0
+  - bioconductor-biocgenerics=0.36.0
+  - bioconductor-biocparallel=1.24.0
   - bioconductor-biomart=2.46.0=r40_0
   - bioconductor-biostrings=2.58.0=r40h8909d69_0
   - bioconductor-delayedarray=0.16.0=r40h8909d69_0
