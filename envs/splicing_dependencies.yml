@@ -6,7 +6,7 @@ channels:
   - conda-forge
 dependencies:
   - _r-mutex=1.0.0
-  - bioconductor-annotationdbi=1.52.0
+  - bioconductor-annotationdbi=1.52
   - bioconductor-biobase=2.50.0
   - bioconductor-biocfilecache=1.14.0
   - bioconductor-biocgenerics=0.36.0
@@ -58,8 +58,8 @@ dependencies:
   - krb5=1.17.2
   - ld64_osx-64=530
   - ldid=2.1.2
-  - libblas=3.9.0
-  - libcblas=3.9.0
+  - libblas
+  - libcblas
   - libclang-cpp11=11.0.1
   - libcurl=7.71.1
   - libcxx=11.0.1
