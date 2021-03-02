@@ -117,7 +117,7 @@ combine_exons_junctions = function(transcripts, junctions, output_name){
   ####read in the bed file
   bed_junctions = data.table::fread(junctions,skip = 1)
   bed_junctions = bed_junctions %>%
-      mutate(control_psi = as.numeric(stringr::str_split(V4,"_0",n = 2, simplify = T)[,2])) %>%
+      mutate(control_psi = as.numeric(stringr::str_split(V4,"\\|",n = 2, simplify = T)[,2])) %>%
       mutate(control_psi = ifelse(is.na(control_psi),0,control_psi)) %>%
       separate(V4,into = c('gene_name','type'),sep = ":") %>%
       separate(type, into = "type",sep = "_0")
