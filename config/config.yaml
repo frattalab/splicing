@@ -28,8 +28,6 @@ scallop_strand: unstranded
 bam_suffix: .Aligned.sorted.out
 
 
-
-
 majiq_extra_parameters:
   simplify:
 majiq_psi_extra_parameters:
