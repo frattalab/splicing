@@ -35,8 +35,8 @@ rule write_exon_beds:
         # assembled_gtf =  os.path.join(stringtie_outdir,"stringtie_merged.gtf")
     output:
         os.path.join(OUTPUT_CRYPTIC_EXONS,"{bse}_{contrast}_cryptic_exons.bed")
-    conda:
-        "../envs/splicing_dependencies.yml"
+    # conda:
+    #     "../envs/splicing_dependencies.yml"
     shell:
         """
         Rscript scripts/extract_cryptic_exons_from_gtf.R \

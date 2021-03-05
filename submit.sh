@@ -34,4 +34,5 @@ snakemake -s ${WORKFLOW} \
 --nolock \
 --rerun-incomplete \
 --latency-wait 100 \
---use-conda
+--use-conda \
+--conda-prefix /SAN/vyplab/vyplab_reference_genomes/conda_envs/splicing_env

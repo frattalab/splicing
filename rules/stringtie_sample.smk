@@ -40,8 +40,8 @@ rule StringTie_Assemble:
         ref_gtf = GTF
     output:
         stringtie_outdir + "{sample}.assemble.gtf"
-    conda:
-        "../envs/stringtie.yaml"
+    # conda:
+    #     "../envs/stringtie.yaml"
     shell:
         "stringtie {input.bam} -G {input.ref_gtf} -o {output}"
 
