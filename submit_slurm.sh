@@ -1,8 +1,6 @@
 #! /bin/bash
 # this file is snakemake.sh
 module load snakemake  || exit 1
-module load majiq
-module load R
 
 WORKFLOW="workflows/${1}.smk"
 
