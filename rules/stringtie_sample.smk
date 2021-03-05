@@ -40,8 +40,8 @@ rule StringTie_Assemble:
         ref_gtf = GTF
     output:
         stringtie_outdir + "{sample}.assemble.gtf"
-    # conda:
-    #     "../envs/stringtie.yaml"
+    conda:
+        "/SAN/vyplab/vyplab_reference_genomes/conda_envs/splicing_env"
     shell:
         "stringtie {input.bam} -G {input.ref_gtf} -o {output}"
 
