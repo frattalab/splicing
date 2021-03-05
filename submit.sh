@@ -35,4 +35,4 @@ snakemake -s ${WORKFLOW} \
 --rerun-incomplete \
 --latency-wait 100 \
 --use-conda \
---conda-prefix /SAN/vyplab/vyplab_reference_genomes/conda_envs/
+--conda-prefix "/SAN/vyplab/vyplab_reference_genomes/conda_envs/"
