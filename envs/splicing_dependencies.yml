@@ -1,0 +1,14 @@
+channels:
+  - bioconda
+  - r
+  - defaults
+  - conda-forge
+dependencies:
+  - r-base
+  - r-glue
+  - r-data.table
+  - r-optparse
+  - r-tidyverse
+  - bioconductor-genomicfeatures
+  - r-splitstackshape
+  - r-janitor

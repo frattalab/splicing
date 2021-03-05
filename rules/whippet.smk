@@ -7,7 +7,7 @@ import yaml
 
 configfile: "config/config.yaml"
 include: "helpers.py"
-samples = pd.read_csv(config['sample_csv_path'])
+samples = pd.read_csv(config['sampleCSVpath'])
 samples2 = samples.loc[samples.exclude_sample_downstream_analysis != 1]
 
 bool_tdp = samples2.sample_name.str.contains('TDP')

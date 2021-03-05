@@ -25,6 +25,7 @@ mkdir -p ${FOLDER}
 cp config/config.yaml ${FOLDER}/${RUN_NAME}_config.yaml
 cp config/comparisons.yaml ${FOLDER}/${RUN_NAME}_comparisons.yaml
 
+
 snakemake -s ${WORKFLOW} \
 --jobscript cluster_qsub.sh \
 --cluster-config config/cluster.yaml \
@@ -32,4 +33,5 @@ snakemake -s ${WORKFLOW} \
 -j 40 \
 --nolock \
 --rerun-incomplete \
---latency-wait 100
+--latency-wait 100 \
+--use-conda

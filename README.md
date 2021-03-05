@@ -7,6 +7,15 @@ The purpose of this pipeline is to be able to run MAJIQ using Snakemake. The aim
 2. GFF3 and GTF of your species of interest
 3. A formatted sample sheet, see examples and explanation below
 # Get started
+## Necessary R packages
+If you're just going to run the build + psi workflows you will need
+
+data.table
+tidyverse
+optparse
+glue
+
+Alternatively, there is an environment provided with the necessary packages
 
 After you've installed the necessary software, snakemake, R libraries, MAJIQ itself, you will need to do 3 things to get this pipeline going
 
@@ -51,14 +60,41 @@ with all bams sharing the `_unique_rg_fixed` suffix, but I don't include that in
 
 I have three groups which I put in the group column, and then I don't have any reason to exclude any of the samples so I leave that blank as well.
 
-*Please* use syntactic names for `sample_name` and `group` (no spaces, don't start with a number, use underscores and not hyphens) I'm not totally sure if that leads to errors, but I would guess it will. 
+*Please* use syntactic names for `sample_name` and `group` (no spaces, don't start with a number, use underscores and not hyphens) I'm not totally sure if that leads to errors, but I would guess it will.
 
 After that, I've included a column saying which litter the mice came from, but I could include as many additional columns as I like.
 
-
-
-After
 ## Setting up your comparisons
+
+To compare groups, we need to go int the config/comparisons.yaml and edit it
+
+Here's an example from the sample sheet above
+
+knockdownexperiment:
+  column_name:
+    - group
+  wt:
+    - wt
+  hom:
+    - hom
+controlVersusHets:
+  column_name:
+    - group
+  wt:
+    - wt
+  het:
+    - het
+litterComparison:
+  column_name:
+    - litter
+  firstLitters:
+    - one
+    - two
+  secondLitters:
+    - three
+    - four
+    - five
+
 ## Making the config
 
 # Final outputs
