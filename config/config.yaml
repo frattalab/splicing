@@ -1,5 +1,5 @@
 
-species: mouse
+species: human
 read_len: 100
 genome_refcode: GRCh38
 endtype: pe
