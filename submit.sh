@@ -24,13 +24,7 @@ FOLDER=submissions/$(date +"%Y%m%d%H%M")
 mkdir -p ${FOLDER}
 cp config/config.yaml ${FOLDER}/${RUN_NAME}_config.yaml
 cp config/comparisons.yaml ${FOLDER}/${RUN_NAME}_comparisons.yaml
-# if [[ ${1} == "transcriptome_assembly"  || ${1} == "exon_beds"]]
 
-if ["${1}" == "build"]; then
-  CONDATAG=" "
-else
-  CONDATAG="--use-conda"
-fi
 
 snakemake -s ${WORKFLOW} \
 --jobscript cluster_qsub.sh \
@@ -40,4 +34,4 @@ snakemake -s ${WORKFLOW} \
 --nolock \
 --rerun-incomplete \
 --latency-wait 100 \
-$CONDATAG
+--use-conda
