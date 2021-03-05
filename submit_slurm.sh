@@ -25,4 +25,5 @@ snakemake -s ${WORKFLOW} \
 --cluster "sbatch -p {cluster.partition} --mem={cluster.mem} -t {cluster.time} -c {cluster.ncpus}" \
 --nolock \
 --rerun-incomplete \
---latency-wait 100
+--latency-wait 100 \
+--use-conda
