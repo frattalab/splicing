@@ -1,70 +1,101 @@
 __default__:
     partition: norm
-    time: 10
-    extra: "--gres=lscratch:10"
+    mem:   1G
+    time: 4:00:00
+annotatate_delta:
+    mem:   24G
+    time: 10:00:00
+normalize_annotate:
+    mem:   16G
+    time: 10:00:00
 majiq_build:
     ncpus:  4
-    mem:   2G
-    time: "72:00:00"
-majiq_psi:
     h_vmem:   2G
     mem:   2G
-    time: "72:00:00"
+    time: 10:00:00
+squashed_normalize_annotate:
+    h_vmem:   32G
+    mem:   32G
+    time: 10:00:00
+majiq_psi:
+    mem:   2G
+    time: 10:00:00
+    ncpus:  2
+majiq_single_psi:
+    mem:   2G
+    time: 10:00:00
     ncpus:  2
 majiq_psi_tsv:
-    h_vmem:   1G
     mem:   1G
     ncpus:  4
-    time: "72:00:00"
+    time: 10:00:00
 majiq_delta_psi:
-    h_vmem:   4G
     mem:   4G
-    time: "72:00:00"
+    time: 10:00:00
     ncpus:  2
 majiq_delta_psi_tsv:
-    h_vmem:   1G
     mem:   1G
-    time: "72:00:00"
+    time: 10:00:00
     ncpus:  2
+majiq_annotate_junctions:
+    h_vmem:   4G
+    mem:   4G
+    time: 10:00:00
 majiq_psi_parse:
-    h_vmem:   1G
-    mem:   1G
-    time: "72:00:00"
-star_tabs_to_beds:
-    h_vmem:   1G
-    mem:   1G
-    time: "72:00:00"
-assembly:
-    h_vmem:   2G
     mem:   2G
-    time: "72:00:00"
-    ncpus:  4
+    time: 10:00:00
+star_tabs_to_beds:
+    mem:   1G
+    time: 10:00:00
+scallop_per_samp:
+    mem:   24G
+    time: 4:00:00
+fetch_unique:
+    mem:   4G
+    time: 12:00:00
+compare_reference:
+    h_vmem:   8G
+    mem:   8G
+StringTie_Assemble:
+    h_vmem:   8G
+    mem:   8G
+    time: 4:00:00
 compose_merge:
-    h_vmem:   1G
     mem:   1G
-    time: "72:00:00"
-    submission_string: " "
-compare_assemblies:
-    h_vmem:   1G
-    mem:   1G
-    time: "72:00:00"
-    submission_string: " "
+    ttime: 10:00:00
+compare_reference_stringtie:
+    mem:   4G
+    time: 12:00:00
+fetch_unique_stringtie:
+    h_vmem:   4G
+    mem:   4G
+    time: 12:00:00
 merge_assemblies:
     h_vmem:   1G
     mem:   1G
-    time: "72:00:00"
-    submission_string: " "
+    time: 10:00:00
+merge_all_assemblies:
+    h_vmem:   8G
+    mem:   8G
+    time: 4:00:00
+merge_stringtie_gtfs:
+    mem:   8G
+    time: 10:00:00
 diffexp:
     h_vmem:   1G
     mem:   1G
-    time: "72:00:00"
-    submission_string: ""
+    time: 10:00:00
+    ncpus:  8
 merge_scallop_gtfs:
     h_vmem:   1G
     mem:   1G
-    time: "72:00:00"
+    time: 10:00:00
     ncpus:  2
-whippet_psi:
+merge_scallop_gtfs_everyone:
     h_vmem:   16G
     mem:   16G
-    time: "72:00:00"
+    time: 10:00:00
+write_exon_beds:
+    h_vmem:   16G
+    mem:   16G
+    time: 8:00:00
