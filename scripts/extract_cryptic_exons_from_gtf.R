@@ -5,7 +5,7 @@ library(data.table)
 library("optparse")
 # use a function from splicejam to find the exons which end on any of the junctions
 
-source("scripts/splicejam_closestExonToJunctions.R")
+#source("scripts/splicejam_closestExonToJunctions.R")
 
 build_all_potential_exon_table = function(grange_object,exon_annotation){
 
@@ -185,3 +185,9 @@ opt_parser = OptionParser(option_list=option_list);
 opt = parse_args(opt_parser);
 
 combine_exons_junctions(transcripts = opt$transcripts, junctions = opt$deltabed, output_name = opt$out)
+
+assign("temp_bed",bed_gf)
+start(temp_bed) = start(temp_bed) + 1
+# end(temp_bed) = end(temp_bed) + 1
+exons_on_junction_ends = build_all_potential_exon_table(temp_bed,flattened_exons)
+nrow(exons_on_junction_ends)

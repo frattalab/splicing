@@ -81,5 +81,6 @@ opt = parse_args(opt_parser);
 
 
 output = parse_voila_delta_tsv(opt$deltafile)
+print('all done!')
 
 fwrite(output, opt$out)
