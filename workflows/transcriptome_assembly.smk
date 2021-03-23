@@ -14,7 +14,7 @@ localrules: compose_gtf_list
 samples = pd.read_csv(config['sampleCSVpath'])
 samples2 = samples.loc[samples.exclude_sample_downstream_analysis != 1]
 SAMPLE_NAMES = list(set(samples2['sample_name']))
-
+BASES, CONTRASTS = return_bases_and_contrasts()
 print(SAMPLE_NAMES)
 
 SPECIES = config["species"]
@@ -43,9 +43,6 @@ rule assemble_all:
         expand(os.path.join(scallop_outdir,"{bse}.scallop_merged.gtf"), bse = BASES),
         expand(os.path.join(scallop_outdir,"{contrast}.scallop_merged.gtf"), contrast = CONTRASTS),
         os.path.join(config["project_top_level"],"all_assemblers_merged.gtf"),
-        expand(stringtie_outdir + "{sample}.assemble.gtf", sample = SAMPLE_NAMES),
-        os.path.join(stringtie_outdir, "stringtie_merged.unique.gtf"),
-        os.path.join(stringtie_outdir,"stringtie_merged.gtf"),
         expand(os.path.join(stringtie_outdir,"{bse}.stringtie_merged.gtf"), bse = BASES),
         expand(os.path.join(stringtie_outdir,"{contrast}.stringtie_merged.gtf"), contrast = CONTRASTS)
 
