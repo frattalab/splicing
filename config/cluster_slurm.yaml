@@ -1,101 +1,100 @@
 __default__:
     partition: norm
     mem:   1G
-    time: 4:00:00
+    time: 0-10
 annotatate_delta:
     mem:   24G
-    time: 10:00:00
+    time: 0-10
 normalize_annotate:
     mem:   16G
-    time: 10:00:00
+    time: 0-10
 majiq_build:
     ncpus:  4
-    h_vmem:   2G
     mem:   2G
-    time: 10:00:00
+    time: 0-10
 squashed_normalize_annotate:
     h_vmem:   32G
     mem:   32G
-    time: 10:00:00
+    time: 0-10
 majiq_psi:
     mem:   2G
-    time: 10:00:00
+    time: 0-10
     ncpus:  2
 majiq_single_psi:
     mem:   2G
-    time: 10:00:00
+    time: 0-10
     ncpus:  2
 majiq_psi_tsv:
     mem:   1G
     ncpus:  4
-    time: 10:00:00
+    time: 0-10
 majiq_delta_psi:
     mem:   4G
-    time: 10:00:00
+    time: 0-10
     ncpus:  2
 majiq_delta_psi_tsv:
     mem:   1G
-    time: 10:00:00
+    time: 0-10
     ncpus:  2
 majiq_annotate_junctions:
     h_vmem:   4G
     mem:   4G
-    time: 10:00:00
+    time: 0-10
 majiq_psi_parse:
     mem:   2G
-    time: 10:00:00
+    time: 0-10
 star_tabs_to_beds:
     mem:   1G
-    time: 10:00:00
+    time: 0-10
 scallop_per_samp:
     mem:   24G
-    time: 4:00:00
+    time: 0-4
 fetch_unique:
     mem:   4G
-    time: 12:00:00
+    time: 0-12
 compare_reference:
     h_vmem:   8G
     mem:   8G
 StringTie_Assemble:
     h_vmem:   8G
     mem:   8G
-    time: 4:00:00
+    time: 0-4
 compose_merge:
     mem:   1G
-    ttime: 10:00:00
+    ttime: 0-10
 compare_reference_stringtie:
     mem:   4G
-    time: 12:00:00
+    time: 0-12
 fetch_unique_stringtie:
     h_vmem:   4G
     mem:   4G
-    time: 12:00:00
+    time: 0-12
 merge_assemblies:
     h_vmem:   1G
     mem:   1G
-    time: 10:00:00
+    time: 0-10
 merge_all_assemblies:
     h_vmem:   8G
     mem:   8G
-    time: 4:00:00
+    time: 0-4
 merge_stringtie_gtfs:
     mem:   8G
-    time: 10:00:00
+    time: 0-10
 diffexp:
     h_vmem:   1G
     mem:   1G
-    time: 10:00:00
+    time: 0-10
     ncpus:  8
 merge_scallop_gtfs:
     h_vmem:   1G
     mem:   1G
-    time: 10:00:00
+    time: 0-10
     ncpus:  2
 merge_scallop_gtfs_everyone:
     h_vmem:   16G
     mem:   16G
-    time: 10:00:00
+    time: 0-10
 write_exon_beds:
     h_vmem:   16G
     mem:   16G
-    time: 8:00:00
+    time: 0-8
