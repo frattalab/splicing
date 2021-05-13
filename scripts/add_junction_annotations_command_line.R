@@ -386,7 +386,7 @@ final_annotate_junctions <- function(parsed_file,output_filepath,gtf){
     start(annotated_junctions) <- start(annotated_junctions) - 1 #the annotate junc ref tool is based on STAR SJ's so there's an internal -1, +1 that happens
     end(annotated_junctions) <- end(annotated_junctions) + 1
     #####write out as a gff3
-    rtracklayer::export.gff3(annotated_junctions,paste0(output_filepath,".gff3"))
+    #rtracklayer::export.gff3(annotated_junctions,paste0(output_filepath,".gff3"))
     data.table::fwrite(data.table::as.data.table(annotated_junctions),paste0(output_filepath,".csv"))
 
 }
