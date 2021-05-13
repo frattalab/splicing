@@ -15,7 +15,7 @@ project_top_level:  /SAN/vyplab/alb_projects/data/tdp_ko_collection/
 majiq_top_level: majiq/
 #directory of all the already aligned bam files, this is necessary for building the majic data index from this data
 bam_dir: all_bams_sym/
-run_name: allmuscle/
+run_name: allmuscle
 #for transcriptome primary_assembly
 scallop_output: scallop_output/
 stringtie_output: stringtie_output/
