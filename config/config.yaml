@@ -3,7 +3,7 @@ species: human
 read_len: 100
 genome_refcode: GRCh38
 endtype: pe
-sampleCSVpath:  /SAN/vyplab/alb_projects/data/tdp_ko_collection/all_the_kd.csv
+sampleCSVpath:  /SAN/vyplab/alb_projects/data/tdp_ko_collection/all_our_muscles.csv
 # master directory in which output from individual rules is stored (within individual subdirectories, unless overriden below)
 #the top level output folder where all the output files are going to be written
 #now it will sound insane, but I recommend you use full paths to preserve where the data is stored as configs are saved after runs
