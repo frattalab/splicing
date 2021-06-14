@@ -5,28 +5,8 @@
 #valid identifiers from the column_name column in the sample_csv. The first identifier is always the baseline group
 knockdownexperiment:
   column_name:
-    - group
-  controlsA:
-    - control_muscle
-  ALSMuscle:
-    - C9
-    - fus
-    - sod
-    - tdpALS
-knockdownexperiment2:
-  column_name:
-    - group
-  controlsS:
-    - control_muscle
-  SBMAmuscle:
-    - sbma
-knockdownexperiment3:
-  column_name:
-    - group
-  alsMuscle:
-    - C9
-    - fus
-    - sod
-    - tdpALS
-  vSBMAMuscle:
-    - sbma
+    - als_cord_test
+  lowCrypticALSLumbar:
+    - low_cryptic
+  highCrypticALSLumbar:
+    - high_cryptic
