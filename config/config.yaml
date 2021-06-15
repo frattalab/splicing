@@ -32,6 +32,7 @@ majiq_extra_parameters:
   simplify:
   min-experiments: 1
   min-denovo: 3
+  incremental:
 majiq_psi_extra_parameters:
 extra_voila_parameters:
   threshold: "0.1"
