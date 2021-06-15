@@ -50,8 +50,8 @@ annotated_junctions_extra_parameters:
 #the path where your samtools is installed
 samtools_path: /share/apps/genomics/samtools-1.9/bin/samtools
 # cufflinks_path: /share/apps/genomics/cufflinks-2.2.1/bin/cufflinks
-majiq_path: /SAN/vyplab/alb_projects/tools/majiq_env/bin/python3 /SAN/vyplab/alb_projects/tools/majiq_env/bin/majiq
-voila_path: /SAN/vyplab/alb_projects/tools/majiq_env/bin/python3 /SAN/vyplab/alb_projects/tools/majiq_env/bin/voila
+majiq_path: /SAN/vyplab/alb_projects/tools/new_majiq/bin/python3 /SAN/vyplab/alb_projects/tools/new_majiq/bin/majiq
+voila_path: /SAN/vyplab/alb_projects/tools/new_majiq/bin/python3 /SAN/vyplab/alb_projects/tools/new_majiq/bin/voila
 
 fasta: /SAN/vyplab/vyplab_reference_genomes/sequence/human/gencode/GRCh38.primary_assembly.genome.fa
 gtf: /SAN/vyplab/vyplab_reference_genomes/annotation/human/GRCh38/gencode.v34.annotation.gtf
