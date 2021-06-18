@@ -13,7 +13,7 @@ knockdownexperiment:
 experiment2:
   column_name:
     - als_cord_test
-  lowCrypticALSLumbar:
-    - low_cryptic
+  highCrypticALSLumbar:
+    - high_cryptic
   controlsLumbar:
     - controls
