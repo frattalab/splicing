@@ -68,7 +68,7 @@ rule majiq_delta_psi_tsv:
     output:
         tsv = os.path.join(MAJIQ_DIR,"delta_psi_voila_tsv","{bse}_{contrast}" + ".psi.tsv")
     params:
-        voila_path = config['voila_path'],
+        voila_path = config['voila_path_old'],
         psi_output_folder = os.path.join(MAJIQ_DIR,"delta_psi_voila_tsv"),
         splice_graph = os.path.join(MAJIQ_DIR,"builder", "splicegraph.sql"),
         extra_voila_paramters = return_parsed_extra_params(config['extra_voila_parameters'])
@@ -101,7 +101,7 @@ rule majiq_psi_tsv:
     output:
         tsv = os.path.join(MAJIQ_DIR,"psi_voila_tsv_single",'{sample}' + ".psi.tsv")
     params:
-        voila_path = config['voila_path'],
+        voila_path = config['voila_path_old'],
         psi_output_folder = os.path.join(MAJIQ_DIR,"psi_voila_tsv_single"),
         splice_graph = os.path.join(MAJIQ_DIR,"builder", "splicegraph.sql")
     shell:

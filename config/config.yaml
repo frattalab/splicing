@@ -57,7 +57,8 @@ fasta: /SAN/vyplab/vyplab_reference_genomes/sequence/human/gencode/GRCh38.primar
 gtf: /SAN/vyplab/vyplab_reference_genomes/annotation/human/GRCh38/gencode.v34.annotation.gtf
 gff3: /SAN/vyplab/vyplab_reference_genomes/annotation/human/GRCh38/gencode.v34.annotation.gff3
 
-
+majiq_path_old: /SAN/vyplab/alb_projects/tools/majiq_env/bin/python3 /SAN/vyplab/alb_projects/tools/majiq_env/bin/majiq
+voila_path_old: /SAN/vyplab/alb_projects/tools/majiq_env/bin/python3 /SAN/vyplab/alb_projects/tools/majiq_env/bin/voila
 #########################
 ## Scallop PARAMETERS
 #########################
