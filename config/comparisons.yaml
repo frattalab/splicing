@@ -15,5 +15,5 @@ experiment2:
     - als_cord_test
   lowCrypticALSLumbar:
     - low_cryptic
-  highCrypticALSLumbar:
+  controlsLumbar:
     - controls
