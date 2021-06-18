@@ -16,7 +16,7 @@ majiq_build:
     submission_string: "-pe smp 4 -R y"
     h_vmem:   2G
     tmem:   2G
-    h_rt: 72:00:00
+    h_rt: 90:00:00
 squashed_normalize_annotate:
     submission_string: " "
     h_vmem:   32G
