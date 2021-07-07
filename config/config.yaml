@@ -30,8 +30,6 @@ bam_suffix: ".Aligned.sorted.out"
 
 majiq_extra_parameters:
   simplify:
-  min-experiments: 5
-  min-denovo: 3
   incremental:
 majiq_psi_extra_parameters:
 extra_voila_parameters:
