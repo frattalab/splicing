@@ -10,3 +10,17 @@ experiment2:
     - WT1
   homOneMonth:
     - HOM1
+experiment1:
+  column_name:
+    - group
+  wtOneMonth:
+    - WT1
+  hetOneMonth:
+    - HET1
+experiment3:
+  column_name:
+    - group
+  wtThreeMonth:
+    - WT3
+  homThreeMonth:
+    - HOM3

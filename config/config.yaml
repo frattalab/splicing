@@ -41,9 +41,9 @@ extra_voila_parameters:
 annotated_junctions_extra_parameters:
   cutoff: 0.1
 
-# fasta: /SAN/vyplab/vyplab_reference_genomes/sequence/mouse/gencode/GRCm38.primary_assembly.genome.fa
-# gtf: /SAN/vyplab/vyplab_reference_genomes/annotation/mouse/gencode/gencode.vM22.annotation.gtf
-# gff3: /SAN/vyplab/vyplab_reference_genomes/annotation/mouse/gencode/gencode.vM22.annotation.gff3
+fasta: /SAN/vyplab/vyplab_reference_genomes/sequence/mouse/gencode/GRCm38.primary_assembly.genome.fa
+gtf: /SAN/vyplab/vyplab_reference_genomes/annotation/mouse/gencode/gencode.vM22.annotation.gtf
+gff3: /SAN/vyplab/vyplab_reference_genomes/annotation/mouse/gencode/gencode.vM22.annotation.gff3
 
 #the path where your samtools is installed
 samtools_path: /share/apps/genomics/samtools-1.9/bin/samtools
@@ -51,9 +51,9 @@ samtools_path: /share/apps/genomics/samtools-1.9/bin/samtools
 majiq_path: /SAN/vyplab/alb_projects/tools/new_majiq/bin/python3 /SAN/vyplab/alb_projects/tools/new_majiq/bin/majiq
 voila_path: /SAN/vyplab/alb_projects/tools/new_majiq/bin/python3 /SAN/vyplab/alb_projects/tools/new_majiq/bin/voila
 
-fasta: /SAN/vyplab/vyplab_reference_genomes/sequence/human/gencode/GRCh38.primary_assembly.genome.fa
-gtf: /SAN/vyplab/vyplab_reference_genomes/annotation/human/GRCh38/gencode.v34.annotation.gtf
-gff3: /SAN/vyplab/vyplab_reference_genomes/annotation/human/GRCh38/gencode.v34.annotation.gff3
+# fasta: /SAN/vyplab/vyplab_reference_genomes/sequence/human/gencode/GRCh38.primary_assembly.genome.fa
+# gtf: /SAN/vyplab/vyplab_reference_genomes/annotation/human/GRCh38/gencode.v34.annotation.gtf
+# gff3: /SAN/vyplab/vyplab_reference_genomes/annotation/human/GRCh38/gencode.v34.annotation.gff3
 
 majiq_path_old: /SAN/vyplab/alb_projects/tools/majiq_env/bin/python3 /SAN/vyplab/alb_projects/tools/majiq_env/bin/majiq
 voila_path_old: /SAN/vyplab/alb_projects/tools/majiq_env/bin/python3 /SAN/vyplab/alb_projects/tools/majiq_env/bin/voila
