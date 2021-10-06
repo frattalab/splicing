@@ -10,3 +10,24 @@ experiment2:
     - control
   bdnf:
     - bdnf
+experiment1:
+  column_name:
+    - condition_time
+  control:
+    - control_1
+  bdnf:
+    - bdnf_1
+experiment3:
+  column_name:
+    - condition_time
+  control:
+    - control_2
+  bdnf:
+    - bdnf_2
+experiment4:
+  column_name:
+    - condition_time
+  control:
+    - control_6
+  bdnf:
+    - bdnf_6
