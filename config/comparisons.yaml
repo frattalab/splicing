@@ -13,21 +13,21 @@ experiment2:
 experiment1:
   column_name:
     - condition_time
-  control:
+  control1:
     - control_1
-  bdnf:
+  bdnf1:
     - bdnf_1
 experiment3:
   column_name:
     - condition_time
-  control:
+  control2:
     - control_2
-  bdnf:
+  bdnf2:
     - bdnf_2
 experiment4:
   column_name:
     - condition_time
-  control:
+  control6:
     - control_6
-  bdnf:
+  bdnf6:
     - bdnf_6
