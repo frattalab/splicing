@@ -30,7 +30,7 @@ bam_suffix: ".Aligned.sorted.out"
 
 majiq_extra_parameters:
   simplify:
-  incremental:
+  min-experiments: 10
 majiq_psi_extra_parameters:
 extra_voila_parameters:
   threshold: "0.1"

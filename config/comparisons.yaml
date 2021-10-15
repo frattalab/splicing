@@ -3,31 +3,32 @@
 #problems. I suggest camelCase names, but doesn't really matter as long as you can interpret them. Throughout the file they have to be unique.
 #each of these two items has as many idenitifiers as you like, but they must be
 #valid identifiers from the column_name column in the sample_csv. The first identifier is always the baseline group
-experiment2:
+exper1:
+  column_name:
+    - group
+  asympt:
+    - Asympt
+  disease:
+    - Disease
+exper2:
   column_name:
     - group
   control:
-    - control
-  bdnf:
-    - bdnf
-experiment1:
+    - Control
+  disease2:
+    - Disease
+experi3:
   column_name:
-    - condition_time
-  control1:
-    - control_1
-  bdnf1:
-    - bdnf_1
-experiment3:
+    - group
+  asymptControl:
+    - Asympt
+    - Control
+  disease3:
+    - Disease
+exper3:
   column_name:
-    - condition_time
+    - group
   control2:
-    - control_2
-  bdnf2:
-    - bdnf_2
-experiment4:
-  column_name:
-    - condition_time
-  control6:
-    - control_6
-  bdnf6:
-    - bdnf_6
+    - Control
+  asympt2:
+    - Asympt
