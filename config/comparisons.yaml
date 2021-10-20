@@ -6,29 +6,7 @@
 exper1:
   column_name:
     - group
-  asympt:
-    - Asympt
-  disease:
-    - Disease
-exper2:
-  column_name:
-    - group
   control:
-    - Control
-  disease2:
-    - Disease
-experi3:
-  column_name:
-    - group
-  asymptControl:
-    - Asympt
-    - Control
-  disease3:
-    - Disease
-exper3:
-  column_name:
-    - group
-  control2:
-    - Control
-  asympt2:
-    - Asympt
+    - control
+  TDP43kd:
+    - TDP43kd
