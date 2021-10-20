@@ -12,7 +12,7 @@ project_top_level:   /SAN/vyplab/alb_projects/data/4su_better_design_ward_ipsc/
 #if the provided path string is RELATIVE, the string will be joined with project_top_level to form the output directory path
 #if the provided path string is ABSOLUTE, the output for the given rule will be stored in the provided string (NOT WITHIN project_top_level)
 #In practice leaving as relative defaults is best option...
-run_name: blood
+run_name: foursu
 majiq_top_level: majiq/
 #directory of all the already aligned bam files, this is necessary for building the majic data index from this data
 bam_dir: /SAN/vyplab/alb_projects/data/4su_better_design_ward_ipsc/STAR_aligned/
