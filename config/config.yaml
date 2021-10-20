@@ -20,7 +20,7 @@ bam_dir: /SAN/vyplab/alb_projects/data/4su_better_design_ward_ipsc/STAR_aligned/
 scallop_output: scallop_output/
 stringtie_output: stringtie_output/
 #one of empty,unstranded, second, first
-scallop_strand: unstranded
+scallop_strand: empty
 
 
 #what's between the sample name and the end of the bam?
