@@ -3,10 +3,31 @@
 #problems. I suggest camelCase names, but doesn't really matter as long as you can interpret them. Throughout the file they have to be unique.
 #each of these two items has as many idenitifiers as you like, but they must be
 #valid identifiers from the column_name column in the sample_csv. The first identifier is always the baseline group
-exper1:
+controls:
   column_name:
     - group
-  control:
-    - control
-  TDP43kd:
-    - TDP43kd
+  somatodendriticControl:
+    - somatodendritic_control
+  axonControl:
+    - axonal_control
+KDS:
+  column_name:
+    - group
+  somatodendriticKD:
+    - somatodendritic_tdp3_knockdown
+  axonalKD:
+    - axonal_tdp3_knockdown
+controlvKDAzon:
+  column_name:
+    - group
+  contAxon:
+    - axonal_control
+  kdAxon:
+    - axonal_tdp3_knockdown
+controlVKDSma:
+  column_name:
+    - group
+  somaCont:
+    - somatodendritic_control
+  somaKD:
+    - axonal_tdp3_knockdown
