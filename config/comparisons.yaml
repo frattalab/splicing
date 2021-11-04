@@ -6,28 +6,21 @@
 controls:
   column_name:
     - group
-  somatodendriticControl:
-    - somatodendritic_control
-  axonControl:
-    - axonal_control
+  wtBase:
+    - WT_base
+  wtPost:
+    - WT_post
 KDS:
   column_name:
     - group
-  somatodendriticKD:
-    - somatodendritic_tdp3_knockdown
-  axonalKD:
-    - axonal_tdp3_knockdown
-controlvKDAzon:
+  wtBase1:
+    - WT_base
+  f210ibase:
+    - F210i_base
+controls3:
   column_name:
     - group
-  contAxon:
-    - axonal_control
-  kdAxon:
-    - axonal_tdp3_knockdown
-controlVKDSma:
-  column_name:
-    - group
-  somaCont:
-    - somatodendritic_control
-  somaKD:
-    - axonal_tdp3_knockdown
+  wtBase2:
+    - WT_base
+  wtDuring:
+    - WT_during
