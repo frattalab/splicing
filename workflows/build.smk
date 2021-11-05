@@ -18,7 +18,7 @@ rule allBuild:
     input:
         MAJIQ_DIR + config['run_name'] + "_majiqConfig.tsv",
         expand(os.path.join(MAJIQ_DIR,"builder",'{name}' + ".sj"),name = SAMPLE_NAMES),
-        os.path.join(MAJIQ_DIR,"splicegraph.sql")
+        os.path.join(MAJIQ_DIR,"builder/splicegraph.sql")
 
 
 include: "../rules/majiq_build.smk"
