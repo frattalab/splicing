@@ -17,6 +17,6 @@ MAJIQ_DIR = get_output_dir(config['project_top_level'], config['majiq_top_level'
 rule allBuild:
     input:
         MAJIQ_DIR + config['run_name'] + "_majiqConfig.tsv",
-        expand(os.path.join(MAJIQ_DIR,"builder",'{name}' + ".majiq"),name = SAMPLE_NAMES)
+        expand(os.path.join(MAJIQ_DIR,"builder",'{name}' + ".sj"),name = SAMPLE_NAMES)
 
 include: "../rules/majiq_build.smk"
