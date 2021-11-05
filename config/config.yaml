@@ -15,7 +15,7 @@ project_top_level:   /SAN/vyplab/alb_projects/data/4su_tdp_f210i/
 run_name: incremental_practice
 majiq_top_level: majiq/
 #directory of all the already aligned bam files, this is necessary for building the majic data index from this data
-bam_dir: STAR_aligned_redone
+bam_dir: /SAN/vyplab/alb_projects/data/4su_tdp_f210i/STAR_aligned_redone
 #for transcriptome primary_assembly
 scallop_output: scallop_output/
 stringtie_output: stringtie_output/
