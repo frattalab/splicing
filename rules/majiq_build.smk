@@ -17,7 +17,8 @@ MAJIQ_DIR = get_output_dir(config['project_top_level'], config['majiq_top_level'
 rule all:
     input:
         MAJIQ_DIR + config['run_name'] + "_majiqConfig.tsv",
-        expand(os.path.join(MAJIQ_DIR,"builder",'{name}' + ".sj"),name = SAMPLE_NAMES)
+        expand(os.path.join(MAJIQ_DIR,"builder",'{name}' + ".sj"),name = SAMPLE_NAMES),
+        os.path.join(MAJIQ_DIR,"splicegraph.sql")
 
 # # this rule creats the majiq configuration file that is required uses a helper function
 rule create_majiq_config_file:
