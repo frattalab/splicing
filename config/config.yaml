@@ -12,7 +12,7 @@ project_top_level:   /SAN/vyplab/alb_projects/data/4su_tdp_f210i/
 #if the provided path string is RELATIVE, the string will be joined with project_top_level to form the output directory path
 #if the provided path string is ABSOLUTE, the output for the given rule will be stored in the provided string (NOT WITHIN project_top_level)
 #In practice leaving as relative defaults is best option...
-run_name: edit_me_for_incremental
+run_name: like_this_maybe
 majiq_top_level: majiq/
 #directory of all the already aligned bam files, this is necessary for building the majic data index from this data
 bam_dir: /SAN/vyplab/alb_projects/data/4su_tdp_f210i/STAR_aligned_redone
@@ -29,7 +29,7 @@ bam_suffix: ".Aligned.sorted.out"
 
 
 majiq_extra_parameters:
-  incremental:
+  junc-files-only:
   min-experiments: 1
 majiq_psi_extra_parameters:
 extra_voila_parameters:
