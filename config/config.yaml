@@ -3,7 +3,7 @@ species: mouse
 read_len: 150
 genome_refcode: GRCh38
 endtype: pe
-sampleCSVpath: /SAN/vyplab/alb_projects/data/4su_tdp_f210i/incremental_building.csv
+sampleCSVpath: /SAN/vyplab/alb_projects/data/4su_tdp_f210i/fastq_locations_4su.csv
 # master directory in which output from individual rules is stored (within individual subdirectories, unless overriden below)
 #the top level output folder where all the output files are going to be written
 #now it will sound insane, but I recommend you use full paths to preserve where the data is stored as configs are saved after runs
@@ -29,6 +29,7 @@ bam_suffix: ".Aligned.sorted.out"
 
 
 majiq_extra_parameters:
+  incremental:
   junc-files-only:
   min-experiments: 3
 majiq_psi_extra_parameters:
