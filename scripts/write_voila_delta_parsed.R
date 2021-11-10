@@ -14,16 +14,16 @@ parse_voila_delta_tsv = function(file_path){
 
     voila_org =  as.data.table(clean_names(fread(file_path)))
     # look for columns with conditional psi
-    condition_psi_cols = colnames(voila_org)[grep("e_psi",colnames(voila_org))]
+    condition_psi_cols = colnames(voila_org)[grep("_mean_psi",colnames(voila_org))]
 
     # this changes depending on the flag we run to majiq
     changed_by_evidence = colnames(voila_org)[grep("p_d_psi_",colnames(voila_org))]
 
 
-    columns_to_split = c("e_d_psi_per_lsv_junction",
-                         changed_by_evidence,
-                         "exons_coords",
-                         "junctions_coords","de_novo_junctions",
+    columns_to_split = c("probability_changing",
+                         "probability_non_changing",
+                         "junctions_coords",
+                         "de_novo_junctions",
                          "ir_coords",condition_psi_cols)
 
     # for some reason....some of this columns didn't show up with me running majiq on the old bam files, different GFF or genome or something is possible route cuase sofor now
@@ -34,11 +34,11 @@ parse_voila_delta_tsv = function(file_path){
     voila_melt = voila_melt[!is.na(e_d_psi_per_lsv_junction)]
     #now to make a unique identifier cmbined the lsv_id and junction coordinates
     voila_melt[,lsv_junc := paste(lsv_id, junctions_coords,sep = "_")]
-    # split the exon_coords to have an exon start and exon end
-    voila_melt[,c("exon_start","exon_end") := tstrsplit(exons_coords, "-")]
+    # split the coords to have a start and an exon end
     # same with the junctions and the retained introns
     voila_melt[,c("junc_start","junc_end") := tstrsplit(junctions_coords, "-")]
     voila_melt[,c("ir_start","ir_end") := tstrsplit(ir_coords, "-")]
+    voila_melt[,paste_into_igv_junction := paste0(chr, ":",junc_start, "-",junc_end)]
     # I find this column irritating
     voila_melt$ucsc_lsv_link = NULL
     # remove these as they're now redundant
@@ -47,12 +47,7 @@ parse_voila_delta_tsv = function(file_path){
     voila_melt$exons_coords = NULL
     # helpful columns
     voila_melt[,junc_dist := abs(as.numeric(junc_start) - as.numeric(junc_end))]
-    voila_melt[,paste_into_igv_junction := paste0(chr, ":",junc_start, "-",junc_end)]
 
-    voila_melt[,exon_length :=abs(as.numeric(exon_start) - as.numeric(exon_end))]
-    voila_melt[,exon_mod_3 := exon_length %% 3]
-    voila_melt[,exon_type := tstrsplit(lsv_id,":")[2]]
-    voila_melt[,exon_type := ifelse(exon_type == "t",'target',"source")]
     # the 5% is the FDR
     setnames(voila_melt,"p_d_psi_0_05_per_lsv_junction", "FDR")
     setnames(voila_melt,"number_gene_name", "gene_name")
