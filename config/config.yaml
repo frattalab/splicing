@@ -29,7 +29,6 @@ bam_suffix: ".Aligned.sorted.out"
 
 
 majiq_extra_parameters:
-  junc-files-only:
   min-experiments: 1
 majiq_psi_extra_parameters:
 extra_voila_parameters:
