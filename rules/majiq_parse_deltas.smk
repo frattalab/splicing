@@ -45,8 +45,8 @@ rule majiq_psi_parse:
         psi_voila_tsv = lambda wildcards: os.path.join(MAJIQ_DIR,"psi_voila_tsv_single",'{sample}' + ".psi.tsv")
     wildcard_constraints:
         sample="|".join(SAMPLE_NAMES)
-    # conda:
-    #     "../envs/splicing_dependencies.yml"
+    conda:
+        "../envs/splicing_dependencies.yml"
     output:
         parsed_csv = os.path.join(MAJIQ_DIR,"psi_voila_tsv_single",'{sample}' + "_parsed.csv")
     shell:
