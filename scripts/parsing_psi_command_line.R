@@ -28,7 +28,7 @@ parse_voila_tsv = function(file_path){
         #the splitting and melting can produce non unique rows, so remove those
         voila_melt = unique(voila_melt)
         #also can result in some rows that have NA in their psi columns
-        voila_melt = voila_melt[!is.na(e_psi_per_lsv_junction)]
+        voila_melt = voila_melt[!is.na(mean_psi_per_lsv_junction)]
         # split the exon_coords to have an exon start and exon end
         # same with the junctions and the retained introns
         #now to make a unique identifier cmbined the lsv_id and junction coordinates
