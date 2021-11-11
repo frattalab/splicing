@@ -16,11 +16,9 @@ parse_voila_delta_tsv = function(file_path){
     # look for columns with conditional psi
     condition_psi_cols = colnames(voila_org)[grep("_mean_psi",colnames(voila_org))]
 
-    # this changes depending on the flag we run to majiq
-    changed_by_evidence = colnames(voila_org)[grep("p_d_psi_",colnames(voila_org))]
 
-
-    columns_to_split = c("probability_changing",
+    columns_to_split = c("mean_dpsi_per_lsv_junction",
+                        "probability_changing",
                          "probability_non_changing",
                          "junctions_coords",
                          "de_novo_junctions",
@@ -31,14 +29,14 @@ parse_voila_delta_tsv = function(file_path){
     #the splitting and melting can produce non unique rows, so remove those
     voila_melt = unique(voila_melt)
     #also can result in some rows that have NA in their psi columns
-    voila_melt = voila_melt[!is.na(e_d_psi_per_lsv_junction)]
+    voila_melt = voila_melt[!is.na(probability_changing)]
     #now to make a unique identifier cmbined the lsv_id and junction coordinates
     voila_melt[,lsv_junc := paste(lsv_id, junctions_coords,sep = "_")]
     # split the coords to have a start and an exon end
     # same with the junctions and the retained introns
     voila_melt[,c("junc_start","junc_end") := tstrsplit(junctions_coords, "-")]
     voila_melt[,c("ir_start","ir_end") := tstrsplit(ir_coords, "-")]
-    voila_melt[,paste_into_igv_junction := paste0(chr, ":",junc_start, "-",junc_end)]
+    voila_melt[,paste_into_igv_junction := paste0(seqid, ":",junc_start, "-",junc_end)]
     # I find this column irritating
     voila_melt$ucsc_lsv_link = NULL
     # remove these as they're now redundant
@@ -48,11 +46,6 @@ parse_voila_delta_tsv = function(file_path){
     # helpful columns
     voila_melt[,junc_dist := abs(as.numeric(junc_start) - as.numeric(junc_end))]
 
-    # the 5% is the FDR
-    setnames(voila_melt,"p_d_psi_0_05_per_lsv_junction", "FDR")
-    setnames(voila_melt,"number_gene_name", "gene_name")
-    # rename that column to something shorter
-    setnames(voila_melt,"e_d_psi_per_lsv_junction","deltaPSI")
 
 
     return(voila_melt)
