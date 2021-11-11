@@ -52,7 +52,6 @@ parse_voila_tsv = function(file_path){
 
         # this is a useless column for us
         voila_melt$lsv_type = NULL
-        setnames(voila_melt,"number_gene_name", "gene_name")
 
         return(voila_melt)
     } else{
