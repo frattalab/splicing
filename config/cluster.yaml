@@ -52,8 +52,8 @@ majiq_annotate_junctions:
     tmem:   4G
     h_rt: 72:00:00
 majiq_psi_parse:
-    h_vmem:   2G
-    tmem:   2G
+    h_vmem:   4G
+    tmem:   4G
     h_rt: 72:00:00
 star_tabs_to_beds:
     h_vmem:   1G
