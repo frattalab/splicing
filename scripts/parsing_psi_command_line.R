@@ -45,7 +45,7 @@ parse_voila_tsv = function(file_path){
         voila_melt$exons_coords = NULL
 
         # helpful column
-        voila_melt[,paste_into_igv_junction := paste0(chr, ":",junc_start, "-",junc_end)]
+        voila_melt[,paste_into_igv_junction := paste0(seqid, ":",junc_start, "-",junc_end)]
         # add on the target or source
         voila_melt[,exon_type := tstrsplit(lsv_type,"|")[1]]
         voila_melt[,exon_type := ifelse(exon_type == "t",'target',"source")]
