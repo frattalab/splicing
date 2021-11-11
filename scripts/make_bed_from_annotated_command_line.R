@@ -16,23 +16,23 @@ make_bed_from_annotated <- function(parsed_file,
     #keep only the junction types in the junction_types arguemnt
     if(only_up_in_case){
         #keep only the junctions increasing the case condition
-        annotated_junctions = annotated_junctions[deltaPSI >0]
+        annotated_junctions = annotated_junctions[mean_dpsi_per_lsv_junction >0]
     }
     annotated_junctions = annotated_junctions[junc_cat %in% junction_types]
     #get the psi columns
-    condition_psi_cols = colnames(annotated_junctions)[grep("e_psi",colnames(annotated_junctions))]
+    condition_psi_cols = colnames(annotated_junctions)[grep("mean_psi",colnames(annotated_junctions))]
     #the baseline is always the first psi column
     base_psi = condition_psi_cols[1]
     #keep only the junctions with a abs(deltaPSI greater than cutoff)
     if(!is.null(cutoff)){
-        annotated_junctions = annotated_junctions[abs(deltaPSI) > cutoff]
+        annotated_junctions = annotated_junctions[abs(mean_dpsi_per_lsv_junction) > cutoff]
     }
     #make a column of gene name, the junction type, and the base psi
     annotated_junctions[,name := paste0(gene_name,":",junc_cat,"|",get(base_psi))]
     #keep only the relevant things
-    annotated_junctions = unique(annotated_junctions[,.(seqnames,start,end,name,deltaPSI,strand,start,end)])
+    annotated_junctions = unique(annotated_junctions[,.(seqnames,start,end,name,mean_dpsi_per_lsv_junction,strand,start,end)])
     #add colors
-    annotated_junctions[,color := ifelse(deltaPSI > 0, "255,0,0","0,0,255")]
+    annotated_junctions[,color := ifelse(mean_dpsi_per_lsv_junction > 0, "255,0,0","0,0,255")]
     writeLines(bed_header, output_filepath)
     write.table(annotated_junctions, output_filepath,
                 col.names=FALSE,
