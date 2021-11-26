@@ -5,22 +5,8 @@
 #valid identifiers from the column_name column in the sample_csv. The first identifier is always the baseline group
 controls:
   column_name:
-    - group
-  wtBase:
-    - WT_base
-  wtPost:
-    - WT_post
-KDS:
-  column_name:
-    - group
-  wtBase1:
-    - WT_base
-  f210ibase:
-    - F210i_base
-controls3:
-  column_name:
-    - group
-  wtBase2:
-    - WT_base
-  wtDuring:
-    - WT_during
+    - try_one
+  ControlLumbarSpinal:
+    - ControlLumbarSpinal
+  highCrypticCord:
+    - highCrypticCord
