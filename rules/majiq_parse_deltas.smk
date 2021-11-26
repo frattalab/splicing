@@ -22,7 +22,7 @@ MAJIQ_DIR = get_output_dir(config['project_top_level'], config['majiq_top_level'
 rule allParse:
     input:
         expand(os.path.join(MAJIQ_DIR,"psi_voila_tsv_single",'{sample}' + "_parsed.csv"), sample = SAMPLE_NAMES),
-        expand(os.path.join(MAJIQ_DIR,"delta_psi_voila_tsv","{bse}_{contrast}" + "_parsed_psi.tsv"),zip, bse = BASES,contrast = CONTRASTS),
+        expand(os.path.join(MAJIQ_DIR,"delta_psi_voila_tsv","{bse}-{contrast}" + "_parsed_psi.tsv"),zip, bse = BASES,contrast = CONTRASTS),
         # os.path.join(MAJIQ_DIR,"psi_voila_tsv_single/" + "full_PSI.csv"),
 
 
@@ -69,9 +69,9 @@ rule majiq_psi_parse:
 
 rule majiq_finish_deltas:
     input:
-        tsv = lambda wildcards: os.path.join(MAJIQ_DIR,"delta_psi_voila_tsv","{bse}_{contrast}" + ".psi.tsv")
+        tsv = lambda wildcards: os.path.join(MAJIQ_DIR,"delta_psi_voila_tsv","{bse}-{contrast}" + ".psi.tsv")
     output:
-        parsed_tsv = os.path.join(MAJIQ_DIR,"delta_psi_voila_tsv","{bse}_{contrast}" + "_parsed_psi.tsv")
+        parsed_tsv = os.path.join(MAJIQ_DIR,"delta_psi_voila_tsv","{bse}-{contrast}" + "_parsed_psi.tsv")
     conda:
         "../envs/splicing_dependencies.yml"
     params:
