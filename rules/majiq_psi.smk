@@ -19,7 +19,7 @@ MAJIQ_DIR = get_output_dir(config['project_top_level'], config['majiq_top_level'
 
 rule allPSI:
     input:
-        expand(os.path.join(MAJIQ_DIR,"delta_psi_voila_tsv","{bse}_{contrast}" + ".psi.tsv"),zip, bse = BASES,contrast = CONTRASTS),
+        expand(os.path.join(MAJIQ_DIR,"delta_psi_voila_tsv","{bse}-{contrast}" + ".psi.tsv"),zip, bse = BASES,contrast = CONTRASTS),
         # expand(os.path.join(MAJIQ_DIR,"psi",'{group}' + ".psi.voila"),group = GROUPS),
         # expand(os.path.join(MAJIQ_DIR,"psi_single",'{sample}' + ".psi.voila"),sample = SAMPLE_NAMES),
         # expand(os.path.join(MAJIQ_DIR,"psi_voila_tsv_single",'{sample}' + ".psi.tsv"), sample = SAMPLE_NAMES)
@@ -47,8 +47,8 @@ rule majiq_delta_psi:
         base_group_majiq = lambda wildcards: majiq_files_from_contrast(wildcards.bse),
         contrast_group_majiq = lambda wildcards: majiq_files_from_contrast(wildcards.contrast)
     output:
-        os.path.join(MAJIQ_DIR,"delta_psi","{bse}_{contrast}" + ".deltapsi.tsv"),
-        os.path.join(MAJIQ_DIR,"delta_psi","{bse}_{contrast}" + ".deltapsi.voila")
+        os.path.join(MAJIQ_DIR,"delta_psi","{bse}-{contrast}" + ".deltapsi.tsv"),
+        os.path.join(MAJIQ_DIR,"delta_psi","{bse}-{contrast}" + ".deltapsi.voila")
     params:
         majiq_path = config['majiq_path'],
         delta_psi_output_folder = os.path.join(MAJIQ_DIR,"delta_psi"),
@@ -63,9 +63,9 @@ rule majiq_delta_psi:
 rule majiq_delta_psi_tsv:
     input:
     #this is always calling from the column named 'group' in the sample csv file
-        voila_file = lambda wildcards: os.path.join(MAJIQ_DIR,"delta_psi","{bse}_{contrast}" + ".deltapsi.voila")
+        voila_file = lambda wildcards: os.path.join(MAJIQ_DIR,"delta_psi","{bse}-{contrast}" + ".deltapsi.voila")
     output:
-        tsv = os.path.join(MAJIQ_DIR,"delta_psi_voila_tsv","{bse}_{contrast}" + ".psi.tsv")
+        tsv = os.path.join(MAJIQ_DIR,"delta_psi_voila_tsv","{bse}-{contrast}" + ".psi.tsv")
     params:
         voila_path = config['voila_path_old'],
         psi_output_folder = os.path.join(MAJIQ_DIR,"delta_psi_voila_tsv"),
