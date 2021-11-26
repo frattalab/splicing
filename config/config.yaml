@@ -3,7 +3,7 @@ species: human
 read_len: 150
 genome_refcode: GRCh38
 endtype: pe
-sampleCSVpath: /SAN/vyplab/NYGC_ALSFTD/analysis_nygc/NYGC_present.csv 
+sampleCSVpath: /SAN/vyplab/NYGC_ALSFTD/analysis_nygc/finished_samples.csv
 # master directory in which output from individual rules is stored (within individual subdirectories, unless overriden below)
 #the top level output folder where all the output files are going to be written
 #now it will sound insane, but I recommend you use full paths to preserve where the data is stored as configs are saved after runs
@@ -52,13 +52,13 @@ gff3: /SAN/vyplab/vyplab_reference_genomes/annotation/human/GRCh38/gencode.v38.a
 #the path where your samtools is installed
 samtools_path: /share/apps/genomics/samtools-1.9/bin/samtools
 # cufflinks_path: /share/apps/genomics/cufflinks-2.2.1/bin/cufflinks
-majiq_path: /SAN/vyplab/alb_projects/tools/new_majiq/bin/python3 /SAN/vyplab/alb_projects/tools/new_majiq/bin/majiq
-voila_path: /SAN/vyplab/alb_projects/tools/new_majiq/bin/python3 /SAN/vyplab/alb_projects/tools/new_majiq/bin/voila
+majiq_path: /SAN/vyplab/alb_projects/pipelines/splicing/env/bin/python3 /SAN/vyplab/alb_projects/pipelines/splicing/env/bin/majiq
+voila_path: /SAN/vyplab/alb_projects/pipelines/splicing/env/bin/python3 /SAN/vyplab/alb_projects/pipelines/splicing/env/bin/voila
 
 
 
-majiq_path_old: /SAN/vyplab/alb_projects/tools/new_majiq/bin/python3 /SAN/vyplab/alb_projects/tools/new_majiq/bin/majiq
-voila_path_old: /SAN/vyplab/alb_projects/tools/new_majiq/bin/python3 /SAN/vyplab/alb_projects/tools/new_majiq/bin/voila
+majiq_path_old: /SAN/vyplab/alb_projects/pipelines/splicing/env/bin/python3 /SAN/vyplab/alb_projects/pipelines/splicing/env/bin/majiq
+voila_path_old: /SAN/vyplab/alb_projects/pipelines/splicing/env/bin/python3 /SAN/vyplab/alb_projects/pipelines/splicing/env/bin/voila
 #########################
 ## Scallop PARAMETERS
 #########################
