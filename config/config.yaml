@@ -7,7 +7,7 @@ sampleCSVpath: /SAN/vyplab/alb_projects/data/tdp_glia/tdp_glia.csv
 # master directory in which output from individual rules is stored (within individual subdirectories, unless overriden below)
 #the top level output folder where all the output files are going to be written
 #now it will sound insane, but I recommend you use full paths to preserve where the data is stored as configs are saved after runs
-project_top_level:   /SAN/vyplab/NYGC_ALSFTD/analysis_nygc/
+project_top_level:   /SAN/vyplab/alb_projects/data/tdp_glia/
 #below you can specify the names of rulesubdirectories
 #if the provided path string is RELATIVE, the string will be joined with project_top_level to form the output directory path
 #if the provided path string is ABSOLUTE, the output for the given rule will be stored in the provided string (NOT WITHIN project_top_level)
@@ -29,8 +29,6 @@ bam_suffix: ""
 
 
 majiq_extra_parameters:
-  min-experiments: 5
-  junc-files-only:
 majiq_psi_extra_parameters:
 extra_voila_parameters:
   threshold: "0.1"
