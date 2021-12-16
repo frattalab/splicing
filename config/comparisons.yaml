@@ -5,8 +5,16 @@
 #valid identifiers from the column_name column in the sample_csv. The first identifier is always the baseline group
 controls:
   column_name:
-    - try_one
-  ControlLumbarSpinal:
-    - ControlLumbarSpinal
-  highCrypticCord:
-    - highCrypticCord
+    - group
+  ControlNonActive:
+    - Control_Non-activated
+  ControlActive:
+    - Control_Activated
+versusKD:
+  column_name:
+    - group
+  ControlNonActive:
+    - Control_Non-activated
+  ControlActive:
+    - Control_Activated
+
