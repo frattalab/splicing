@@ -21,8 +21,8 @@ rule allPSI:
     input:
         expand(os.path.join(MAJIQ_DIR,"delta_psi_voila_tsv","{bse}-{contrast}" + ".psi.tsv"),zip, bse = BASES,contrast = CONTRASTS),
         expand(os.path.join(MAJIQ_DIR,"psi",'{group}' + ".psi.voila"),group = GROUPS),
-        expand(os.path.join(MAJIQ_DIR,"psi_single",'{sample}' + ".psi.voila"),sample = SAMPLE_NAMES),
-        expand(os.path.join(MAJIQ_DIR,"psi_voila_tsv_single",'{sample}' + ".psi.tsv"), sample = SAMPLE_NAMES)
+        # expand(os.path.join(MAJIQ_DIR,"psi_single",'{sample}' + ".psi.voila"),sample = SAMPLE_NAMES),
+        # expand(os.path.join(MAJIQ_DIR,"psi_voila_tsv_single",'{sample}' + ".psi.tsv"), sample = SAMPLE_NAMES)
 
 rule majiq_psi:
     input:
@@ -40,7 +40,7 @@ rule majiq_psi:
         """
         mkdir -p {params.psi_output_folder}
         {params.majiq_path} psi {input.group_majiq} -j {threads} -o {params.psi_output_folder} -n {wildcards.group}
-#         """
+        """
 rule majiq_delta_psi:
     input:
         majiq_config_file = MAJIQ_DIR + config['run_name'] + "_majiqConfig.tsv",
@@ -77,24 +77,25 @@ rule majiq_delta_psi_tsv:
         {params.voila_path} tsv {params.splice_graph} {input.voila_file} -f {output.tsv} {params.extra_voila_paramters}
         """
 
-rule majiq_single_psi:
-    input:
-        group_majiq = lambda wildcards: os.path.join(MAJIQ_DIR,"builder",wildcards.sample + ".majiq")
-    output:
-        voila = os.path.join(MAJIQ_DIR,"psi_single",'{sample}' + ".psi.voila"),
-        tsv = os.path.join(MAJIQ_DIR,"psi_single",'{sample}' + ".psi.tsv")
-    params:
-        majiq_path = config['majiq_path'],
-        psi_output_folder = os.path.join(MAJIQ_DIR,"psi_single"),
-        test = lambda wildcards: wildcards.sample.replace(config['bam_suffix'],"")
-    threads:
-        4
-    shell:
-        """
-        mkdir -p {params.psi_output_folder}
-        echo {params.test}
-        {params.majiq_path} psi {input.group_majiq} -j {threads} -o {params.psi_output_folder} -n {params.test}
-        """
+# rule majiq_single_psi:
+#     input:
+#         group_majiq = lambda wildcards: os.path.join(MAJIQ_DIR,"builder",wildcards.sample + ".majiq")
+#     output:
+#         voila = os.path.join(MAJIQ_DIR,"psi_single",'{sample}.replace(config['bam_suffix'],"") + ".psi.voila"),
+#         tsv = os.path.join(MAJIQ_DIR,"psi_single",'{sample}' + ".psi.tsv")
+#     params:
+#         majiq_path = config['majiq_path'],
+#         psi_output_folder = os.path.join(MAJIQ_DIR,"psi_single"),
+#         test = lambda wildcards: wildcards.sample.replace(config['bam_suffix'],"")
+#     threads:
+#         4
+#     shell:
+#         """
+#         mkdir -p {params.psi_output_folder}
+#         echo {params.test}
+#         {params.majiq_path} psi {input.group_majiq} -j {threads} -o {params.psi_output_folder} -n {params.test}
+#       """
+
 rule majiq_psi_tsv:
     input:
     #this is always calling from the column named 'group' in the sample csv file
