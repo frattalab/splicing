@@ -14,7 +14,7 @@ versusKD:
   column_name:
     - group
   ControlNon:
-    - Non-activated_TDP43KD
+    - Non-activated_Control
   TDPKDnon:
     - Non-activated_TDP43KD
 
