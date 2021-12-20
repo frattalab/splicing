@@ -7,14 +7,14 @@ controls:
   column_name:
     - group
   ControlNonActive:
-    - Control_Non_activated
+    - Non-activated_Control
   ControlActive:
-    - Control_Activated
+    - Activated_Control
 versusKD:
   column_name:
     - group
   ControlNon:
-    - Control_Non_activated
+    - Non-activated_TDP43KD
   TDPKDnon:
-    - TDP43_KD_Non_activated
+    - Non-activated_TDP43KD
 
