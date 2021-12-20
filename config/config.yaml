@@ -25,7 +25,7 @@ scallop_strand: empty
 
 #what's between the sample name and the end of the bam?
 #Mine all look like this M323K_HET_1_unique_rg_fixed.bam so my suffix is _unique_rg_fixed.bam
-bam_suffix: ".Aligned.sorted.out."
+bam_suffix: ".Aligned.sorted.out"
 
 
 majiq_extra_parameters:
