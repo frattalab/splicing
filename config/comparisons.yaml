@@ -13,8 +13,8 @@ controls:
 versusKD:
   column_name:
     - group
-  ControlNonActive:
+  ControlNon:
     - Control_Non-activated
-  ControlActive:
-    - Control_Activated
+  TDPKDnon:
+    - TDP43_KD_Non-activated
 
