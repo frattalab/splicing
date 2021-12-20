@@ -20,6 +20,7 @@ else
 fi
 
 FOLDER=submissions/$(date +"%Y%m%d%H%M")
+##TODO parse the yaml to get the project_top_level
 
 mkdir -p ${FOLDER}
 cp config/config.yaml ${FOLDER}/${RUN_NAME}_config.yaml
