@@ -86,12 +86,14 @@ rule majiq_single_psi:
     params:
         majiq_path = config['majiq_path'],
         psi_output_folder = os.path.join(MAJIQ_DIR,"psi_single"),
+        test = wildcards.sample.str2.replace(config['bam_suffix'],"")
     threads:
         4
     shell:
         """
         mkdir -p {params.psi_output_folder}
-        {params.majiq_path} psi {input.group_majiq} -j {threads} -o {params.psi_output_folder} -n {wildcards.sample}
+        echo {params.test}
+        {params.majiq_path} psi {input.group_majiq} -j {threads} -o {params.psi_output_folder} -n {params.test}
         """
 rule majiq_psi_tsv:
     input:
