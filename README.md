@@ -68,8 +68,9 @@ After that, I've included a column saying which litter the mice came from, but I
 
 To compare groups, we need to go int the config/comparisons.yaml and edit it
 
-Here's an example from the sample sheet above
+Here's an example from the sample sheet above:
 
+```
 knockdownexperiment:
   column_name:
     - group
@@ -94,6 +95,9 @@ litterComparison:
     - three
     - four
     - five
+```
+
+Make sure there is a space between the "-" and the value when you're creating the YAML or it won't be a properly formatted YAML list and the pipeline won't work.
 
 ## Making the config
 
