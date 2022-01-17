@@ -41,6 +41,7 @@ rule majiq_psi:
         mkdir -p {params.psi_output_folder}
         {params.majiq_path} psi {input.group_majiq} -j {threads} -o {params.psi_output_folder} -n {wildcards.group}
         """
+
 rule majiq_delta_psi:
     input:
         majiq_config_file = MAJIQ_DIR + config['run_name'] + "_majiqConfig.tsv",
