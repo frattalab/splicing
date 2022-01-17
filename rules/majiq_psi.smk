@@ -82,7 +82,7 @@ rule majiq_single_psi:
     input:
         group_majiq = lambda wildcards: os.path.join(MAJIQ_DIR,"builder",wildcards.sample + ".majiq")
     output:
-        voila = os.path.join(MAJIQ_DIR,"psi_single",'{sample}.replace(config['bam_suffix'],"") + ".psi.voila"),
+        # voila = os.path.join(MAJIQ_DIR,"psi_single","{sample}.replace(config['bam_suffix'],"") + ".psi.voila")),
         tsv = os.path.join(MAJIQ_DIR,"psi_single",'{sample}' + ".psi.tsv")
     conda:
         "../envs/splicing_dependencies.yml"
