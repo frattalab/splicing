@@ -1,18 +1,18 @@
 
 species: human
-read_len: 150
+read_len: 100
 genome_refcode: GRCh38
 endtype: pe
-sampleCSVpath: /SAN/vyplab/alb_projects/data/tdp_glia/tdp_glia.csv
+sampleCSVpath: /SAN/vyplab/first_weeks/TDP_CHX_CLONES_GLIA/sample_sheet.csv
 # master directory in which output from individual rules is stored (within individual subdirectories, unless overriden below)
 #the top level output folder where all the output files are going to be written
 #now it will sound insane, but I recommend you use full paths to preserve where the data is stored as configs are saved after runs
-project_top_level:   /SAN/vyplab/alb_projects/data/tdp_glia/
+project_top_level:   /SAN/vyplab/first_weeks/TDP_CHX_CLONES_GLIA/
 #below you can specify the names of rulesubdirectories
 #if the provided path string is RELATIVE, the string will be joined with project_top_level to form the output directory path
 #if the provided path string is ABSOLUTE, the output for the given rule will be stored in the provided string (NOT WITHIN project_top_level)
 #In practice leaving as relative defaults is best option...
-run_name: glia
+run_name: tdp_splicing
 majiq_top_level: majiq/
 #directory of all the already aligned bam files, this is necessary for building the majic data index from this data
 bam_dir: /SAN/vyplab/first_weeks/TDP_CHX_CLONES_GLIA/STAR_aligned/
