@@ -46,7 +46,7 @@ rule majiq_psi_parse:
     wildcard_constraints:
         sample="|".join(SAMPLE_NAMES)
     conda:
-        "../envs/splicing_env.yml"
+        "../envs/splicing_dependencies.yml"
     output:
         parsed_csv = os.path.join(MAJIQ_DIR,"psi_voila_tsv_single",'{sample}' + "_parsed.csv")
     shell:
@@ -73,7 +73,7 @@ rule majiq_finish_deltas:
     output:
         parsed_tsv = os.path.join(MAJIQ_DIR,"delta_psi_voila_tsv","{bse}-{contrast}" + "_parsed_psi.tsv")
     conda:
-        "../envs/splicing_env.yml"
+        "../envs/splicing_dependencies.yml"
     params:
         psi_output_folder = os.path.join(MAJIQ_DIR,"delta_psi_voila_tsv")
     shell:
