@@ -28,8 +28,8 @@ majiq_psi:
     h_rt: 72:00:00
     submission_string: "-pe smp 2 -R y"
 majiq_single_psi:
-    h_vmem:   2G
-    tmem:   2G
+    h_vmem:   3G
+    tmem:   3G
     h_rt: 72:00:00
     submission_string: "-pe smp 2 -R y"
 majiq_psi_tsv:
