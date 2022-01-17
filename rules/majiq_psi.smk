@@ -10,7 +10,7 @@ localrules: create_majiq_config_file
 samples = pd.read_csv(config['sampleCSVpath'])
 samples2 = samples.loc[samples.exclude_sample_downstream_analysis != 1]
 SAMPLE_NAMES = list(set(samples2['sample_name'] + config['bam_suffix']))
-SAMPLE_NAMES_NOPERIODS = list(set(samples2['sample_name']]))
+SAMPLE_NAMES_NOPERIODS = list(set(samples2['sample_name']))
 
 GROUPS = list(set(samples2['group']))
 
