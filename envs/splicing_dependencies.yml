@@ -12,3 +12,4 @@ dependencies:
   - bioconductor-genomicfeatures
   - r-splitstackshape
   - r-janitor
+  - samtools
