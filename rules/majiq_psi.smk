@@ -91,7 +91,7 @@ rule majiq_single_psi:
     params:
         majiq_path = config['majiq_path'],
         psi_output_folder = os.path.join(MAJIQ_DIR,"psi_single"),
-        test = lambda wildcards: wildcards.sample
+        test = lambda wildcards: wildcards.sample.replace(".","_")
     threads:
         4
     shell:
