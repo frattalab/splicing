@@ -23,7 +23,7 @@ rule allPSI:
     input:
         expand(os.path.join(MAJIQ_DIR,"delta_psi_voila_tsv","{bse}-{contrast}" + ".psi.tsv"),zip, bse = BASES,contrast = CONTRASTS),
         expand(os.path.join(MAJIQ_DIR,"psi",'{group}' + ".psi.voila"),group = GROUPS),
-        expand(os.path.join(MAJIQ_DIR,"psi_single","{sample}" + ".psi.DONE"), sample = SAMPLE_NAMES_NOPERIODS)
+        expand(os.path.join(MAJIQ_DIR,"psi_single","{sample}" + ".psi.voila"), sample = SAMPLE_NAMES_NOPERIODS)
         # expand(os.path.join(MAJIQ_DIR,"psi_voila_tsv_single",'{sample}' + ".psi.tsv"), sample = SAMPLE_NAMES)
 
 rule majiq_psi:
@@ -84,23 +84,21 @@ rule majiq_single_psi:
     input:
         group_majiq = lambda wildcards: os.path.join(MAJIQ_DIR,"builder",wildcards.sample + config['bam_suffix'] + ".majiq")
     output:
-        voila =  os.path.join(MAJIQ_DIR,"psi_single","{sample}" + ".psi.DONE")
+        voila =  os.path.join(MAJIQ_DIR,"psi_single","{sample}" + ".psi.voila")
         # whatever = os.path.join(MAJIQ_DIR,"psi_single",'{sample}' + ".psi.voila")
     conda:
         "../envs/splicing_dependencies.yml"
     params:
         majiq_path = config['majiq_path'],
         psi_output_folder = os.path.join(MAJIQ_DIR,"psi_single"),
-        test = lambda wildcards: wildcards.sample.replace(".","_")
+        pretty_name = lambda wildcards: wildcards.sample.replace(".","_"),
+        pretty_name_full = lambda wildcards: os.path.join(MAJIQ_DIR,"psi_single",wildcards.sample.replace(".","_") + "psi.voila")
     threads:
         4
     shell:
         """
         mkdir -p {params.psi_output_folder}
-        echo {params.test}
-        echo {output.voila}
-        {params.majiq_path} psi {input.group_majiq} -j {threads} -o {params.psi_output_folder} -n {params.test}
-        touch {output.voila}
+        {params.majiq_path} psi {input.group_majiq} -j {threads} -o {params.psi_output_folder} -n {params.pretty_name} && mv {params.pretty_name_full} {output.voila}
       """
 
 rule majiq_psi_tsv:
