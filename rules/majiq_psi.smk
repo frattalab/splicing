@@ -82,7 +82,7 @@ rule majiq_single_psi:
     input:
         group_majiq = lambda wildcards: os.path.join(MAJIQ_DIR,"builder",wildcards.sample + ".majiq")
     output:
-        # voila = os.path.join(MAJIQ_DIR,"psi_single","{sample}.replace(config['bam_suffix'],"") + ".psi.voila")),
+        voila = os.path.join(MAJIQ_DIR,"psi_single","{sample}".replace(config['bam_suffix'],"") + ".psi.voila")),
         os.path.join(MAJIQ_DIR,"psi_single",'{sample}' + ".psi.tsv"),
         os.path.join(MAJIQ_DIR,"psi_single",'{sample}' + ".psi.voila")
     conda:
@@ -97,6 +97,7 @@ rule majiq_single_psi:
         """
         mkdir -p {params.psi_output_folder}
         echo {params.test}
+        echo {output.voila}
         {params.majiq_path} psi {input.group_majiq} -j {threads} -o {params.psi_output_folder} -n {params.test}
       """
 
