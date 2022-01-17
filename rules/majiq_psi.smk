@@ -24,7 +24,7 @@ rule allPSI:
         expand(os.path.join(MAJIQ_DIR,"delta_psi_voila_tsv","{bse}-{contrast}" + ".psi.tsv"),zip, bse = BASES,contrast = CONTRASTS),
         expand(os.path.join(MAJIQ_DIR,"psi",'{group}' + ".psi.voila"),group = GROUPS),
         expand(os.path.join(MAJIQ_DIR,"psi_single","{sample}" + ".psi.voila"), sample = SAMPLE_NAMES_NOPERIODS)
-        # expand(os.path.join(MAJIQ_DIR,"psi_voila_tsv_single",'{sample}' + ".psi.tsv"), sample = SAMPLE_NAMES)
+        expand(os.path.join(MAJIQ_DIR,"psi_voila_tsv_single",'{sample}' + ".psi.tsv"), sample = SAMPLE_NAMES_NOPERIODS)
 
 rule majiq_psi:
     input:
@@ -92,7 +92,7 @@ rule majiq_single_psi:
         majiq_path = config['majiq_path'],
         psi_output_folder = os.path.join(MAJIQ_DIR,"psi_single"),
         pretty_name = lambda wildcards: wildcards.sample.replace(".","_"),
-        pretty_name_full = lambda wildcards: os.path.join(MAJIQ_DIR,"psi_single",wildcards.sample.replace(".","_") + "psi.voila")
+        pretty_name_full = lambda wildcards: os.path.join(MAJIQ_DIR,"psi_single",wildcards.sample.replace(".","_") + ".psi.voila")
     threads:
         4
     shell:
