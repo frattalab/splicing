@@ -82,7 +82,7 @@ rule majiq_delta_psi_tsv:
 
 rule majiq_single_psi:
     input:
-        group_majiq = lambda wildcards: os.path.join(MAJIQ_DIR,"builder",wildcards.sample + config['bam_suffix'] + ".majiq")
+        group_majiq = lambda wildcards: os.path.join(MAJIQ_DIR,"builder",wildcards.sample.replace(".","_") + config['bam_suffix'] + ".majiq")
     output:
         voila =  os.path.join(MAJIQ_DIR,"psi_single","{sample}" + ".psi.voila")
         # whatever = os.path.join(MAJIQ_DIR,"psi_single",'{sample}' + ".psi.voila")
