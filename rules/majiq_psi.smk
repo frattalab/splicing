@@ -10,7 +10,7 @@ localrules: create_majiq_config_file
 samples = pd.read_csv(config['sampleCSVpath'])
 samples2 = samples.loc[samples.exclude_sample_downstream_analysis != 1]
 SAMPLE_NAMES = list(set(samples2['sample_name'] + config['bam_suffix']))
-SAMPLE_NAMES_NOP = list(set(samples2['sample_name'].replace(".","_")))
+SAMPLE_NAMES_NOPERIODS = list(set([x.replace(".","_") for x in samples2['sample_name']]))
 
 GROUPS = list(set(samples2['group']))
 
@@ -23,7 +23,7 @@ rule allPSI:
     input:
         expand(os.path.join(MAJIQ_DIR,"delta_psi_voila_tsv","{bse}-{contrast}" + ".psi.tsv"),zip, bse = BASES,contrast = CONTRASTS),
         expand(os.path.join(MAJIQ_DIR,"psi",'{group}' + ".psi.voila"),group = GROUPS),
-        expand(os.path.join(MAJIQ_DIR,"psi_single","{sample}" + ".psi.voila"), sample = SAMPLE_NAMES_NOP)
+        expand(os.path.join(MAJIQ_DIR,"psi_single","{sample}" + ".psi.voila"), sample = SAMPLE_NAMES_NOPERIODS)
         # expand(os.path.join(MAJIQ_DIR,"psi_voila_tsv_single",'{sample}' + ".psi.tsv"), sample = SAMPLE_NAMES)
 
 rule majiq_psi:
@@ -84,7 +84,7 @@ rule majiq_single_psi:
     input:
         group_majiq = lambda wildcards: os.path.join(MAJIQ_DIR,"builder",wildcards.sample + config['bam_suffix'] + ".majiq")
     output:
-        voila = os.path.join(MAJIQ_DIR,"psi_single","{sample}" + ".psi.voila"),
+        voila =  os.path.join(MAJIQ_DIR,"psi_single","{sample}" + ".psi.voila")
         # whatever = os.path.join(MAJIQ_DIR,"psi_single",'{sample}' + ".psi.voila")
     conda:
         "../envs/splicing_dependencies.yml"
