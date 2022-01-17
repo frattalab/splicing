@@ -78,24 +78,26 @@ rule majiq_delta_psi_tsv:
         {params.voila_path} tsv {params.splice_graph} {input.voila_file} -f {output.tsv} {params.extra_voila_paramters}
         """
 
-# rule majiq_single_psi:
-#     input:
-#         group_majiq = lambda wildcards: os.path.join(MAJIQ_DIR,"builder",wildcards.sample + ".majiq")
-#     output:
-#         voila = os.path.join(MAJIQ_DIR,"psi_single",'{sample}.replace(config['bam_suffix'],"") + ".psi.voila"),
-#         tsv = os.path.join(MAJIQ_DIR,"psi_single",'{sample}' + ".psi.tsv")
-#     params:
-#         majiq_path = config['majiq_path'],
-#         psi_output_folder = os.path.join(MAJIQ_DIR,"psi_single"),
-#         test = lambda wildcards: wildcards.sample.replace(config['bam_suffix'],"")
-#     threads:
-#         4
-#     shell:
-#         """
-#         mkdir -p {params.psi_output_folder}
-#         echo {params.test}
-#         {params.majiq_path} psi {input.group_majiq} -j {threads} -o {params.psi_output_folder} -n {params.test}
-#       """
+rule majiq_single_psi:
+    input:
+        group_majiq = lambda wildcards: os.path.join(MAJIQ_DIR,"builder",wildcards.sample + ".majiq")
+    output:
+        voila = os.path.join(MAJIQ_DIR,"psi_single",'{sample}.replace(config['bam_suffix'],"") + ".psi.voila"),
+        tsv = os.path.join(MAJIQ_DIR,"psi_single",'{sample}' + ".psi.tsv")
+    conda:
+        "../envs/splicing_dependencies.yml"
+    params:
+        majiq_path = config['majiq_path'],
+        psi_output_folder = os.path.join(MAJIQ_DIR,"psi_single"),
+        test = lambda wildcards: wildcards.sample.replace(config['bam_suffix'],"")
+    threads:
+        4
+    shell:
+        """
+        mkdir -p {params.psi_output_folder}
+        echo {params.test}
+        {params.majiq_path} psi {input.group_majiq} -j {threads} -o {params.psi_output_folder} -n {params.test}
+      """
 
 rule majiq_psi_tsv:
     input:
