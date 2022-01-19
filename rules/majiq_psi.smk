@@ -9,7 +9,6 @@ localrules: create_majiq_config_file
 #reading in the samples and dropping the samples to be excluded in order to get a list of sample names
 samples = pd.read_csv(config['sampleCSVpath'])
 samples2 = samples.loc[samples.exclude_sample_downstream_analysis != 1]
-SAMPLE_NAMES = list(set(samples2['sample_name'] + config['bam_suffix']))
 SAMPLE_NAMES_NOPERIODS = list(set(samples2['sample_name']))
 
 GROUPS = list(set(samples2['group']))
@@ -24,7 +23,7 @@ rule allPSI:
         expand(os.path.join(MAJIQ_DIR,"delta_psi_voila_tsv","{bse}-{contrast}" + ".psi.tsv"),zip, bse = BASES,contrast = CONTRASTS),
         expand(os.path.join(MAJIQ_DIR,"psi",'{group}' + ".psi.voila"),group = GROUPS),
         expand(os.path.join(MAJIQ_DIR,"psi_single","{sample}" + config['bam_suffix'] + ".psi.voila"), sample = SAMPLE_NAMES_NOPERIODS),
-        expand(os.path.join(MAJIQ_DIR,"psi_voila_tsv_single",'{sample}' + ".psi.tsv"), sample = SAMPLE_NAMES)
+        expand(os.path.join(MAJIQ_DIR,"psi_voila_tsv_single",'{sample}' + ".psi.tsv"), sample = SAMPLE_NAMES_NOPERIODS)
 
 rule majiq_psi:
     input:
@@ -105,16 +104,17 @@ rule majiq_single_psi:
 
 rule majiq_psi_tsv:
     input:
-    #this is always calling from the column named 'group' in the sample csv file
-        voila_file = lambda wildcards: os.path.join(MAJIQ_DIR,"psi_single",'{sample}' + ".psi.voila")
+        voila_file = lambda wildcards: os.path.join(MAJIQ_DIR,"psi_single","{sample}" + config['bam_suffix'] + ".psi.voila")
     output:
-        tsv = os.path.join(MAJIQ_DIR,"psi_voila_tsv_single",'{sample}' + ".psi.tsv")
+        tsv =os.path.join(MAJIQ_DIR,"psi_single","{sample}" + config['bam_suffix'] + ".psi.tsv")
     params:
         voila_path = config['voila_path_old'],
         psi_output_folder = os.path.join(MAJIQ_DIR,"psi_voila_tsv_single"),
-        splice_graph = os.path.join(MAJIQ_DIR,"builder", "splicegraph.sql")
+        splice_graph = os.path.join(MAJIQ_DIR,"builder", "splicegraph.sql"),
+        pretty_name = lambda wildcards: wildcards.sample.replace(".","_").replace("-","_"),
+        pretty_name_full = lambda wildcards: os.path.join(MAJIQ_DIR,"psi_single",wildcards.sample.replace(".","_").replace("-","_") + ".psi.tsv")
     shell:
         """
         mkdir -p {params.psi_output_folder}
-        {params.voila_path} tsv {params.splice_graph} {input.voila_file} -f {output.tsv}
+        {params.voila_path} tsv {params.splice_graph} {input.voila_file} -f {params.pretty_name} && mv {params.pretty_name_full} {output.tsv}
         """
