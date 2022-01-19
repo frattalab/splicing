@@ -10,7 +10,7 @@ localrules: create_majiq_config_file
 samples = pd.read_csv(config['sampleCSVpath'])
 samples2 = samples.loc[samples.exclude_sample_downstream_analysis != 1]
 SAMPLE_NAMES = list(set(samples2['sample_name'] + config['bam_suffix']))
-SAMPLE_NAMES_NOPERIODS = list(set([x.replace("-","_",) for x in samples2['sample_name']]))
+SAMPLE_NAMES_NOPERIODS = list(set(samples2['sample_name']))
 
 GROUPS = list(set(samples2['group']))
 
@@ -93,8 +93,8 @@ rule majiq_single_psi:
     params:
         majiq_path = config['majiq_path'],
         psi_output_folder = os.path.join(MAJIQ_DIR,"psi_single"),
-        pretty_name = lambda wildcards: wildcards.sample.replace(".","_"),
-        pretty_name_full = lambda wildcards: os.path.join(MAJIQ_DIR,"psi_single",wildcards.sample.replace(".","_") + ".psi.voila")
+        pretty_name = lambda wildcards: wildcards.sample.replace(".","_").replace("-","_"),
+        pretty_name_full = lambda wildcards: os.path.join(MAJIQ_DIR,"psi_single",wildcards.sample.replace(".","_").replace("-","_") + ".psi.voila")
     threads:
         4
     shell:
