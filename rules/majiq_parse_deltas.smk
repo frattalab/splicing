@@ -58,7 +58,7 @@ rule majiq_psi_single_parse:
 
 rule majiq_psi_group_parse:
     input:
-        psi_voila_tsv = lambda wildcards: os.path.join(MAJIQ_DIR,"group",'{group}' + ".psi.tsv")
+        psi_voila_tsv = lambda wildcards: os.path.join(MAJIQ_DIR,"psi",'{group}' + ".psi.tsv")
     wildcard_constraints:
         sample="|".join(SAMPLE_NAMES_NOPERIODS)
     conda:
