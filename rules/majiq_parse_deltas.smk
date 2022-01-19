@@ -12,6 +12,7 @@ include: "helpers.py"
 samples = pd.read_csv(config['sampleCSVpath'])
 samples2 = samples.loc[samples.exclude_sample_downstream_analysis != 1]
 SAMPLE_NAMES = list(set(samples2['sample_name'] + config['bam_suffix']))
+SAMPLE_NAMES_NOPERIODS = list(set(samples2['sample_name']))
 SJ_NAMES  = list(set(samples2['sample_name']))
 print(SAMPLE_NAMES)
 GROUPS = list(set(samples2['group']))
@@ -21,7 +22,8 @@ MAJIQ_DIR = get_output_dir(config['project_top_level'], config['majiq_top_level'
 
 rule allParse:
     input:
-        # expand(os.path.join(MAJIQ_DIR,"psi_voila_tsv_single",'{sample}' + "_parsed.csv"), sample = SAMPLE_NAMES),
+        expand(os.path.join(MAJIQ_DIR,"psi_voila_tsv_single",'{sample}' + "_parsed.csv"), sample = SAMPLE_NAMES_NOPERIODS),
+        expand(os.path.join(MAJIQ_DIR,"psi",'{group}' + "_parsed.csv"), group = GROUPS),
         expand(os.path.join(MAJIQ_DIR,"delta_psi_voila_tsv","{bse}-{contrast}" + "_parsed_psi.tsv"),zip, bse = BASES,contrast = CONTRASTS),
         # os.path.join(MAJIQ_DIR,"psi_voila_tsv_single/" + "full_PSI.csv"),
 
@@ -40,15 +42,29 @@ rule allParse:
 #         mkdir -p {params.out_folder}
 #         python3 ./scripts/splicejunction2bed.py -i {input.sj_tab} -o {output.bed}
 #         """
-rule majiq_psi_parse:
+rule majiq_psi_single_parse:
     input:
         psi_voila_tsv = lambda wildcards: os.path.join(MAJIQ_DIR,"psi_voila_tsv_single",'{sample}' + ".psi.tsv")
     wildcard_constraints:
-        sample="|".join(SAMPLE_NAMES)
+        sample="|".join(SAMPLE_NAMES_NOPERIODS)
     conda:
         "../envs/splicing_dependencies.yml"
     output:
         parsed_csv = os.path.join(MAJIQ_DIR,"psi_voila_tsv_single",'{sample}' + "_parsed.csv")
+    shell:
+        """
+        Rscript scripts/parsing_psi_command_line.R --input {input.psi_voila_tsv} -o {output.parsed_csv}
+        """
+
+rule majiq_psi_group_parse:
+    input:
+        psi_voila_tsv = lambda wildcards: os.path.join(MAJIQ_DIR,"group",'{group}' + ".psi.tsv")
+    wildcard_constraints:
+        sample="|".join(SAMPLE_NAMES_NOPERIODS)
+    conda:
+        "../envs/splicing_dependencies.yml"
+    output:
+        parsed_csv = os.path.join(MAJIQ_DIR,"psi",'{group}' + "_parsed.csv")
     shell:
         """
         Rscript scripts/parsing_psi_command_line.R --input {input.psi_voila_tsv} -o {output.parsed_csv}
