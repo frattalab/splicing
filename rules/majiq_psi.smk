@@ -23,7 +23,8 @@ rule allPSI:
         expand(os.path.join(MAJIQ_DIR,"delta_psi_voila_tsv","{bse}-{contrast}" + ".psi.tsv"),zip, bse = BASES,contrast = CONTRASTS),
         expand(os.path.join(MAJIQ_DIR,"psi",'{group}' + ".psi.voila"),group = GROUPS),
         expand(os.path.join(MAJIQ_DIR,"psi_single","{sample}" + config['bam_suffix'] + ".psi.voila"), sample = SAMPLE_NAMES_NOPERIODS),
-        expand(os.path.join(MAJIQ_DIR,"psi_voila_tsv_single",'{sample}' + ".psi.tsv"), sample = SAMPLE_NAMES_NOPERIODS)
+        expand(os.path.join(MAJIQ_DIR,"psi_voila_tsv_single",'{sample}' + config['bam_suffix'] + ".psi.tsv"), sample = SAMPLE_NAMES_NOPERIODS)
+
 rule majiq_psi:
     input:
     #this is always calling from the column named 'group' in the sample csv file
@@ -105,7 +106,7 @@ rule majiq_psi_tsv:
     input:
         voila_file = lambda wildcards: os.path.join(MAJIQ_DIR,"psi_single","{sample}" + config['bam_suffix'] + ".psi.voila")
     output:
-        tsv = os.path.join(MAJIQ_DIR,"psi_voila_tsv_single","{sample}" + config['bam_suffix'] + ".psi.tsv")
+        tsv = os.path.join(MAJIQ_DIR,"psi_voila_tsv_single",'{sample}' + config['bam_suffix'] + ".psi.tsv")
     params:
         voila_path = config['voila_path_old'],
         psi_output_folder = os.path.join(MAJIQ_DIR,"psi_voila_tsv_single"),
