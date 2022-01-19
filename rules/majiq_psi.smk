@@ -25,7 +25,7 @@ rule allPSI:
         expand(os.path.join(MAJIQ_DIR,"psi_single","{sample}" + config['bam_suffix'] + ".psi.voila"), sample = SAMPLE_NAMES_NOPERIODS),
         expand(os.path.join(MAJIQ_DIR,"psi_voila_tsv_single",'{sample}' + config['bam_suffix'] + ".psi.tsv"), sample = SAMPLE_NAMES_NOPERIODS)
 
-rule majiq_psi:
+rule majiq_psi_group:
     input:
     #this is always calling from the column named 'group' in the sample csv file
         group_majiq = lambda wildcards: majiq_files_by_group(wildcards.group)
