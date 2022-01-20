@@ -69,7 +69,7 @@ rule majiq_delta_psi_tsv:
     output:
         tsv = os.path.join(MAJIQ_DIR,"delta_psi_voila_tsv","{bse}-{contrast}" + ".psi.tsv")
     params:
-        voila_path = config['voila_path_old'],
+        voila_path = config['voila_path'],
         psi_output_folder = os.path.join(MAJIQ_DIR,"delta_psi_voila_tsv"),
         splice_graph = os.path.join(MAJIQ_DIR,"builder", "splicegraph.sql"),
         extra_voila_paramters = return_parsed_extra_params(config['extra_voila_parameters'])
@@ -108,13 +108,12 @@ rule majiq_psi_tsv:
     output:
         tsv = os.path.join(MAJIQ_DIR,"psi_voila_tsv_single",'{sample}' + config['bam_suffix'] + ".psi.tsv")
     params:
-        voila_path = config['voila_path_old'],
+        voila_path = config['voila_path'],
         psi_output_folder = os.path.join(MAJIQ_DIR,"psi_voila_tsv_single"),
         splice_graph = os.path.join(MAJIQ_DIR,"builder", "splicegraph.sql"),
-        pretty_name = lambda wildcards: wildcards.sample.replace(".","_").replace("-","_"),
         pretty_name_full = lambda wildcards: os.path.join(MAJIQ_DIR,"psi_single",wildcards.sample.replace(".","_").replace("-","_") + ".psi.tsv")
     shell:
         """
         mkdir -p {params.psi_output_folder}
-        {params.voila_path} tsv {params.splice_graph} {input.voila_file} -f {params.pretty_name} && mv {params.pretty_name_full} {output.tsv}
+        {params.voila_path} tsv {params.splice_graph} {input.voila_file} -f {params.pretty_name_full} && mv {params.pretty_name_full} {output.tsv}
         """
