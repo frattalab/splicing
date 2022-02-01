@@ -23,7 +23,7 @@ MAJIQ_DIR = get_output_dir(config['project_top_level'], config['majiq_top_level'
 rule allParse:
     input:
         expand(os.path.join(MAJIQ_DIR,"psi_voila_tsv_single",'{sample}' + "_parsed.csv"), sample = SAMPLE_NAMES),
-        expand(os.path.join(MAJIQ_DIR,"psi",'{group}' + "_parsed.csv"), group = GROUPS),
+        expand(os.path.join(MAJIQ_DIR,"psi_voila_tsv",'{group}' + "_parsed.csv"), group = GROUPS),
         expand(os.path.join(MAJIQ_DIR,"delta_psi_voila_tsv","{bse}-{contrast}" + "_parsed_psi.tsv"),zip, bse = BASES,contrast = CONTRASTS),
         # os.path.join(MAJIQ_DIR,"psi_voila_tsv_single/" + "full_PSI.csv"),
 
@@ -64,7 +64,7 @@ rule majiq_psi_group_parse:
     conda:
         "../envs/splicing_dependencies.yml"
     output:
-        parsed_csv = os.path.join(MAJIQ_DIR,"psi",'{group}' + "_parsed.csv")
+        parsed_csv = os.path.join(MAJIQ_DIR,"psi_voila_tsv",'{group}' + "_parsed.csv")
     shell:
         """
         Rscript scripts/parsing_psi_command_line.R --input {input.psi_voila_tsv} -o {output.parsed_csv}
