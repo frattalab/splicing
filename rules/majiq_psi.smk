@@ -22,6 +22,7 @@ rule allPSI:
     input:
         expand(os.path.join(MAJIQ_DIR,"delta_psi_voila_tsv","{bse}-{contrast}" + ".psi.tsv"),zip, bse = BASES,contrast = CONTRASTS),
         expand(os.path.join(MAJIQ_DIR,"psi",'{group}' + ".psi.voila"),group = GROUPS),
+        expand(os.path.join(MAJIQ_DIR,"psi_voila_tsv",'{group}' + ".psi.voila"),group = GROUPS),
         expand(os.path.join(MAJIQ_DIR,"psi_single","{sample}" + config['bam_suffix'] + ".psi.voila"), sample = SAMPLE_NAMES_NOPERIODS),
         expand(os.path.join(MAJIQ_DIR,"psi_voila_tsv_single",'{sample}' + config['bam_suffix'] + ".psi.tsv"), sample = SAMPLE_NAMES_NOPERIODS)
 
@@ -42,6 +43,24 @@ rule majiq_psi_group:
         mkdir -p {params.psi_output_folder}
         {params.majiq_path} psi {input.group_majiq} -j {threads} -o {params.psi_output_folder} -n {wildcards.group}
         """
+
+rule majiq_group_psi_tsv:
+    input:
+    #this is always calling from the column named 'group' in the sample csv file
+        voila_file = os.path.join(MAJIQ_DIR,"psi",'{group}' + ".psi.voila")
+    output:
+        tsv = os.path.join(MAJIQ_DIR,"psi_voila_tsv","{bse}-{contrast}" + ".psi.tsv")
+    params:
+        voila_path = config['voila_path'],
+        psi_output_folder = os.path.join(MAJIQ_DIR,"psi_voila_tsv"),
+        splice_graph = os.path.join(MAJIQ_DIR,"builder", "splicegraph.sql"),
+        extra_voila_paramters = return_parsed_extra_params(config['extra_voila_parameters'])
+    shell:
+        """
+        mkdir -p {params.psi_output_folder}
+        {params.voila_path} tsv {params.splice_graph} {input.voila_file} -f {output.tsv} {params.extra_voila_paramters}
+        """
+
 
 rule majiq_delta_psi:
     input:

@@ -64,6 +64,18 @@ I have three groups which I put in the group column, and then I don't have any r
 
 After that, I've included a column saying which litter the mice came from, but I could include as many additional columns as I like.
 
+*PLEASE USE SYNATIC NAMES*
+
+That means NO hyphens and NO periods. 
+
+`M323K_HOM_2` - GOOD
+`M323K.HOM.2` - BAD
+
+
+| sample_name | group | exclude_sample_downstream_analysis | litter |
+|-------------|-------|------------------------------------|--------|
+| M323K_HET_1 | het   |                                    | 1.2    | - NO
+| M323K_HET_2 | het   |                                    | two_2    | - YES
 ## Setting up your comparisons
 
 To compare groups, we need to go int the config/comparisons.yaml and edit it
