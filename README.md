@@ -76,6 +76,7 @@ That means NO hyphens and NO periods.
 |-------------|-------|------------------------------------|--------|
 | M323K_HET_1 | het   |                                    | 1.2    | - NO
 | M323K_HET_2 | het   |                                    | two_2    | - YES
+
 ## Setting up your comparisons
 
 To compare groups, we need to go int the config/comparisons.yaml and edit it
