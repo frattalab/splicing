@@ -27,7 +27,7 @@ cp config/config.yaml ${FOLDER}/${RUN_NAME}_config.yaml
 cp config/comparisons.yaml ${FOLDER}/${RUN_NAME}_comparisons.yaml
 
 
-snakemake -s $WORKFLOW \
+snakemake -s rules/majiq_psi.smk\
 --use-conda \
 --conda-prefix "/SAN/vyplab/vyplab_reference_genomes/conda_envs/" \
 --jobscript cluster_qsub.sh \
