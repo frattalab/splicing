@@ -17,7 +17,7 @@ bdnfControlTwo:
     - CONTROL_2hr
   bdnf2:
     - BDNF_2hr
-bdnfControlOne:
+bdnfControlSIX:
   column_name:
     - condition_time
   control6:
