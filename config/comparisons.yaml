@@ -3,38 +3,66 @@
 #problems. I suggest camelCase names, but doesn't really matter as long as you can interpret them. Throughout the file they have to be unique.
 #each of these two items has as many idenitifiers as you like, but they must be
 #valid identifiers from the column_name column in the sample_csv. The first identifier is always the baseline group
-bdnfControlOne:
+kdone:
   column_name:
-    - condition_time
-  control1:
-    - CONTROL_1hr
-  bdnf1:
-    - BDNF_1hr
-bdnfControlTwo:
+    - group
+  controlAppocherSKNDZ:
+    - appocher_control_sk-n-dz
+  TDP43KDAppocherSKNDZ:
+    - appocher_TDP43KD_sk-n-dz
+kdtwo:
   column_name:
-    - condition_time
-  control2:
-    - CONTROL_2hr
-  bdnf2:
-    - BDNF_2hr
-bdnfControlSIX:
+    - group
+  controlKlimMotorNeuron:
+    - klim_control_ipscMotor_neuron
+  TDP43KDKlimMotorNeuron:
+    - klim_TDP43KD_ipscMotor_neuron
+kdthree:
   column_name:
-    - condition_time
-  control6:
-    - CONTROL_6hr
-  bdnf6:
-    - BDNF_6hr
-controlVfoursu:
+    - group
+  controlFergusonHeLA:
+    - ferguson_control_hela
+  TDP43KDFergusonHeLA:
+    - ferguson_TDP43KD_hela
+kdfour:
   column_name:
-    - condition_time
-  control1hr:
-    - CONTROL_1hr
-  control6hr:
-    - CONTROL_6hr
-controlVfoursu2:
+    - group
+  controlMelamedSHSY5Y:
+    - melamed_control_sh-sy-5y
+  TDP43KDMelamedSHSY5Y:
+    - melamed_TDP43KD_sh-sy-5y
+kdfive:
   column_name:
-    - condition_time
-  control1hour:
-    - CONTROL_1hr
-  control2hour:
-    - CONTROL_2hr
+    - group
+  controlBrownSHSY5Y:
+    - brown_control_sh-sy-5y
+  TDP43KDBrownSHSY5Y:
+    - brown_TDP43KD_sh-sy-5y
+kdsix:
+  column_name:
+    - group
+  controlBrownSKNDZ:
+    - brown_control_sk-n-dz
+  TDP43KDBrownSKNDZ:
+    - brown_TDP43KD_sk-n-dz
+kdseven:
+  column_name:
+    - group
+  controlBrownCorticalNeuron:
+    - brown_control_ipscCortical_neuron
+  TDP43KDBrownCorticalNeuron:
+    - brown_TDP43KD_ipscCortical_neuron
+kdeight:
+  column_name:
+    - group
+  controlSeddighiCorticalNeuron:
+    - seddighi_control_ipscCortical_neuron
+  TDP43KDSeddighiCorticalNeuron:
+    - seddighi_TDP43KD_ipscCortical_neuron
+kdnine:
+  column_name:
+    - group
+  controlLiuFACSNeurons:
+    - liu_control_facsNuclei
+  TDP43KDLiuFACSNeurons:
+    - liu_TDP43KD_facsNuclei
