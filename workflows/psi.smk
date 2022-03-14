@@ -15,6 +15,7 @@ GROUPS = list(set(samples2['group']))
 
 BASES, CONTRASTS = return_bases_and_contrasts()
 
+MAJIQ_DIR = get_output_dir(config['project_top_level'], config['majiq_top_level'])
 
 
 rule allPSIwf:
