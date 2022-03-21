@@ -37,13 +37,14 @@ rule majiq_psi_group:
         majiq_path = config['majiq_path'],
         psi_output_folder = os.path.join(MAJIQ_DIR,"psi"),
         pretty_name = lambda wildcards: wildcards.group.replace(".","_").replace("-","_"),
-        pretty_name_full = lambda wildcards: os.path.join(MAJIQ_DIR,"psi",wildcards.group.replace(".","_").replace("-","_") + ".psi.tsv")
+        pretty_name_full_tsv = lambda wildcards: os.path.join(MAJIQ_DIR,"psi",wildcards.group.replace(".","_").replace("-","_") + ".psi.tsv")
+        pretty_name_full_voila = lambda wildcards: os.path.join(MAJIQ_DIR,"psi",wildcards.group.replace(".","_").replace("-","_") + ".psi.voila")
     threads:
         16
     shell:
         """
         mkdir -p {params.psi_output_folder}
-        {params.majiq_path} psi {input.group_majiq} -j {threads} -o {params.psi_output_folder} -n {params.pretty_name}
+        {params.majiq_path} psi {input.group_majiq} -j {threads} -o {params.psi_output_folder} -n {params.pretty_name} && mv {params.pretty_name_full_tsv} {output.tsv} && mv {params.pretty_name_full_voila} {output.voila}
         """
 
 rule majiq_group_psi_tsv:
@@ -61,7 +62,7 @@ rule majiq_group_psi_tsv:
     shell:
         """
         mkdir -p {params.psi_output_folder}
-        {params.voila_path} tsv {params.splice_graph} {input.voila_file} -f {output.tsv} {params.extra_voila_paramters} && mv {params.pretty_name_full} {output.voila}
+        {params.voila_path} tsv {params.splice_graph} {input.voila_file} -f {output.tsv} {params.extra_voila_paramters} 
         """
 
 
