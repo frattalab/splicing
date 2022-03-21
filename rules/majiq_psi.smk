@@ -37,7 +37,7 @@ rule majiq_psi_group:
         majiq_path = config['majiq_path'],
         psi_output_folder = os.path.join(MAJIQ_DIR,"psi"),
         pretty_name = lambda wildcards: wildcards.group.replace(".","_").replace("-","_"),
-        pretty_name_full_tsv = lambda wildcards: os.path.join(MAJIQ_DIR,"psi",wildcards.group.replace(".","_").replace("-","_") + ".psi.tsv")
+        pretty_name_full_tsv = lambda wildcards: os.path.join(MAJIQ_DIR,"psi",wildcards.group.replace(".","_").replace("-","_") + ".psi.tsv"),
         pretty_name_full_voila = lambda wildcards: os.path.join(MAJIQ_DIR,"psi",wildcards.group.replace(".","_").replace("-","_") + ".psi.voila")
     threads:
         16
