@@ -46,7 +46,8 @@ rule majiq_psi_group:
         mkdir -p {params.psi_output_folder}
         {params.majiq_path} psi {input.group_majiq} -j {threads} -o {params.psi_output_folder} -n {params.pretty_name} 
         if [ {params.pretty_name_full_tsv} != {output.tsv} ]; then
-            mv {params.pretty_name_full_tsv} {output.tsv} && mv {params.pretty_name_full_voila} {output.voila}
+            mv {params.pretty_name_full_tsv} {output.tsv}
+            mv {params.pretty_name_full_voila} {output.voila}
         fi
          
         """
