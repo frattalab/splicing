@@ -39,8 +39,10 @@ rule scallop_per_samp:
         sample="|".join(SAMPLE_NAMES)
     output:
         os.path.join(scallop_outdir,'{sample}' + ".gtf")
+    conda:
+        "../envs/scallop.yml"
     params:
-        scallop_path = config['scallop_path'],
+        scallop_path = 'scallop',
         verbose = 0,
         scallop_out_folder = scallop_outdir,
         scallop_extra_config = return_parsed_extra_params(config['scallop_extra_parameters']),

@@ -3,5 +3,5 @@ channels:
   - bioconda
   - defaults
 dependencies:
-  - scallop
   - gffcompare
+  - scallop2
