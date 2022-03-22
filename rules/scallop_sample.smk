@@ -42,7 +42,7 @@ rule scallop_per_samp:
     conda:
         "../envs/scallop.yaml"
     params:
-        scallop_path = 'scallop',
+        scallop_path = 'scallop2',
         verbose = 0,
         scallop_out_folder = scallop_outdir,
         scallop_extra_config = return_parsed_extra_params(config['scallop_extra_parameters']),
