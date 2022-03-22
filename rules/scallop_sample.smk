@@ -40,7 +40,7 @@ rule scallop_per_samp:
     output:
         os.path.join(scallop_outdir,'{sample}' + ".gtf")
     conda:
-        "../envs/scallop.yml"
+        "../envs/scallop.yaml"
     params:
         scallop_path = 'scallop',
         verbose = 0,
