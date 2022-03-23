@@ -38,8 +38,8 @@ majiq_psi_tsv:
     submission_string: "-pe smp 4 -R y"
     h_rt: 08:00:00
 majiq_group_psi_tsv:
-    h_vmem:   3G
-    tmem:   3G
+    h_vmem:   6G
+    tmem:   6G
     submission_string: "-pe smp 4 -R y"
     h_rt: 08:00:00
 majiq_delta_psi:
