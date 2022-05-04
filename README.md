@@ -173,7 +173,8 @@ majiq
 `source submit.sh build run_name`
 2. PSI step
 `source submit.sh psi run_name`
-
+3. annotate step
+`source submit.sh annotate run_name`
 with whatever run name you'd like
 
 ## Submitting on Slurm
@@ -188,6 +189,8 @@ with whatever run name you'd like
 If you don't have a cluster, you can run straight with snakemake
 `snakemake -s workflows/build.smk`
 `snakemake -s workflows/psi.smk`
+`snakemake -s workflows/annotate.smk`
+
 
 
 
