@@ -12,6 +12,11 @@ normalize_annotate:
     h_vmem:   16G
     tmem:   16G
     h_rt: 72:00:00
+majiq_delta_modulizer:
+    submission_string: "-pe smp 4 -R y"
+    h_vmem:   4G
+    tmem:   4G
+    h_rt: 12:00:00
 majiq_build:
     submission_string: "-pe smp 4 -R y"
     h_vmem:   2G

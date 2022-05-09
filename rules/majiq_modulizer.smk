@@ -32,7 +32,7 @@ rule majiq_delta_modulizer:
         delta_mod_output_folder = os.path.join(MAJIQ_DIR,"modulizers","{bse}-{contrast}"),
         splice_graph = os.path.join(MAJIQ_DIR,"builder", "splicegraph.sql")
     threads:
-        8
+        4
     shell:
         """
         mkdir -p {params.delta_mod_output_folder}
