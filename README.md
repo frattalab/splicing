@@ -2,6 +2,15 @@
 Splicing done with MAJIQ tool **still a work in progress**
 The purpose of this pipeline is to be able to run MAJIQ using Snakemake. The aim is to make MAJIQ easier to run for non-bioinformaticians and it produces additional parsing and annotation to the MAJIQ output.
 
+As of MAJIQ v.2.3 there's finally published a tool to make their output easier to use:
+https://biociphers.bitbucket.io/majiq-docs-academic/modulizer/quick-start.html
+
+As of May 9 2022 - 
+
+I am currently updating this pipeline to use their "junctions.tsv" file produced by the above module. 
+- 
+BEWARE this is going to change the way the pipeline works
+
 # Needed files
 1. Aligned, sorted, and indexed BAM files of RNA-seq. You will need .bam and .bai files for all your samples.
 2. GFF3 and GTF of your species of interest
@@ -173,7 +182,8 @@ majiq
 `source submit.sh build run_name`
 2. PSI step
 `source submit.sh psi run_name`
-
+3. annotate step
+`source submit.sh annotate run_name`
 with whatever run name you'd like
 
 ## Submitting on Slurm
@@ -188,6 +198,8 @@ with whatever run name you'd like
 If you don't have a cluster, you can run straight with snakemake
 `snakemake -s workflows/build.smk`
 `snakemake -s workflows/psi.smk`
+`snakemake -s workflows/annotate.smk`
+
 
 
 
