@@ -20,7 +20,7 @@ GROUPS = list(set(samples2['group']))
 BASES, CONTRASTS = return_bases_and_contrasts()
 MAJIQ_DIR = get_output_dir(config['project_top_level'], config['majiq_top_level'])
 
-rule allParse:
+rule allAnnotations:
     input:
         expand(os.path.join(MAJIQ_DIR,"modulizers","{bse}-{contrast}", "junctions.tsv"),zip, bse = BASES,contrast = CONTRASTS),
         expand(os.path.join(MAJIQ_DIR,"psi_voila_tsv_single",'{sample}' + "_parsed.csv"), sample = SAMPLE_NAMES),
