@@ -5,7 +5,7 @@ import yaml
 
 configfile: "config/config.yaml"
 
-include: "helpers.py"
+include: "rules/helpers.py"
 
 #reading in the samples and dropping the samples to be excluded in order to get a list of sample names
 
