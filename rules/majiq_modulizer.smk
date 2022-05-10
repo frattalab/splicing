@@ -38,5 +38,5 @@ rule majiq_delta_modulizer:
         mkdir -p {params.delta_mod_output_folder}
         {params.voila_path} modulize {params.splice_graph} \
         {input} \
-        -d {params.delta_mod_output_folder} -j {threads}
+        -d {params.delta_mod_output_folder} -j {threads} --show-all
         """
