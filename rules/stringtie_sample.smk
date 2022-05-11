@@ -41,7 +41,7 @@ rule StringTie_Assemble:
     output:
         stringtie_outdir + "{sample}.assemble.gtf"
     conda:
-        "../envs/splicing_env.yml"
+        "../envs/splicing_dependencies.yml"
     shell:
         "stringtie {input.bam} -G {input.ref_gtf} -o {output}"
 
