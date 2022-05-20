@@ -23,35 +23,37 @@ mean_exon_psi <- function(my_df, columnA,columnB){
 
 top_folder = "/Users/annaleigh/cluster/alb_projects/data/tdp_ko_collection/invitro_majiq/majiq/"
 middle_folder = 'delta_psi_voila_tsv' 
-bottom_folder = 'controlFergusonHeLA-TDP43KDFergusonHeLA'
+bottom_folder = 'controlBrownSKNDZ-TDP43KDBrownSKNDZ'
 
 baseline = str_split(bottom_folder,"-")[[1]][1]
 contrast = str_split(bottom_folder,"-")[[1]][2]
 basepsi = paste0(baseline, '_median_psi')
 contrastpsi = paste0(contrast, '_median_psi')
 
+
+# read in the annotated junctions -----------------------------------------
 my_junctions = fread(file.path(top_folder,middle_folder,paste0(bottom_folder,'_annotated_junctions.csv')))
 
-cryptic_exon_junctions = my_junctions %>% 
+all_cryptic_splicing = my_junctions %>% 
     filter(my_junctions[,12] < 0.05 & my_junctions[,13] > 0.1) %>% 
-    select(1,2,3,5,6,7,12,13,21,35) %>% 
+    select(1,2,3,5,6,7,12,13,21,35)
+
+cryptic_exon_junctions = all_cryptic_splicing %>% 
     filter(junc_cat %in% c("novel_donor","novel_acceptor","none"))
 
-skiptic_junctions = my_junctions %>% 
-    filter(my_junctions[,12] < 0.05 & my_junctions[,13] > 0.1) %>% 
-    select(1,2,3,5,6,7,12,13,21,35) %>% 
+skiptic_junctions = all_cryptic_splicing %>% 
     filter(junc_cat %in% c("novel_exon_skip"))
 
-novel_combos = my_junctions %>% 
-    filter(my_junctions[,12] < 0.05 & my_junctions[,13] > 0.1) %>% 
-    select(1,2,3,5,6,7,12,13,21,35) %>% 
+novel_combos = all_cryptic_splicing %>% 
     filter(junc_cat %in% c("novel_combo"))
 
-
+# Read in the summary to find out what kind of files I'll need for each type -----------------------------------------
+middle_folder = 'modulizers/' 
+my_junctions = fread(file.path(top_folder,middle_folder,paste0(bottom_folder,'summary.tsv')))
 
 # cassette exons -----------------------------------------------------------
 
-middle_folder = 'modulizers/' 
+
 folder_path  = file.path(top_folder,middle_folder, bottom_folder)
 
 cassette = fread(file.path(folder_path,"cassette.tsv"))
@@ -64,8 +66,15 @@ cryptic_casette <- cryptic_exon_junctions %>%
     mean_exon_psi(.,!!basepsi,!!contrastpsi) %>% 
     mutate(name = paste0(gene_name,"|",base_mean,"|",contrast_mean)) %>% 
     separate(paste_into_igv_exon,into =  c("chr","start","end")) %>% 
+    mutate(end = as.numeric(end),
+           start = as.numeric(start)) %>% 
+    filter((end >= start - 1)) %>% 
     unique() %>% 
-    makeGRangesFromDataFrame(,keep.extra.columns = TRUE) 
+    makeGRangesFromDataFrame(,keep.extra.columns = TRUE) %>% 
+    plyranges::filter(base_mean < 0.05)
+
+
+cryptic_casette %>% rtracklayer::export(paste0(bottom_folder,'cryptic_casette.bed'))
 
 cryptic_casette$seq<- as.character(Biostrings::getSeq(BSgenome.Hsapiens.UCSC.hg38, 
                                                       cryptic_casette))
@@ -89,11 +98,35 @@ last_exons[,paste_into_igv_junction := paste0(seqid,":",junction_coord)]
 last_exons[,paste_into_igv_exon := paste0(seqid,":",spliced_with_coord)]
 
 
-cryptic_last_exons = cryptic_exon_junctions %>% 
+cryptic_exon_junctions %>% 
     left_join(last_exons, by = 'paste_into_igv_junction') %>% 
+    filter(!is.na(paste_into_igv_exon))  %>% 
+    select(!!basepsi)
+    mean_exon_psi(.,!!basepsi,!!contrastpsi) %>% 
+    mutate(name = paste0(gene_name,"|",base_mean,"|",contrast_mean)) %>% 
+    unique() %>% 
+    separate(paste_into_igv_exon,into =  c("chr","start","end")) %>% 
+    mutate(end = as.numeric(end),
+           start = as.numeric(start)) %>% 
+    filter((end >= start - 1)) %>% 
+    unique() %>% 
+    makeGRangesFromDataFrame(,keep.extra.columns = TRUE) 
+
+# putative last exons -----------------------------------------------------------
+p_last_exons = fread(file.path(folder_path,"p_alternate_last_exon.tsv"))
+p_last_exons[,paste_into_igv_junction := paste0(seqid,":",junction_coord)]
+p_last_exons[,paste_into_igv_exon := paste0(seqid,":",spliced_with_coord)]
+
+
+p_cryptic_last_exons = cryptic_exon_junctions %>% 
+    left_join(p_last_exons, by = 'paste_into_igv_junction') %>% 
     filter(!is.na(paste_into_igv_exon))  %>% 
     mean_exon_psi(.,!!basepsi,!!contrastpsi) %>% 
     mutate(name = paste0(gene_name,"|",base_mean,"|",contrast_mean)) %>% 
     unique() %>% 
     separate(paste_into_igv_exon,into =  c("chr","start","end")) %>% 
+    mutate(end = as.numeric(end),
+           start = as.numeric(start)) %>% 
+    filter((end >= start - 1)) %>% 
+    unique() %>% 
     makeGRangesFromDataFrame(,keep.extra.columns = TRUE) 
