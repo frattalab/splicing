@@ -52,6 +52,14 @@ majiq_group_psi_tsv:
     tmem:   6G
     submission_string: "-pe smp 4 -R y"
     h_rt: 08:00:00
+majiq_group_psi_tsv:
+    h_vmem:   8G
+    tmem:   8G
+    h_rt: 08:00:00
+majiq_psi_group_parse:
+    h_vmem:   8G
+    tmem:   8G
+    h_rt: 08:00:00
 majiq_psi_group:
     h_vmem:   2G
     tmem:   2G
@@ -79,3 +87,77 @@ majiq_psi_parse:
     h_vmem:   4G
     tmem:   4G
     h_rt: 72:00:00
+star_tabs_to_beds:
+    h_vmem:   1G
+    tmem:   1G
+    h_rt: 72:00:00
+scallop_per_samp:
+    h_vmem:   32G
+    tmem:   32G
+    h_rt: 4:00:00
+fetch_unique:
+    h_vmem:   4G
+    tmem:   4G
+    h_rt: 12:00:00
+    submission_string: " "
+compare_reference:
+    h_vmem:   8G
+    tmem:   8G
+    h_rt: 4:00:00
+StringTie_Assemble:
+    h_vmem:   8G
+    tmem:   8G
+    h_rt: 4:00:00
+compose_merge:
+    h_vmem:   1G
+    tmem:   1G
+    h_rt: 72:00:00
+    submission_string: " "
+compare_reference_stringtie:
+    h_vmem:   4G
+    tmem:   4G
+    h_rt: 12:00:00
+    submission_string: " "
+fetch_unique_stringtie:
+    h_vmem:   4G
+    tmem:   4G
+    h_rt: 12:00:00
+    submission_string: " "
+merge_assemblies:
+    h_vmem:   1G
+    tmem:   1G
+    h_rt: 72:00:00
+    submission_string: " "
+merge_all_assemblies:
+    h_vmem:   8G
+    tmem:   8G
+    h_rt: 4:00:00
+    submission_string: " "
+merge_stringtie_gtfs:
+    h_vmem:   8G
+    tmem:   8G
+    h_rt: 72:00:00
+    submission_string: " "
+diffexp:
+    h_vmem:   1G
+    tmem:   1G
+    h_rt: 72:00:00
+    submission_string: "-pe smp 8 -R y"
+merge_scallop_gtfs:
+    h_vmem:   1G
+    tmem:   1G
+    h_rt: 72:00:00
+    submission_string: "-pe smp 2 -R y"
+merge_scallop_gtfs_everyone:
+    h_vmem:   16G
+    tmem:   16G
+    h_rt: 72:00:00
+    submission_string: " "
+whippet_psi:
+    h_vmem:   16G
+    tmem:   16G
+    h_rt: 72:00:00
+write_exon_beds:
+    h_vmem:   16G
+    tmem:   16G
+    h_rt: 8:00:00
