@@ -17,6 +17,10 @@ majiq_delta_modulizer:
     h_vmem:   4G
     tmem:   4G
     h_rt: 12:00:00
+write_junctions_beds:
+    h_vmem:   4G
+    tmem:   4G
+    h_rt: 12:00:00
 majiq_build:
     submission_string: "-pe smp 4 -R y"
     h_vmem:   2G

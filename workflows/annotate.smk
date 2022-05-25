@@ -26,6 +26,8 @@ rule allAnnotations:
         expand(os.path.join(MAJIQ_DIR,"psi_voila_tsv_single",'{sample}' + "_parsed.csv"), sample = SAMPLE_NAMES),
         expand(os.path.join(MAJIQ_DIR,"psi_voila_tsv",'{group}' + "_parsed.csv"), group = GROUPS),
         expand(os.path.join(MAJIQ_DIR,"delta_psi_voila_tsv","{bse}-{contrast}" + "_parsed_psi.tsv"),zip, bse = BASES,contrast = CONTRASTS),
+        expand(os.path.join(MAJIQ_DIR,"delta_psi_voila_tsv","{bse}-{contrast}" + "_annotated_junctions.csv"),zip, bse = BASES,contrast = CONTRASTS),
+        expand(os.path.join(MAJIQ_DIR,"delta_psi_voila_tsv","{bse}-{contrast}_annotated.junctions.bed"),zip, bse = BASES,contrast = CONTRASTS)
         
 
 include: "../rules/majiq_modulizer.smk"
