@@ -18,7 +18,7 @@ However, additional parsing of the 'modulizer' module is also being developed.
 
 Buyer beware, mileage may vary, 
 
-Feel free to email/pop up and issue on the repo
+Feel free to email/pop up any issues on the repo
 
 
 # Needed files
