@@ -5,11 +5,21 @@ The purpose of this pipeline is to be able to run MAJIQ using Snakemake. The aim
 As of MAJIQ v.2.3 there's finally published a tool to make their output easier to use:
 https://biociphers.bitbucket.io/majiq-docs-academic/modulizer/quick-start.html
 
-As of May 9 2022 - 
+*BEWARE*
 
-I am currently updating this pipeline to use their "junctions.tsv" file produced by the above module. 
-- 
-BEWARE this is going to change the way the pipeline works
+I am actively developing how this pipeline works - for now it runs in 3 steps
+
+1. build
+2. psi
+3. annotate
+
+
+However, additional parsing of the 'modulizer' module is also being developed. 
+
+Buyer beware, mileage may vary, 
+
+Feel free to email/pop up any issues on the repo
+
 
 # Needed files
 1. Aligned, sorted, and indexed BAM files of RNA-seq. You will need .bam and .bai files for all your samples.
