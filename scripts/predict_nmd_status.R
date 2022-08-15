@@ -42,6 +42,16 @@ my_orf = function(transcripts, BSgenome = NULL, returnLongestOnly = TRUE,
     
     return(orfDF)
 }
+
+## 'cds_by_tx' must be a GRangesList object obtained with cdsBy(txdb, by="tx")
+addCdsPhase <- function(cds_by_tx)
+{
+    cds_phase <- pc(rep(IntegerList(0), length(cds_by_tx)),
+                    heads((3L - (cumsum(width(cds_by_tx)) %% 3L)) %% 3L, n=-1L))
+    unlisted_cds_by_tx <- unlist(cds_by_tx, use.names=FALSE)
+    mcols(unlisted_cds_by_tx)$cds_phase <- unlist(cds_phase, use.names=FALSE)
+    relist(unlisted_cds_by_tx, cds_by_tx)
+}
 #produced by assigning_transcript_backbone.R
 max_tx_protein_coding_genes
 #produced by assigning_transcript_backbone.R
@@ -56,7 +66,7 @@ cds_regions = unlist(cds_regions)
 
 cds_regions$transcript_id = gsub("\\..*", "", names(cds_regions))
 
-
+cryptic_regions_protein_coding = unique(makeGRangesFromDataFrame(max_tx_protein_coding_genes,keep.extra.columns = TRUE))
 peptides = c()
 with_peptide = c()
 cryptic_regions_protein_coding$PTC = NA_character_
@@ -64,8 +74,8 @@ peppo_df = tibble()
 
 for(i in 1:length(cryptic_regions_protein_coding)){
     print(i)
+
     gene_name = cryptic_regions_protein_coding[i]$gene_name
-    print(gene_name)
     parent_transcript = cryptic_regions_protein_coding[i]$transcript_id
     cds_parent = cds_regions %>% filter(transcript_id == parent_transcript)
     
@@ -75,20 +85,30 @@ for(i in 1:length(cryptic_regions_protein_coding)){
     
     exon_one = cryptic_regions_protein_coding[i]
     
-    new_model = sort(c(exon_one,cds_parent))
+    new_model = reduce(sort(c(exon_one,cds_parent)))
     
+    new_model$transcript_id = parent_transcript
+
     new_model = GeneStructureTools::reorderExonNumbers(new_model)
     
     names(new_model) = NULL
     new_model = unlist(addCdsPhase(GRangesList(new_model)))
+    seqlevels(new_model) = seqlevels(cds_parent)
     
-    cryptic_number = new_model %>% plyranges::filter(is.na(cds_id)) %>% 
-        as.data.frame() %>% pull(exon_number)
+    if(length( which(new_model != cds_parent)) == 0){
+        print(glue::glue("cryptic exon {exon_one$cryptic_coords} in {gene_name}
+                         is inside of an annotated exon in the parent transcript! Skipping"))
+        next()
+    }
     
+    cds_parent = GeneStructureTools::reorderExonNumbers(cds_parent)
+    
+    cryptic_numbers = which(exon_one == new_model)
+    
+    cryptic_number = cryptic_numbers[1]
     cryptic_up_down = new_model %>% filter(exon_number %in% c(cryptic_number - 1, 
                                                               cryptic_number,cryptic_number + 1))
     
-    cds_parent = GeneStructureTools::reorderExonNumbers(cds_parent)
     
     normal = my_orf(cds_parent,BSgenome.Hsapiens.UCSC.hg38::BSgenome.Hsapiens.UCSC.hg38) %>% 
         dplyr::slice(1) %>% pull(aa_sequence)
@@ -113,14 +133,17 @@ for(i in 1:length(cryptic_regions_protein_coding)){
         aln = msa::msa(both_strings)
         ce_pos = which(strsplit(msa::msaConsensusSequence(aln)[[1]],"")[[1]] == "?")
         left_flank = (min(ce_pos) - 20) : (min(ce_pos - 1))
+        left_flank = left_flank[left_flank > 0]
         right_flank = (max(ce_pos) + 1) : (max(ce_pos + 20))
         
         
         ce_peptide = paste0(strsplit(ce_aa,"")[[1]][ce_pos],collapse = "")
+        
         left_flank_peptide = paste0(strsplit(ce_aa,"")[[1]][left_flank],collapse = "")
         right_flank_peptide = paste0(strsplit(ce_aa,"")[[1]][right_flank],collapse = "")
+        
         if(nchar(left_flank_peptide) != 20 | nchar(right_flank_peptide) != 20){
-            browser()
+            print(glue::glue("left and right flanks are off on {i} - {gene_name}"))
         }
         
         

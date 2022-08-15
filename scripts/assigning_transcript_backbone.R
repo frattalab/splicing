@@ -1,4 +1,5 @@
-
+library(data.table)
+library(tidyverse)
 library(GenomicFeatures)
 # gtf_path = '/SAN/vyplab/vyplab_reference_genomes/annotation/human/GRCh38/gencode.v38.annotation.gtf'
 # gtf_path = "/Users/annaleigh/cluster/vyplab_reference_genomes/annotation/human/GRCh38/gencode.v38.annotation.gtf"
@@ -11,10 +12,9 @@ biotype_table = biotype_table %>%
     mutate(gene_id = gsub("\\..*","",gene_id)) %>%
     mutate(transcript_id = gsub("\\..*","",transcript_id))
 rm(g)
-beepr::beep(6)
 
 top_folder = '/Users/annaleigh/Documents/GitHub/tdp_43_psi_rankings/'
-experiment = 'chx/CycloheximideControl-CycloheximideTDP43KD'
+experiment = 'public/controlSeddighiCorticalNeuron-TDP43KDSeddighiCorticalNeuron'
 
 
 transcript_counts = fread(glue::glue("{top_folder}transcript_counts/{experiment}.transcript_counts.csv"))

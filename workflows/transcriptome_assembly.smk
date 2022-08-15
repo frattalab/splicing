@@ -4,7 +4,6 @@ import subprocess
 import yaml
 configfile: "config/config.yaml"
 include: "../rules/helpers.py"
-transcriptome_assembly.smk
 localrules: compose_gtf_list
 ##############################
 ##### STOLEN FROM https://github.com/bioinformatics-core-shared-training/RNAseq_March_2019/tree/master/

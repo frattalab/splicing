@@ -3,21 +3,21 @@ library(tidyverse)
 library(rlang)
 library(BSgenome.Hsapiens.UCSC.hg38)
 library(stringi)
-# gtf_path = '/SAN/vyplab/vyplab_reference_genomes/annotation/human/GRCh38/gencode.v38.annotation.gtf'
-# gtf_path = "/Users/annaleigh/cluster/vyplab_reference_genomes/annotation/human/GRCh38/gencode.v38.annotation.gtf"
+# # gtf_path = '/SAN/vyplab/vyplab_reference_genomes/annotation/human/GRCh38/gencode.v38.annotation.gtf'
+# # gtf_path = "/Users/annaleigh/cluster/vyplab_reference_genomes/annotation/human/GRCh38/gencode.v38.annotation.gtf"
 gtf_path = '/Users/annaleigh/Downloads/gencode.v38.annotation.gtf.gz'
 print(stringr::str_c(Sys.time(), " - Creating Exon by Transcript DT..."))
 gtf_obj =  GenomicFeatures::makeTxDbFromGFF(gtf_path,format = 'gtf')
-
-
-
-# now read in the annotated GTF from gencode
+# 
+# 
+# 
+# # now read in the annotated GTF from gencode
 gtf_exons = as.data.table(GenomicFeatures::exons(gtf_obj,use.names = TRUE))
 gtf_exons = gtf_exons %>% mutate(coords = paste0(seqnames,":",start,"-",end))
 
-
-
-
+# 
+# 
+# 
 
 
 
@@ -41,8 +41,13 @@ process_event_files = function(path_to_file, event_name = 'alt3_5'){
     
     return(cryptic_exon_of_event)
 }
+
 top_folder = "/Users/annaleigh/cluster/first_weeks/TDP_CHX_CLONES_GLIA/chx/majiq/"
+
+top_folder = '/Users/annaleigh/cluster/alb_projects/data/tdp_ko_collection/invitro_majiq/majiq/'
 the_vitros = list.files(file.path(top_folder,'modulizers'))
+
+
 for(v in the_vitros){
     print(v)
     
@@ -50,6 +55,8 @@ for(v in the_vitros){
     # top_folder = "/Users/annaleigh/cluster/first_weeks/TDP_CHX_CLONES_GLIA/curves/majiq/"
     
     bottom_folder = v
+    
+    # 
     
     # bottom_folder = 'CycloheximideControl-CycloheximideTDP43KD'
     
@@ -127,19 +134,26 @@ for(v in the_vitros){
         mutate(res = gsub("^-1","1",res)) %>% 
         separate(res, into = c("start","end"),sep = "-",remove = FALSE) %>% 
         mutate(start = as.numeric(start),
-               end = as.numeric(end))
+               end = as.numeric(end)) %>% 
+        mutate(name = paste0(gene_name,"|",paste_into_igv_junction)) 
     
     complete_events = melted_exons %>% 
         filter(!(is.na(start) & is.na(end))) %>% 
         filter(start != 1 & end != 1) %>% 
         filter(end > start) %>% 
+        unique()  
+    
+    melted_exons %>% filter(!(name %in% complete_events$name)) %>% 
         unique() %>% 
-        makeGRangesFromDataFrame() %>% 
-        unique()
-        
+        fwrite(paste0("/Users/annaleigh/Documents/GitHub/tdp_43_psi_rankings/modules_output/chx/",bottom_folder,'.incomplete_events.csv'))
+    
     complete_events %>% 
-        rtracklayer::export(paste0(bottom_folder,'.cryptic_exons.bed'))
-        
+        makeGRangesFromDataFrame(,keep.extra.columns = TRUE) %>% 
+        rtracklayer::export(paste0("/Users/annaleigh/Documents/GitHub/tdp_43_psi_rankings/modules_output/chx/",bottom_folder,'.cryptic_exons.bed'))
+    
+
+    
+
 }
 beepr::beep(4)
 
