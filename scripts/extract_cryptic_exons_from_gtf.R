@@ -5,7 +5,7 @@ library(data.table)
 library("optparse")
 # use a function from splicejam to find the exons which end on any of the junctions
 
-#source("scripts/splicejam_closestExonToJunctions.R")
+source("scripts/splicejam_closestExonToJunctions.R")
 
 build_all_potential_exon_table = function(grange_object,exon_annotation){
 
@@ -109,18 +109,18 @@ annotate_all_possible_exon_table = function(possible_exons, exon_by_transcript_d
     return(annotated_pe)
 }
 
-combine_exons_junctions = function(transcripts, junctions, output_name){
-  ####read in the scallop GTF
-  gtf = transcripts
+combine_exons_junctions = function(transcripts, junctions, output_name, contrast_min = 0.15, base_max = 0.05){
+  ### read in the parsed annotated junctions
+  delta_psi = fread(junctions)
+  delta_psi = delta_psi %>%
+      select(seqnames:lsv_type,junc_cat) %>% 
+      select(-lsv_type)
+  
+  cryptic_junctions = delta_psi %>% 
+      filter(delta_psi[,12] < base_max & delta_psi[,13] > contrast_min)
+  ####read in the transcriptome assembled GTF
   # gtf = "/Users/annaleigh/Downloads/gencode.v37.basic.annotation.gtf"
-  gtf_txdb =  GenomicFeatures::makeTxDbFromGFF(gtf,format = 'gtf')
-  ####read in the bed file
-  bed_junctions = data.table::fread(junctions,skip = 1)
-  bed_junctions = bed_junctions %>%
-      mutate(control_psi = as.numeric(stringr::str_split(V4,"\\|",n = 2, simplify = T)[,2])) %>%
-      mutate(control_psi = ifelse(is.na(control_psi),0,control_psi)) %>%
-      separate(V4,into = c('gene_name','type'),sep = ":") %>%
-      separate(type, into = "type",sep = "\\|")
+  gtf_txdb =  GenomicFeatures::makeTxDbFromGFF(transcripts,format = 'gtf')
   #### get the junctions
   # tx_jnc = as.data.table(intronsByTranscript(gtf_txdb,use.names=T))
   ### get the exons
@@ -128,57 +128,74 @@ combine_exons_junctions = function(transcripts, junctions, output_name){
   ### add an exon column
   exon_jnc[,paste_into_igv_exon := paste0(seqnames, ":",start, "-",end)]
   exon_jnc[,exon_name := paste0(group_name,":",exon_rank)]
-
+  exon_jnc = exon_jnc %>% 
+      group_by(group_name) %>% 
+      mutate(last_exon = (exon_rank == max(exon_rank))) %>% 
+      mutate(first_exon = (exon_rank == min(exon_rank))) %>% 
+      as.data.table()
   ##flatten the exons
   flattened_exons = makeGRangesFromDataFrame(exon_jnc,keep.extra.columns = T)
-  bed_gf = makeGRangesFromDataFrame(bed_junctions,
-                                    start.field = 'V2',
-                                    end.field = 'V3',
-                                    seqnames.field = 'V1',
-                                    strand.field = 'V6',
+  ##turn the junctions into a grange the exons
+  
+  cj_gr = makeGRangesFromDataFrame(cryptic_junctions,
                                     keep.extra.columns = T)
 
-  exons_on_junction_ends = build_all_potential_exon_table(bed_gf,flattened_exons)
+  exons_on_junction_ends = build_all_potential_exon_table(cj_gr,flattened_exons)
 
   exons_on_junction_ends = annotate_all_possible_exon_table(exons_on_junction_ends,exon_jnc)
 
   exons_on_junction_ends = exons_on_junction_ends %>%
-      left_join(bed_junctions, by = c("seqnames" = "V1",
-                                      "start" = "V2",
-                                      "end" = "V3")) %>%
+      left_join(cryptic_junctions, by = c("seqnames",
+                                      "start",
+                                      "end", "strand")) %>%
       unique()
 
-  exons_on_junction_ends = exons_on_junction_ends %>% mutate(cryptic_exon = case_when(strand == "+" & type == "novel_acceptor" ~ Exon_target,
-                                           strand == "+" & type == "novel_donor" ~ Exon_source,
-                                           strand == "-" & type == "novel_acceptor" ~ Exon_source,
-                                           strand == "-" & type == "novel_donor" ~ Exon_target))
+  exons_on_junction_ends = exons_on_junction_ends %>% 
+      mutate(cryptic_exon = case_when(strand == "+" & junc_cat == "novel_acceptor" ~ Exon_target,
+                                           strand == "+" & junc_cat == "novel_donor" ~ Exon_source,
+                                           strand == "-" & junc_cat == "novel_acceptor" ~ Exon_source,
+                                           strand == "-" & junc_cat == "novel_donor" ~ Exon_target))
 
 
-
-  cryptic_exons = unique(exons_on_junction_ends[grepl("novel",type) & V5 > 0.1 & control_psi < 0.05][,.(cryptic_exon,gene_name)])
-
-
-
-  cryptic_exons = unique(exons_on_junction_ends[grepl("novel",type) & V5 > 0.1 &
-                                    control_psi < 0.05][,.(cryptic_exon,gene_name,V5)][,tdpKD_psi := mean(V5),by = .(cryptic_exon,gene_name)])
+  cryptic_exons = exons_on_junction_ends %>% 
+      filter(!is.na(cryptic_exon)) %>% 
+      left_join(exon_jnc[,.(last_exon,first_exon,exon_coords)],by = c("cryptic_exon" = "exon_coords")) %>% 
+      select(gene_name,paste_into_igv_junction,probability_changing:first_exon) %>% 
+      unique()
+  
+  
+  colnames(cryptic_exons) = c("gene_name", "paste_into_igv_junction", "probability_changing", 
+    "probability_non_changing", "baseline_PSI", "contrast_PSI", 
+    "junc_cat", "cryptic_exon", "last_exon", "first_exon")
+  
+  
+  cryptic_exons = cryptic_exons %>% 
+      group_by(cryptic_exon) %>% 
+      mutate(baseline_avg_PSI = mean(baseline_PSI),
+             contrast_avg_PSI = mean(contrast_PSI)) %>% 
+      ungroup() %>% 
+      as.data.table()
 
 
   cryptic_exons %>%
       mutate(strand = str_sub(cryptic_exon,-1,-1)) %>%
       separate(cryptic_exon, into = c("seqname","start","end")) %>%
       filter(!is.na(start)) %>%
-      dplyr::select(-V5) %>%
-      unique() %>%
-      fwrite(output_name,col.names = F, sep = "\t")
+      mutate(name = glue::glue("{baseline_avg_PSI}|{contrast_avg_PSI}|{gene_name}")) %>% 
+      rtracklayer::export(glue::glue("{outputname}.bed"))
+  
+  cryptic_exons %>% 
+      fwrite(glue::glue("{outputname}.csv"))
 }
+
 ####end of the helper functions####
 option_list = list(
     make_option(c("-t", "--transcripts"), type="character", default=NULL,
                 help="assembled transcripts from the transcriptome_assembly workflow", metavar="character"),
-    make_option(c("-d", "--deltabed"), type="character", default=NULL,
-                help="one of the deltaPSI beds produced by this workflow", metavar="character"),
+    make_option(c("-d", "--delta"), type="character", default=NULL,
+                help="one of the deltaPSI annotated CSV files produced by this workflow", metavar="character"),
     make_option(c("-o", "--outputname"), type="character",
-                help="output file name - no extension 2 files will be written", metavar="character",default = "cryptic_exons.bed")
+                help="output file name - no extension - 2 files will be written", metavar="character",default = "cryptic_exons.bed")
 );
 
 opt_parser = OptionParser(option_list=option_list);

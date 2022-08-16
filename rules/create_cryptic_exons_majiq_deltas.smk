@@ -26,15 +26,15 @@ stringtie_outdir = get_output_dir(config["project_top_level"], config['stringtie
 
 rule allParse:
     input:
-        expand(os.path.join(OUTPUT_CRYPTIC_EXONS,"{bse}_{contrast}_cryptic_exons.bed"),zip, bse = BASES,contrast = CONTRASTS)
+        expand(os.path.join(OUTPUT_CRYPTIC_EXONS,"{bse}-{contrast}_cryptic_exons.bed"),zip, bse = BASES,contrast = CONTRASTS)
 
 rule write_exon_beds:
     input:
-        bed = os.path.join(MAJIQ_DIR,"delta_psi_voila_tsv","{bse}_{contrast}_annotated.junctions.bed"),
+        bed = os.path.join(MAJIQ_DIR,"delta_psi_voila_tsv","{bse}-{contrast}_annotated.junctions.bed"),
         assembled_gtf =  os.path.join(config["project_top_level"],"all_assemblers_merged.gtf")
         # assembled_gtf =  os.path.join(stringtie_outdir,"stringtie_merged.gtf")
     output:
-        os.path.join(OUTPUT_CRYPTIC_EXONS,"{bse}_{contrast}_cryptic_exons.bed")
+        os.path.join(OUTPUT_CRYPTIC_EXONS,"{bse}-{contrast}_cryptic_exons.bed")
     # conda:
     #     "../envs/splicing_dependencies.yml"
     shell:
@@ -44,3 +44,4 @@ rule write_exon_beds:
         --deltabed {input.bed} \
         --outputname {output}
         """
+/SAN/vyplab/first_weeks/TDP_CHX_CLONES_GLIA/curves/majiq/cryptic_exons_beds/noDox-dox0075_cryptic_exons.bed
