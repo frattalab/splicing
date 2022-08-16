@@ -74,6 +74,10 @@ tx_to_keep = protein_coding_genes %>%
 
 tx_to_keep = tx_to_keep %>% 
     left_join(protein_coding_genes[,.(gene_name.x,name,cryptic_coords,strand)]) %>% 
-    unique()
+    unique() %>% 
+    dplyr::rename(gene_name = gene_name.x,
+                  transcript_id = value)
 
-fwrite(max_tx_protein_coding_genes, glue::glue('{top_folder}modules_output/{experiment}.cryptic_exons.protein_coding_with_transcript_backbone.csv'))
+
+
+fwrite(tx_to_keep, glue::glue('{top_folder}modules_output/{experiment}.cryptic_exons.protein_coding_with_transcript_backbone.csv'))

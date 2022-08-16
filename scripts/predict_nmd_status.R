@@ -53,7 +53,13 @@ addCdsPhase <- function(cds_by_tx)
     relist(unlisted_cds_by_tx, cds_by_tx)
 }
 #produced by assigning_transcript_backbone.R
-max_tx_protein_coding_genes
+with_backbone = glue::glue('{top_folder}modules_output/{experiment}.cryptic_exons.protein_coding_with_transcript_backbone.csv')
+cryptic_regions_protein_coding = fread(with_backbone)
+
+cryptic_regions_protein_coding = cryptic_regions_protein_coding %>% 
+    separate(cryptic_coords, into = c("chr","start","end")) %>% 
+    makeGRangesFromDataFrame(,keep.extra.columns = TRUE)
+
 #produced by assigning_transcript_backbone.R
 if(!exists(gtf_obj)){
     gtf_path = '/Users/annaleigh/Downloads/gencode.v38.annotation.gtf.gz'
@@ -66,7 +72,6 @@ cds_regions = unlist(cds_regions)
 
 cds_regions$transcript_id = gsub("\\..*", "", names(cds_regions))
 
-cryptic_regions_protein_coding = unique(makeGRangesFromDataFrame(max_tx_protein_coding_genes,keep.extra.columns = TRUE))
 peptides = c()
 with_peptide = c()
 cryptic_regions_protein_coding$PTC = NA_character_
@@ -84,6 +89,8 @@ for(i in 1:length(cryptic_regions_protein_coding)){
     }
     
     exon_one = cryptic_regions_protein_coding[i]
+    seqlevels(exon_one) = seqlevels(cds_parent)
+    
     
     new_model = reduce(sort(c(exon_one,cds_parent)))
     
@@ -92,6 +99,7 @@ for(i in 1:length(cryptic_regions_protein_coding)){
     new_model = GeneStructureTools::reorderExonNumbers(new_model)
     
     names(new_model) = NULL
+    
     new_model = unlist(addCdsPhase(GRangesList(new_model)))
     seqlevels(new_model) = seqlevels(cds_parent)
     
