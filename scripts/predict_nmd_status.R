@@ -1,5 +1,6 @@
 library(stringi)
 library(msa)
+library(plyranges)
 my_orf = function(transcripts, BSgenome = NULL, returnLongestOnly = TRUE, 
                   allFrames = FALSE,  
                   uORFs = FALSE) 
@@ -55,9 +56,8 @@ addCdsPhase <- function(cds_by_tx)
 #produced by assigning_transcript_backbone.R
 with_backbone = glue::glue('{top_folder}modules_output/{experiment}.cryptic_exons.protein_coding_with_transcript_backbone.csv')
 cryptic_regions_protein_coding = fread(with_backbone)
-
 cryptic_regions_protein_coding = cryptic_regions_protein_coding %>% 
-    separate(cryptic_coords, into = c("chr","start","end")) %>% 
+    dplyr::select(seqnames:name,transcript_id,gene_name) %>% unique() %>% 
     makeGRangesFromDataFrame(,keep.extra.columns = TRUE)
 
 #produced by assigning_transcript_backbone.R
@@ -92,7 +92,7 @@ for(i in 1:length(cryptic_regions_protein_coding)){
     seqlevels(exon_one) = seqlevels(cds_parent)
     
     
-    new_model = reduce(sort(c(exon_one,cds_parent)))
+    new_model = GenomicRanges::reduce(sort(c(exon_one,cds_parent)))
     
     new_model$transcript_id = parent_transcript
 
@@ -113,7 +113,7 @@ for(i in 1:length(cryptic_regions_protein_coding)){
     
     cryptic_numbers = which(exon_one == new_model)
     
-    cryptic_number = cryptic_numbers[1]
+    cryptic_number = subsetByOverlaps(new_model,exon_one)$exon_number
     cryptic_up_down = new_model %>% filter(exon_number %in% c(cryptic_number - 1, 
                                                               cryptic_number,cryptic_number + 1))
     
