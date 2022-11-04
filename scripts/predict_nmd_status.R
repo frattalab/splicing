@@ -9,7 +9,7 @@ my_orf = function(transcripts, BSgenome = NULL, returnLongestOnly = TRUE,
         returnLongestOnly = FALSE
         longest = 1
     }
-    
+    browser()
     transcripts$exon_number <- as.numeric(transcripts$exon_number)
     order <- order(transcripts$transcript_id, transcripts$exon_number)
     transcripts <- transcripts[order]
@@ -54,32 +54,40 @@ addCdsPhase <- function(cds_by_tx)
     relist(unlisted_cds_by_tx, cds_by_tx)
 }
 #produced by assigning_transcript_backbone.R
+if(!exists('gtf_obj')){
+    gtf_path = '/Users/annaleigh/Downloads/gencode.v38.annotation.gtf.gz'
+    print(stringr::str_c(Sys.time(), " - Importing the GTF..."))
+    gtf_obj =  GenomicFeatures::makeTxDbFromGFF(gtf_path,format = 'gtf')  
+}
+if(!exists('cds_regions')){
+    cds_regions = cdsBy(gtf_obj, "tx",use.names = TRUE)
+    cds_regions = unlist(cds_regions)
+    
+    cds_regions$transcript_id = gsub("\\..*", "", names(cds_regions))
+    
+}
+#produced by assigning_transcript_backbone.R
 with_backbone = glue::glue('{top_folder}modules_output/{experiment}.cryptic_exons.protein_coding_with_transcript_backbone.csv')
+outname_peppo = glue::glue('{top_folder}modules_output/{experiment}.nmd_prediction.csv')
+outname_updown = glue::glue('{top_folder}modules_output/{experiment}.cryptic_up_down.bed')
+
 cryptic_regions_protein_coding = fread(with_backbone)
 cryptic_regions_protein_coding = cryptic_regions_protein_coding %>% 
     dplyr::select(seqnames:name,transcript_id,gene_name) %>% unique() %>% 
     makeGRangesFromDataFrame(,keep.extra.columns = TRUE)
 
-#produced by assigning_transcript_backbone.R
-if(!exists(gtf_obj)){
-    gtf_path = '/Users/annaleigh/Downloads/gencode.v38.annotation.gtf.gz'
-    print(stringr::str_c(Sys.time(), " - Importing the GTF..."))
-    gtf_obj =  GenomicFeatures::makeTxDbFromGFF(gtf_path,format = 'gtf')  
-}
 
-cds_regions = cdsBy(gtf_obj, "tx",use.names = TRUE)
-cds_regions = unlist(cds_regions)
-
-cds_regions$transcript_id = gsub("\\..*", "", names(cds_regions))
 
 peptides = c()
 with_peptide = c()
 cryptic_regions_protein_coding$PTC = NA_character_
 peppo_df = tibble()
+all_cryptic_up_downs = GRanges()
 
 for(i in 1:length(cryptic_regions_protein_coding)){
-    print(i)
-
+    if(i %% 10 == 0){
+        print(i)
+    }
     gene_name = cryptic_regions_protein_coding[i]$gene_name
     parent_transcript = cryptic_regions_protein_coding[i]$transcript_id
     cds_parent = cds_regions %>% filter(transcript_id == parent_transcript)
@@ -88,11 +96,11 @@ for(i in 1:length(cryptic_regions_protein_coding)){
         next()
     }
     
-    exon_one = cryptic_regions_protein_coding[i]
-    seqlevels(exon_one) = seqlevels(cds_parent)
+    the_cryptic_exon = cryptic_regions_protein_coding[i]
+    seqlevels(the_cryptic_exon) = seqlevels(cds_parent)
     
     
-    new_model = GenomicRanges::reduce(sort(c(exon_one,cds_parent)))
+    new_model = GenomicRanges::reduce(sort(c(the_cryptic_exon,cds_parent)))
     
     new_model$transcript_id = parent_transcript
 
@@ -103,20 +111,29 @@ for(i in 1:length(cryptic_regions_protein_coding)){
     new_model = unlist(addCdsPhase(GRangesList(new_model)))
     seqlevels(new_model) = seqlevels(cds_parent)
     
-    if(length( which(new_model != cds_parent)) == 0){
-        print(glue::glue("cryptic exon {exon_one$cryptic_coords} in {gene_name}
+    if(length( which(sort(new_model) != sort(cds_parent))) == 0){
+        print(glue::glue("cryptic exon {the_cryptic_exon$cryptic_coords} in {gene_name}
                          is inside of an annotated exon in the parent transcript! Skipping"))
         next()
     }
     
     cds_parent = GeneStructureTools::reorderExonNumbers(cds_parent)
     
-    cryptic_numbers = which(exon_one == new_model)
+    cryptic_number = subsetByOverlaps(new_model,the_cryptic_exon)$exon_number
     
-    cryptic_number = subsetByOverlaps(new_model,exon_one)$exon_number
     cryptic_up_down = new_model %>% filter(exon_number %in% c(cryptic_number - 1, 
                                                               cryptic_number,cryptic_number + 1))
     
+    cryptic_up_down = cryptic_up_down %>% mutate(type = case_when(exon_number == cryptic_number ~ 'cryptic',
+                                                exon_number < cryptic_number ~ 'upstream',
+                                                exon_number > cryptic_number ~ 'downstream'))
+    
+    cryptic_up_down$name = the_cryptic_exon$name
+    
+    cryptic_up_down = cryptic_up_down %>% mutate(name = glue::glue("{name}|{type}"))
+    
+    
+    all_cryptic_up_downs = c(cryptic_up_down,all_cryptic_up_downs)
     
     normal = my_orf(cds_parent,BSgenome.Hsapiens.UCSC.hg38::BSgenome.Hsapiens.UCSC.hg38) %>% 
         dplyr::slice(1) %>% pull(aa_sequence)
@@ -169,4 +186,7 @@ for(i in 1:length(cryptic_regions_protein_coding)){
     }
     
 }
+beepr::beep(4)
 
+fwrite(unique(as.data.table(cryptic_regions_protein_coding)),outname_peppo)
+rtracklayer::export(unique(all_cryptic_up_downs),outname_updown)

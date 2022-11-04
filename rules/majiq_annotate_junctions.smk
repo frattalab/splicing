@@ -52,3 +52,20 @@ rule write_junctions_beds:
         --out {output} \
         {params.extra_junction_parameters}
         """
+
+
+rule annotatate_single_psi:
+    input:
+        tsv = os.path.join(MAJIQ_DIR,"psi_voila_tsv_single",'{sample}' + config['bam_suffix'] + ".psi.tsv")
+    wildcard_constraints:
+        sample="|".join(SAMPLE_NAMES)
+    output:
+        os.path.join(MAJIQ_DIR,"psi_voila_tsv_single","{sample}_annotated_junctions.csv")
+    conda:
+        "../envs/splicing_dependencies.yml"
+    params:
+        gtf = config['gtf'],
+        psi_output_folder = os.path.join(MAJIQ_DIR,"delta_psi_voila_tsv","{sample}_annotated_junctions")
+    shell:
+        """
+        Rscript scripts/add_junction_annotations_command_line.R --deltapsi {input.tsv} --out {params.psi_output_folder} --gtf {params.gtf}
