@@ -68,4 +68,6 @@ rule annotatate_single_psi:
         psi_output_folder = os.path.join(MAJIQ_DIR,"delta_psi_voila_tsv","{sample}_annotated_junctions")
     shell:
         """
-        Rscript scripts/add_junction_annotations_command_line.R --deltapsi {input.tsv} --out {params.psi_output_folder} --gtf {params.gtf}
+        Rscript scripts/add_junction_annotations_command_line.R --deltapsi {input.tsv} \
+        --out {params.psi_output_folder} --gtf {params.gtf}
+        """
