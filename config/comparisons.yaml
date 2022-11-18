@@ -6,7 +6,7 @@
 kdone:
   column_name:
     - group
-  controlmyoblast:
+  controlHumphreyCorticalNeuron:
     - control
-  TDP43KDmyoblast:
-    - TDP43KD
+  TDP43KDHumphreyCorticalNeuron:
+    - tdp43KD
