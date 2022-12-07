@@ -1,0 +1,66 @@
+Building DAG of jobs...
+Using shell: /usr/bin/bash
+Provided cores: 2
+Rules claiming more threads will be scaled down.
+Job stats:
+job               count    min threads    max threads
+--------------  -------  -------------  -------------
+all                   1              1              1
+assign_AS_type        1              1              1
+baltica_report        1              1              1
+simplify              1              1              1
+total                 4              1              1
+
+Select jobs to execute...
+
+[Tue Dec  6 15:24:09 2022]
+rule baltica_report:
+    input: results/SJ_annotated.csv, leafcutter/leafcutter_junctions.csv
+    output: results/baltica_report_.html
+    log: logs/baltica_report.log
+    jobid: 7
+    resources: tmpdir=/tmp/9729864.1.cpu.q
+
+[Tue Dec  6 15:24:09 2022]
+rule assign_AS_type:
+    input: results/SJ_annotated.csv, stringtie/merged/merged.combined.gtf
+    output: results/SJ_annotated_assigned.csv
+    log: logs/assign_AS_type.log
+    jobid: 6
+    resources: tmpdir=/tmp/9729864.1.cpu.q
+
+[Tue Dec  6 15:24:09 2022]
+Error in rule baltica_report:
+    jobid: 7
+    output: results/baltica_report_.html
+    log: logs/baltica_report.log (check log file(s) for error message)
+
+RuleException:
+URLError in line 181 of /SAN/vyplab/alb_projects/pipelines/baltica_hacked2/analysis.smk:
+<urlopen error [Errno 2] No such file or directory: '/SAN/vyplab/alb_projects/pipelines/baltica_hacked2/baltica_report.Rmd'>
+  File "/SAN/vyplab/alb_projects/pipelines/baltica_hacked2/analysis.smk", line 181, in __rule_baltica_report
+  File "/SAN/vyplab/alb_projects/miniconda3/lib/python3.8/urllib/request.py", line 222, in urlopen
+  File "/SAN/vyplab/alb_projects/miniconda3/lib/python3.8/urllib/request.py", line 525, in open
+  File "/SAN/vyplab/alb_projects/miniconda3/lib/python3.8/urllib/request.py", line 542, in _open
+  File "/SAN/vyplab/alb_projects/miniconda3/lib/python3.8/urllib/request.py", line 502, in _call_chain
+  File "/SAN/vyplab/alb_projects/miniconda3/lib/python3.8/urllib/request.py", line 1485, in file_open
+  File "/SAN/vyplab/alb_projects/miniconda3/lib/python3.8/urllib/request.py", line 1524, in open_local_file
+  File "/SAN/vyplab/alb_projects/miniconda3/lib/python3.8/concurrent/futures/thread.py", line 57, in run
+Activating singularity image /SAN/vyplab/first_weeks/TDP_CHX_CLONES_GLIA/curves/.snakemake/singularity/8c8a3574e99286bac514a846a13eea14.simg
+Loading input
+Assigning AS, AFE and ALE type
+Warning message:
+In .Seqinfo.mergexy(x, y) :
+  Each of the 2 combined objects has sequence levels not in the other:
+  - in 'x': 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, X, Y
+  - in 'y': chrM, KI270442.1, KI270713.1, KI270714.1, KI270718.1, KI270719.1, KI270721.1, KI270722.1, KI270726.1, KI270727.1, KI270728.1, KI270731.1, KI270734.1, KI270745.1
+  Make sure to always combine/compare objects based on the same reference
+  genome (use suppressWarnings() to suppress this warning).
+There were 50 or more warnings (use warnings() to see the first 50)
+Writting output
+[Tue Dec  6 16:47:01 2022]
+Finished job 6.
+1 of 4 steps (25%) done
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look above for error message
+Complete log: /SAN/vyplab/alb_projects/pipelines/baltica_hacked2/.snakemake/log/2022-12-06T152356.649597.snakemake.log

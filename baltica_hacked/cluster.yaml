@@ -1,0 +1,55 @@
+__default__:
+    h_vmem: 4G
+    h_rt:   04:0:0
+    submission_string: " "
+    tmem: 4G
+rmats_run:
+    submission_string: "-pe smp 4 -R y"
+    h_vmem:    6G
+    tmem:   6G
+    h_rt: 05:00:00
+leafcutter_bam2junc:
+    submission_string: "-pe smp 4 -R y"
+    h_vmem:    6G
+    tmem:   6G
+    h_rt: 12:00:00
+leafcutter_concatenate:
+    submission_string: "-pe smp 4 -R y"
+    h_vmem:    6G
+    tmem:   6G
+    h_rt: 12:00:00
+leafcutter_differential_splicing:
+    submission_string: "-pe smp 4 -R y"
+    h_vmem:    6G
+    tmem:   6G
+    h_rt: 12:00:00
+leafcutter_gtf_to_exon:
+    submission_string: "-pe smp 4 -R y"
+    h_vmem:    6G
+    tmem:   6G
+    h_rt: 12:00:00
+leafcutter_intron_clustering:
+    submission_string: "-pe smp 4 -R y"
+    h_vmem:    6G
+    tmem:   6G
+    h_rt: 12:00:00
+junctionseq_analysis:
+    submission_string: ""
+    h_vmem:    32G
+    tmem:   32G
+    h_rt: 04:00:00
+junctionseq_qc:
+    submission_string: ""
+    h_vmem:    32G
+    tmem:   32G
+    h_rt: 02:00:00
+junctionseq_merge:
+    submission_string: ""
+    h_vmem:    32G
+    tmem:   32G
+    h_rt: 04:00:00
+majiq_build:
+    submission_string: ""
+    h_vmem:   8G
+    tmem:   8G
+    h_rt: 24:00:00
