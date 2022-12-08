@@ -16,7 +16,7 @@ SINGULARITY_CACHEDIR=/SAN/vyplab/alb_projects/tools/
 export SINGULARITY_CACHEDIR
 
 
-snakemake -s junctionseq.smk \
+snakemake -s majiq.smk \
 --configfile /SAN/vyplab/first_weeks/TDP_CHX_CLONES_GLIA/curves/baltica/config.yml \
 --cluster-config /SAN/vyplab/alb_projects/pipelines/baltica_hacked2/cluster.yaml \
 --jobscript /SAN/vyplab/alb_projects/pipelines/baltica_hacked2/cluster_qsub.sh \
@@ -26,4 +26,11 @@ snakemake -s junctionseq.smk \
 -j 40 \
 --nolock \
 --rerun-incomplete \
---latency-wait 100
+--latency-wait 100 -F
+
+
+# snakemake -s majiq.smk \
+# --configfile /SAN/vyplab/first_weeks/TDP_CHX_CLONES_GLIA/curves/baltica/config.yml \
+# --cluster-config /SAN/vyplab/alb_projects/pipelines/baltica_hacked2/cluster.yaml \
+# --use-singularity \
+# --singularity-args "-B /SAN/vyplab/:/SAN/vyplab/"  -F -np

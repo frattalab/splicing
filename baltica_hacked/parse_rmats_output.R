@@ -27,46 +27,90 @@ option_list <- list(
   make_option(
     c("-c", "--cutoff"),
     type = "double",
-    default = 0.05,
+    default = 1.1,
     help = "Discard junction with FDR < than --cutoff [default %default]"
   )
 )
 # enabling both baltica or snakemake input
 if (exists("snakemake")) {
-  snakemake@source("utils.R")
-
   opt <- list(
     input = snakemake@input,
     output = snakemake@output[[1]],
     cutoff = snakemake@params[["cutoff"]]
   )
-  files <- opt$input
+  files <- as.character(opt$input)
 } else {
   opt <- parse_args(OptionParser(option_list = option_list))
   files <- Sys.glob(opt$input)
-  source("~/Baltica/scripts/utils.R")
 }
 
-res <- split(files, str_split(files, "/", simplify = T)[, 2])
+#' Process for alternative splice site rMATs output files
+#' @param df dataframe from rMATs
+#' @param start name of the start column
+#' @param end name of the end column
+#' @param type flag for splice junction type
+#' @param FDR is the FDR cutoff
+#' @return GenomicRange of the selected SJ
+#' @export
+#'
+process_RMATS_ass <- function(df, start = "flankingES", end = "shortES", type, FDR = 0.05) {
+  df <- df %>%
+    dplyr::filter(FDR < !!FDR) %>%
+    dplyr::select(
+      chr, !!start, !!end, strand, comparison, FDR, IncLevelDifference
+    ) %>%
+    dplyr::rename(c(start = !!start, end = !!end)) %>%
+    mutate(start = pmin(start, end), end = pmax(start, end))
+
+  df$"type" <- type
+
+  df
+}
+
+
+#' Process for exon skipping and intron retention r
+#' MATs output files
+#' @param df dataframe from rMATs
+#' @param start name of the start column
+#' @param end name of the end column
+#' @param type flag for splice junction type
+#' @param FDR is the FDR cutoff
+#' @return GenomicRange of the selected SJ
+#' @export
+#'
+process_RMATS <- function(df, start, end, type, FDR = 0.05) {
+  df <- df %>%
+    dplyr::filter(FDR < !!FDR) %>%
+    dplyr::select(
+      chr, !!start, !!end, strand, comparison,
+      FDR, IncLevelDifference
+    ) %>%
+    dplyr::rename(c(start = !!start, end = !!end))
+
+  df$type <- type
+
+  df
+}
+
+split_path <- strsplit(files, "/", fixed = T)
+comparison <- sapply(split_path, `[[`, length(split_path[[1]]) - 1)
+
+res <- split(files, comparison)
 
 get_rmats_coord <- function(.files, .comparison) {
   message("Processing files for ", .comparison)
-  x <- suppressWarnings(
-    lapply(.files, readr::read_delim, "\t", col_types = c(
-      .default = col_double(),
-      GeneID = col_character(),
-      geneSymbol = col_character(),
-      chr = col_character(),
-      strand = col_character(),
-      IJC_SAMPLE_1 = col_character(),
-      SJC_SAMPLE_1 = col_character(),
-      IJC_SAMPLE_2 = col_character(),
-      SJC_SAMPLE_2 = col_character(),
-      IncLevel1 = col_character(),
-      IncLevel2 = col_character()
-    ))
+  x <- lapply(.files, read.delim, "\t", header = TRUE)
+
+  lapply(seq_along(.files), function(i) {
+    message(.files[[i]], ": has ", nrow(x[[i]]), " entries")
+  })
+  .split_files <- strsplit(.files, "/", fixed = T)
+  as_type <- gsub(
+    x = sapply(.split_files, `[[`, length(.split_files[[1]])),
+    pattern = ".MATS.JC.txt", replacement = ""
   )
-  names(x) <- str_split(.files, pattern = "[/.]", simplify = T)[, 3]
+
+  names(x) <- as_type
   for (i in names(x)) {
     x[[i]]$comparison <- .comparison
   }
@@ -100,18 +144,26 @@ get_rmats_coord <- function(.files, .comparison) {
     FDR = opt$cutoff
   )
 
-  gr <- c(es_ssj, es_isj, ir, a5ss_SSJ, a5ss_ISJ, a3ss_SSJ, a3ss_ISJ)
-  gr$method <- "rmats"
-
-  gr
+  res <- bind_rows(
+    lst(es_ssj, es_isj, ir, a5ss_SSJ, a5ss_ISJ, a3ss_SSJ, a3ss_ISJ)
+  )
+  res$method <- "rmats"
+  res
 }
 
 message("Loading and procesing rMATs files")
 res <- lapply(setNames(names(res), names(res)), function(x) {
   get_rmats_coord(res[[x]], x)
 })
-res <- as(res, "GRangesList")
-res <- unlist(res)
+res <- bind_rows(res)
 
-message("Number of junctions after filtering ", length(res))
-write_csv(data.frame(res), opt$output)
+# Force remove chr from seqnames
+res <- res %>%
+  mutate(
+    chr = gsub(x = res$chr, replacement = "", pattern = "chr")
+  ) %>%
+  arrange(FDR) %>%
+  distinct(comparison, chr, start, end, strand, .keep_all = TRUE)
+
+message("Number of junctions after filtering ", nrow(res))
+write_csv(res, opt$output)

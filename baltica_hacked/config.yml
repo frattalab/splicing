@@ -1,0 +1,44 @@
+assembly: GRCh38_90
+baltica_path: /SAN/vyplab/alb_projects/miniconda3/lib/python3.8/site-packages/baltica/command.py
+config_path: /SAN/vyplab/alb_projects/tools/baltica/baltica/config.yml
+contrasts:
+  mix2-vs-mix1:
+  - mix2
+  - mix1
+  mix3-vs-mix1:
+  - mix3
+  - mix1
+  mix3-vs-mix2:
+  - mix3
+  - mix2
+fdr: 0.05
+leafcutter_max_intron_length: 500000
+leafcutter_min_cluster_reads: 30
+leafcutter_min_coverage: 20
+leafcutter_min_samples_per_group: 3
+leafcutter_min_samples_per_intron: 5
+majiq_minreads: 5
+majiq_non_changing_threshold: 0.05
+majiq_threshold: 0.2
+path: /home/tbrittoborges/sirv_test/
+read_len: 101
+ref: /home/tbrittoborges/Baltica/data/SIRV.gtf
+ref_fa: /home/tbrittoborges/Baltica/data/SIRV.fa
+sample_path: /home/tbrittoborges/Baltica/data/
+samples:
+  mix1_1: mix1_1.bam
+  mix1_2: mix1_2.bam
+  mix1_3: mix1_3.bam
+  mix1_4: mix1_4.bam
+  mix1_5: mix1_5.bam
+  mix2_1: mix2_1.bam
+  mix2_2: mix2_2.bam
+  mix2_3: mix2_3.bam
+  mix2_4: mix2_4.bam
+  mix2_5: mix2_5.bam
+  mix3_1: mix3_1.bam
+  mix3_2: mix3_2.bam
+  mix3_3: mix3_3.bam
+  mix3_4: mix3_4.bam
+  mix3_5: mix3_5.bam
+strandness: fr-firststrand

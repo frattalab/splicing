@@ -87,14 +87,14 @@ rule majiq_create_ini:
 
 
 rule majiq_gtf_to_gff:
-    input: config["ref"]
+    input: config["gff3"]
     output: "majiq/ref.gff"
     log: 
         "logs/majiq_gtf_to_gff.log"
     shadow:
         "shallow"
     shell:
-        "gtf2gff3.pl {input} > {output}"
+        "ln -s {input} > {output}"
 
 
 rule majiq_build:
