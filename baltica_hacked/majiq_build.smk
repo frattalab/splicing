@@ -70,9 +70,7 @@ rule all:
         "logs/",
         expand("mappings/{name}.bam", name=name),
         "majiq/build.ini",
-        expand("majiq/{name}.majiq", name=name),
-        expand("majiq/{contrast}/{contrast}.deltapsi.voila", contrast=contrasts.keys()),
-        expand("majiq/voila/{contrast}_voila.tsv", contrast=contrasts.keys()),
+        expand("majiq/{name}.majiq", name=name)
 
 
 rule majiq_create_ini:
@@ -112,47 +110,3 @@ rule majiq_build:
     shell:
         " majiq build --conf {input.ini} --nproc {threads} --output majiq/ {input.ref}"
 
-
-rule majiq_deltapsi:
-    input:
-        a=lambda wc: comparison(wc, 0, mapping),
-        b=lambda wc: comparison(wc, -1, mapping),
-    output:
-        "majiq/{contrast}/{contrast}.deltapsi.voila",
-    conda:
-        "../envs/majiq.yml"
-    threads: 10
-    log:
-        "logs/majiq_deltapsi/{contrast}.log",
-    params:
-        name=lambda wc: wc.contrast.replace("-vs-", " "),
-        name2=lambda wc: wc.contrast.replace("-vs-", "_"),
-        cont=lambda wc: wc.contrast,
-        majiq_minreads=config.get("minreads", 3),
-    shell:
-        "majiq deltapsi -grp1 {input.a} -grp2 {input.b} "
-        "--nproc {threads} --output majiq/{params.cont} "
-        "--names {params.name} "
-        "--minreads {params.majiq_minreads} ;"
-        "mv majiq/{params.cont}/{params.name2}.deltapsi.voila "
-        "{output} "
-
-
-rule majiq_voila:
-    input:
-        "majiq/splicegraph.sql",
-        "majiq/{contrast}/{contrast}.deltapsi.voila",
-    output:
-        "majiq/voila/{contrast}_voila.tsv",
-    conda:
-        "../envs/majiq.yml"
-    log:
-        "logs/majiq_voila/{contrast}.log",
-    params:
-        threshold=config.get("majiq_threshold", 0.2),
-        non_changing_threshold=config.get("majiq_non_changing_threshold", 0.05),
-    shell:
-        "voila tsv "
-        "--threshold {params.threshold} "
-        "--non-changing-threshold {params.non_changing_threshold} "
-        "{input} -f {output}"
