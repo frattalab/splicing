@@ -48,6 +48,7 @@ container: "docker://tbrittoborges/majiq:2.2"
 workdir: config.get("path", ".")
 
 
+
 name = config["samples"].keys()
 sample = config["samples"].values()
 sample_path = config["sample_path"]
@@ -60,6 +61,7 @@ mapping = {c: [x for x in name if x[: x.index("_")] == c] for c in conditions}
 localrules:
     symlink,
     majiq_create_ini,
+    majiq_gtf_to_gff
 
 
 include: "symlink.smk"
@@ -87,12 +89,8 @@ rule majiq_create_ini:
 rule majiq_gtf_to_gff:
     input: config["gff3"]
     output: "majiq/ref.gff"
-    log: 
-        "logs/majiq_gtf_to_gff.log"
-    shadow:
-        "shallow"
     shell:
-        "ln -s {input} > {output}"
+        "ln -s {input} {output}"
 
 
 rule majiq_build:

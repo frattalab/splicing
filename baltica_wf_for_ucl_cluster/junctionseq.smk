@@ -14,8 +14,13 @@ __license__ = "MIT"
 
 from itertools import groupby, chain
 
+log_path = config["path"] + '/logs'
 
-workdir: config.get("path", ".")
+import os
+os.makedirs(log_path, exist_ok=True)
+# workdir: config.get("path", ".")
+print(config.get("path", "."))
+workdir: config["path"]
 
 
 name = config["samples"].keys()

@@ -27,7 +27,6 @@ workdir: config.get("path", ".")
 contrasts = config["contrasts"]
 keys = config["samples"].keys()
 keys = [tuple(x.split("_")) for x in keys]
-print("Hello beautiful")
 temp_dir = tempfile.TemporaryDirectory()
 
 d = defaultdict(list)

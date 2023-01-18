@@ -1,11 +1,12 @@
 sample_path = config["sample_path"]
 name = config["samples"].keys()
 sample = config["samples"].values()
-
+log_path = config["path"] + '/logs'
+workdir: config["path"]
 from os import symlink, path
 from shutil import copy2
-
-print("HI GORGEOUS")
+import os
+os.makedirs(log_path, exist_ok=True)
 rule symlink:
     input:
         bam=expand("{samples_dir}{sample}", sample=sample, samples_dir=sample_path),

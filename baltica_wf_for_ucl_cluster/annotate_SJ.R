@@ -321,6 +321,7 @@ if (isTRUE(opt$unstranded)) {
 gr <- lapply(df, function(x) {
   .gr <- GRanges(x)
   .gr <- .gr[width(.gr) > 2, ]
+  seqlevelsStyle(.gr) = 'UCSC'
   if (!"comparison" %in% colnames(mcols(.gr))) {
     mcols(.gr)["comparison"] <- "NA"
   }
