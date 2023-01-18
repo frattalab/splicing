@@ -57,7 +57,6 @@ include: "symlink.smk"
 rule all:
     input:
         expand("mappings/{name}.bam", name=name),
-        expand("stringtie/merged_bam/{group}.bam", group=cond),
         expand("stringtie/stringtie/{group}.gtf", group=cond),
         "stringtie/merged/merged.combined.gtf",
 
@@ -66,8 +65,8 @@ rule stringtie_merge_bam:
     input:
         lambda wc: ["mappings/{}_{}.bam".format(*x) for x in d[wc.group]],
     output:
-        bam="stringtie/merged_bam/{group}.bam",
-        bai="stringtie/merged_bam/{group}.bam.bai",
+        bam=temp("stringtie/merged_bam/{group}.bam"),
+        bai=temp("stringtie/merged_bam/{group}.bam.bai"),
     threads: 10
     log:
         "logs/stringtie_merge_bam/{group}.log",
