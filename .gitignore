@@ -6,3 +6,4 @@ old_config_file/
 submissions/
 .snakemake/
 ._*
+scripts/manual_runs.R
