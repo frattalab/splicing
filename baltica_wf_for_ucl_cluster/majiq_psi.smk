@@ -104,8 +104,6 @@ rule majiq_voila:
         "majiq/{contrast}/{contrast}.deltapsi.voila",
     output:
         "majiq/voila/{contrast}_voila.tsv",
-    conda:
-        "../envs/majiq.yml"
     log:
         "logs/majiq_voila/{contrast}.log",
     params:
