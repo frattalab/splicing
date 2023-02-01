@@ -1,0 +1,19 @@
+name:
+  majiq
+
+channels:
+  - bioconda
+
+dependencies:
+  - python = 3.5
+  - GitPython
+  - wheel
+  - setuptools
+  - numpy
+  - cython
+  - htslib
+  - pysam
+   - pip:
+     - git+https://bitbucket.org/biociphers/majiq_stable.git#egg=majiq
+# export HTSLIB_INCLUDE_DIR=/home/tbrittoborges/miniconda3/envs/majiq/lib/python3.5/site-packages/pysam/include/htslib
+# export HTSLIB_LIBRARY_DIR=/home/tbrittoborges/miniconda3/envs/majiq/lib/python3.5/site-packages/pysam/include/htslib/htslib/

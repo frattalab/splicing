@@ -1,0 +1,8 @@
+name:
+  irfinder
+
+channels:
+  - bioconda
+
+dependencies:
+  - irfinder==1.2.6

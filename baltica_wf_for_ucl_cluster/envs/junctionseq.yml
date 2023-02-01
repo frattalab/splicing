@@ -1,0 +1,15 @@
+name:
+  junctionseq
+
+channels:
+  - r
+  - bioconda
+
+dependencies:
+  - r = 3.6
+  - r-biocmanager
+  - qorts
+
+# Because junctionseq recipe it's not currently working
+# conda activate junctionseq
+# Rscript -e 'BiocManager::install("JunctionSeq")'
