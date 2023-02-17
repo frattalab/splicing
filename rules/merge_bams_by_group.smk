@@ -41,8 +41,8 @@ rule merge_bam_base:
     input:
         base_group_stringtie = lambda wildcards: file_path_list(wildcards.bse,bam_dir,config['bam_suffix'] + '.bam')
     output:
-        bam= stringtie_outdir + "merged_bam/{bse}.bam",
-        bai= stringtie_outdir + "merged_bam/{bse}.bam.bai"
+        bam= os.path.join(bam_dir_temporary,"{bse}.bam"),
+        bai= os.path.join(bam_dir_temporary,"{bse}.bam.bai")
     threads: 10
     conda:
         "../envs/stringtie.yml"
@@ -55,8 +55,8 @@ rule merge_bam_contrast:
     input:
         contrast_group_stringtie = lambda wildcards: file_path_list(wildcards.contrast,bam_dir,config['bam_suffix'] + '.bam')
     output:
-        bam= stringtie_outdir + "merged_bam/{contrast}.bam",
-        bai= stringtie_outdir + "merged_bam/{contrast}.bam.bai"
+        bam= os.path.join(bam_dir_temporary,"{contrast}.bam"),
+        bai= os.path.join(bam_dir_temporary,"{contrast}.bam.bai")
     threads: 10
     conda:
         "../envs/stringtie.yml"
