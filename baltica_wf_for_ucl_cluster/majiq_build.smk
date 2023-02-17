@@ -100,8 +100,6 @@ rule majiq_build:
     output:
         expand("majiq/{name}.majiq", name=name),
         "majiq/splicegraph.sql",
-    conda:
-        "../envs/majiq.yml"
     threads: len(conditions)
     log:
         "logs/majiq_build.log",

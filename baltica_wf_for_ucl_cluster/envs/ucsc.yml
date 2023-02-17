@@ -1,0 +1,9 @@
+name:
+  ucsc
+
+channels:
+  - bioconda
+
+dependencies:
+  - ucsc-genepredtobed
+  - ucsc-gtftogenepred

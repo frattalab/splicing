@@ -1,0 +1,9 @@
+name:
+  base
+
+channels:
+  - bioconda
+  - conda-forge
+
+dependencies:
+  - "rmats=4.1.1"

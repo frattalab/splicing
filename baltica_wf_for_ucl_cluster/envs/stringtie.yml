@@ -1,0 +1,10 @@
+name:
+  stringtie
+
+channels:
+  - bioconda
+
+dependencies:
+  - stringtie
+  - samtools
+  - gffcompare
