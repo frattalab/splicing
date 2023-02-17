@@ -28,12 +28,32 @@ stringtie_outdir = get_output_dir(config["project_top_level"], config['stringtie
 rule all_stringtie:
     input:
         expand(stringtie_outdir + "{sample}.assemble.gtf", sample = SAMPLE_NAMES),
-        os.path.join(stringtie_outdir, "stringtie_merged.unique.gtf"),
-        os.path.join(stringtie_outdir,"stringtie_merged.gtf"),
-        expand(os.path.join(stringtie_outdir,"{bse}.stringtie_merged.gtf"), bse = BASES),
-        expand(os.path.join(stringtie_outdir,"{contrast}.stringtie_merged.gtf"), contrast = CONTRASTS)
 
+        # os.path.join(stringtie_outdir, "stringtie_merged.unique.gtf"),
+        # os.path.join(stringtie_outdir,"stringtie_merged.gtf"),
+        # expand(os.path.join(stringtie_outdir,"{bse}.stringtie_merged.gtf"), bse = BASES),
+        # expand(os.path.join(stringtie_outdir,"{contrast}.stringtie_merged.gtf"), contrast = CONTRASTS)
 
+rule stringtie_denovo_transcriptomics:
+    input:
+        "stringtie/merged_bam/{group}.bam",
+    output:
+        "stringtie/stringtie/{group}.gtf",
+    params:
+        strandness=strand.get(config.get("strandness", ""), ""),
+        min_junct_coverage=config.get("min_junct_coverage", 3),
+        min_isoform_proportion=config.get("min_isoform_proportion", 0.001),
+        minimum_read_per_bp_coverage=config.get("minimum_read_per_bp_coverage", 3),
+    wildcard_constraints:
+        group="|".join(cond),
+    log:
+        "logs/stringtie_denovo_transcriptomics/{group}.log",
+    envmodules:
+        "stringtie",
+    shadow:
+        "shallow"
+    shell:
+        "stringtie {input} -o {output} -p {threads}  {params.strandness} -c {params.minimum_read_per_bp_coverage} -j {params.min_junct_coverage} -f {params.min_isoform_proportion} 2> {log} "
 rule StringTie_Assemble:
     input:
         bam = lambda wildcards: bam_dir + '{sample}' + config['bam_suffix'] + '.bam',
@@ -65,6 +85,7 @@ rule merge_stringtie_gtfs:
         """
         {params.gtfmerge} union {input.gtf_list} {output.merged_gtf} -t 2 -n
         """
+
 ######### DOING THE SAME THING THREE TIMES NOW
 rule compose_gtf_list_bases_stringtie:
     input:
