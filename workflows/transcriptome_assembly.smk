@@ -26,7 +26,7 @@ stringtie_outdir = get_output_dir(config["project_top_level"], config['stringtie
 scallop_outdir = get_output_dir(config["project_top_level"], config['scallop_output'])
 
 
-
+include: "../rules/merge_bams_by_group.smk"
 include: "../rules/scallop_sample.smk"
 include: "../rules/stringtie_sample.smk"
 
