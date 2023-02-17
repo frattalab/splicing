@@ -164,3 +164,7 @@ write_exon_beds:
     h_vmem:   16G
     tmem:   16G
     h_rt: 8:00:00
+merge_bam_base:
+    h_vmem:   18G
+    tmem:   18G
+    h_rt: 20:00:00
