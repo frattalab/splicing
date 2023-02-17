@@ -28,23 +28,19 @@ bam_dir_temporary = get_output_dir(config["project_top_level"], 'merged_bams')
 stringtie_outdir = get_output_dir(config["project_top_level"], config['stringtie_output'])
 scallop_outdir = get_output_dir(config["project_top_level"], config['scallop_output'])
 
-# RULE ORDER DIRECTIVE
-# if paired end, use the paired end rule to run, if single end use the single end rule to run
-ruleorder: merge_bam_base > merge_bam_contrast
 
 
 rule allMerging:
     input:
-        expand(os.path.join(bam_dir_temporary,"{bse}.bam"), bse = BASES),
-        expand(os.path.join(bam_dir_temporary,"{contrast}.bam"), contrast = CONTRASTS)
+        expand(os.path.join(bam_dir_temporary,"{grp}.bam"), grp = ALLGROUP)
 
 
-rule merge_bam_base:
+rule merge_bam_groups:
     input:
-        base_group_stringtie = lambda wildcards: file_path_list(wildcards.bse,bam_dir,config['bam_suffix'] + '.bam')
+        base_group_stringtie = lambda wildcards: file_path_list(wildcards.grp,bam_dir,config['bam_suffix'] + '.bam')
     output:
-        bam= os.path.join(bam_dir_temporary,"{bse}.bam"),
-        bai= os.path.join(bam_dir_temporary,"{bse}.bam.bai")
+        bam= os.path.join(bam_dir_temporary,"{grp}.bam"),
+        bai= os.path.join(bam_dir_temporary,"{grp}.bam.bai")
     threads: 10
     conda:
         "../envs/stringtie.yml"
@@ -53,16 +49,3 @@ rule merge_bam_base:
     shell:
         "samtools merge {output.bam} {input.base_group_stringtie} --threads {threads};samtools index {output.bam} {output.bai} 2> {log} "
 
-rule merge_bam_contrast:
-    input:
-        contrast_group_stringtie = lambda wildcards: file_path_list(wildcards.contrast,bam_dir,config['bam_suffix'] + '.bam')
-    output:
-        bam= os.path.join(bam_dir_temporary,"{contrast}.bam"),
-        bai= os.path.join(bam_dir_temporary,"{contrast}.bam.bai")
-    threads: 10
-    conda:
-        "../envs/stringtie.yml"
-    shadow:
-        "shallow"
-    shell:
-        "samtools merge {output.bam} {input.contrast_group_stringtie} --threads {threads};samtools index {output.bam} {output.bai} 2> {log} "
