@@ -14,8 +14,8 @@ samples = pd.read_csv(config['sampleCSVpath'])
 samples2 = samples.loc[samples.exclude_sample_downstream_analysis != 1]
 SAMPLE_NAMES = list(set(samples2['sample_name']))
 BASES, CONTRASTS = return_bases_and_contrasts()
-print(BASES)
-print(CONTRASTS)
+ALLGROUP = list(set(BASES + CONTRASTS))
+print(ALLGROUP)
 
 
 SPECIES = config["species"]
