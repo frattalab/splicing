@@ -15,19 +15,22 @@ samples = pd.read_csv(config['sampleCSVpath'])
 samples2 = samples.loc[samples.exclude_sample_downstream_analysis != 1]
 SAMPLE_NAMES = list(set(samples2['sample_name']))
 BASES, CONTRASTS = return_bases_and_contrasts()
+ALLGROUP = list(set(BASES + CONTRASTS))
+print(ALLGROUP)
 
 
 SPECIES = config["species"]
 GTF = config['gtf']
 
-#make sure the output folder for STAR exists before running anything
-bam_dir = get_output_dir(config["project_top_level"], config['bam_dir'])
+#make sure the output folder exists before running anything
+bam_dir_temporary = get_output_dir(config["project_top_level"], 'merged_bams')
+
 stringtie_outdir = get_output_dir(config["project_top_level"], config['stringtie_output'])
 
 
 rule all_stringtie:
     input:
-        expand(stringtie_outdir + "{sample}.assemble.gtf", sample = SAMPLE_NAMES),
+        expand(stringtie_outdir + "{grp}.assemble.gtf", sample = ALLGROUP),
 
         # os.path.join(stringtie_outdir, "stringtie_merged.unique.gtf"),
         # os.path.join(stringtie_outdir,"stringtie_merged.gtf"),
@@ -36,30 +39,10 @@ rule all_stringtie:
 
 rule stringtie_denovo_transcriptomics:
     input:
-        "stringtie/merged_bam/{group}.bam",
+        bam= os.path.join(bam_dir_temporary,"{grp}.bam"),
+        bai= os.path.join(bam_dir_temporary,"{grp}.bam.bai")
     output:
-        "stringtie/stringtie/{group}.gtf",
-    params:
-        strandness=strand.get(config.get("strandness", ""), ""),
-        min_junct_coverage=config.get("min_junct_coverage", 3),
-        min_isoform_proportion=config.get("min_isoform_proportion", 0.001),
-        minimum_read_per_bp_coverage=config.get("minimum_read_per_bp_coverage", 3),
-    wildcard_constraints:
-        group="|".join(cond),
-    log:
-        "logs/stringtie_denovo_transcriptomics/{group}.log",
-    envmodules:
-        "stringtie",
-    shadow:
-        "shallow"
-    shell:
-        "stringtie {input} -o {output} -p {threads}  {params.strandness} -c {params.minimum_read_per_bp_coverage} -j {params.min_junct_coverage} -f {params.min_isoform_proportion} 2> {log} "
-rule StringTie_Assemble:
-    input:
-        bam = lambda wildcards: bam_dir + '{sample}' + config['bam_suffix'] + '.bam',
-        ref_gtf = GTF
-    output:
-        stringtie_outdir + "{sample}.assemble.gtf"
+        stringtie_outdir + "{grp}.assemble.gtf"
     conda:
         "../envs/stringtie.yml"
     shell:
