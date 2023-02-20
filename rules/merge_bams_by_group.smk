@@ -42,8 +42,6 @@ rule merge_bam_groups:
         bam= os.path.join(bam_dir_temporary,"{grp}.bam"),
         bai= os.path.join(bam_dir_temporary,"{grp}.bam.bai")
     threads: 10
-    shadow:
-        "shallow"
     shell:
         "samtools merge {output.bam} {input.base_group_stringtie} --threads {threads};samtools index {output.bam} {output.bai} 2> {log} "
 
