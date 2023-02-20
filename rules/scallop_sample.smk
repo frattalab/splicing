@@ -37,7 +37,7 @@ print(scallop_outdir)
 
 rule all_scallop:
     input:
-        expand(scallop_outdir + "{grp}.gtf", sample = ALLGROUP),
+        expand(os.path.join(scallop_outdir,'{grp}' + ".gtf"), grp = ALLGROUP)
         # os.path.join(scallop_outdir, "scallop_merged.unique.gtf"),
         # os.path.join(scallop_outdir, "gffall.scallop_merged.gtf.tmap"),
         # expand(os.path.join(scallop_outdir,"{grp}.scallop_merged.gtf"), sample = ALLGROUP)
