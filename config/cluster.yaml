@@ -95,8 +95,8 @@ star_tabs_to_beds:
     tmem:   1G
     h_rt: 72:00:00
 scallop_per_group:
-    h_vmem:   32G
-    tmem:   32G
+    h_vmem:   16G
+    tmem:   16G
     h_rt: 4:00:00
 fetch_unique:
     h_vmem:   4G
@@ -107,7 +107,7 @@ compare_reference:
     h_vmem:   8G
     tmem:   8G
     h_rt: 4:00:00
-StringTie_Assemble:
+stringtie_per_group:
     h_vmem:   8G
     tmem:   8G
     h_rt: 4:00:00

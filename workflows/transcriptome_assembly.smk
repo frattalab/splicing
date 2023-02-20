@@ -31,7 +31,6 @@ rule allMerging:
         expand(os.path.join(bam_dir_temporary,"{grp}.bam.bai"),grp = ALLGROUP),
         expand(os.path.join(scallop_outdir,'{grp}' + ".gtf"),grp = ALLGROUP),
         expand(os.path.join(stringtie_outdir,'{grp}' + ".gtf"),grp = ALLGROUP),
-        expand("{outdir}/{grp}.gtf.map", outdir=both_output_dirs, grp=ALLGROUP)
 
 
 
@@ -92,30 +91,30 @@ rule stringtie_per_group:
         "stringtie {input.bam} -G {GTF} -o {output}"
 
 
-rule compare_reference:
-    input:
-        lambda wildcards: expand("{outdir}/{grp}.gtf.map", outdir=both_output_dirs, grp=wildcards.grp)
-    output:
-        os.path.join('{outdir}', '{grp}' + ".gtf.map")
-    params:
-        ref_gtf = GTF,
-        gffcompare = config['gffcompare'],
-        prefix = os.path.join('{outdir}', '{grp}')
-    shell:
-        """
-        {params.gffcompare} -o gffall -r {params.ref_gtf} {input}
-        """
+# rule compare_reference:
+#     input:
+#         lambda wildcards: expand("{outdir}/{grp}.gtf.map", outdir=both_output_dirs, grp=wildcards.grp)
+#     output:
+#         os.path.join('{outdir}', '{grp}' + ".gtf.map")
+#     params:
+#         ref_gtf = GTF,
+#         gffcompare = config['gffcompare'],
+#         prefix = os.path.join('{outdir}', '{grp}')
+#     shell:
+#         """
+#         {params.gffcompare} -o gffall -r {params.ref_gtf} {input}
+#         """
 
-rule fetch_unique:
-    input:
-        sample_tmap = os.path.join(scallop_outdir,"scallop_merged.gtf"),
-        sample_gtf = os.path.join(scallop_outdir, "gffall.scallop_merged.gtf.tmap")
-    output:
-        os.path.join(scallop_outdir, "scallop_merged.unique.gtf")
-    params:
-        ref_gtf = GTF,
-        gtfcuff = config['gtfcuff']
-    shell:
-        """
-        {params.gtfcuff} puniq {input.sample_tmap} {input.sample_gtf} {params.ref_gtf} {output}
-        """
+# rule fetch_unique:
+#     input:
+#         sample_tmap = os.path.join(scallop_outdir,"scallop_merged.gtf"),
+#         sample_gtf = os.path.join(scallop_outdir, "gffall.scallop_merged.gtf.tmap")
+#     output:
+#         os.path.join(scallop_outdir, "scallop_merged.unique.gtf")
+#     params:
+#         ref_gtf = GTF,
+#         gtfcuff = config['gtfcuff']
+#     shell:
+#         """
+#         {params.gtfcuff} puniq {input.sample_tmap} {input.sample_gtf} {params.ref_gtf} {output}
+#         """
