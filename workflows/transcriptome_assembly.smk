@@ -30,7 +30,8 @@ rule allMerging:
         expand(os.path.join(bam_dir_temporary,"{grp}.bam"), grp = ALLGROUP),
         expand(os.path.join(bam_dir_temporary,"{grp}.bam.bai"),grp = ALLGROUP),
         expand(os.path.join(scallop_outdir,'{grp}' + ".gtf"),grp = ALLGROUP),
-        expand(os.path.join(stringtie_outdir,'{grp}' + ".gtf"),grp = ALLGROUP)
+        expand(os.path.join(stringtie_outdir,'{grp}' + ".gtf"),grp = ALLGROUP),
+        expand("{outdir}/{grp}.gtf.map", outdir=both_output_dirs, grp=ALLGROUP)
 
 
 
