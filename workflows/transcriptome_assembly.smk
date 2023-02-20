@@ -4,66 +4,116 @@ import subprocess
 import yaml
 configfile: "config/config.yaml"
 include: "../rules/helpers.py"
-localrules: compose_gtf_list
-##############################
-##### STOLEN FROM https://github.com/bioinformatics-core-shared-training/RNAseq_March_2019/tree/master/
-##### Final output is a merged gtf of all samples containing transcripts that
-##### were found in the samples but NOT the input GTF
-##############################
-#reading in the samples and dropping the samples to be excluded in order to get a list of sample names
+
 samples = pd.read_csv(config['sampleCSVpath'])
 samples2 = samples.loc[samples.exclude_sample_downstream_analysis != 1]
 SAMPLE_NAMES = list(set(samples2['sample_name']))
 BASES, CONTRASTS = return_bases_and_contrasts()
-print(SAMPLE_NAMES)
+ALLGROUP = list(set(BASES + CONTRASTS))
+print(ALLGROUP)
+
 
 SPECIES = config["species"]
 GTF = config['gtf']
 
 #make sure the output folder for STAR exists before running anything
 bam_dir = get_output_dir(config["project_top_level"], config['bam_dir'])
+bam_dir_temporary = get_output_dir(config["project_top_level"], 'merged_bams')
+
 stringtie_outdir = get_output_dir(config["project_top_level"], config['stringtie_output'])
 scallop_outdir = get_output_dir(config["project_top_level"], config['scallop_output'])
 
+both_output_dirs = [stringtie_outdir,scallop_outdir]
 
-include: "../rules/merge_bams_by_group.smk"
-include: "../rules/scallop_sample.smk"
-include: "../rules/stringtie_sample.smk"
-
-rule assemble_all:
+rule allMerging:
     input:
-        expand(scallop_outdir + '{sample}' + ".gtf", sample = SAMPLE_NAMES),
-        os.path.join(scallop_outdir, "scallop_merged.unique.gtf"),
-        os.path.join(scallop_outdir, "gffall.scallop_merged.gtf.tmap"),
-        expand(os.path.join(scallop_outdir,"{bse}.scallop_merged.gtf"), bse = BASES),
-        expand(os.path.join(scallop_outdir,"{contrast}.scallop_merged.gtf"), contrast = CONTRASTS),
-        expand(stringtie_outdir + "{sample}.assemble.gtf", sample = SAMPLE_NAMES),
-        os.path.join(stringtie_outdir, "stringtie_merged.unique.gtf"),
-        os.path.join(stringtie_outdir,"stringtie_merged.gtf"),
-        expand(os.path.join(scallop_outdir,"{bse}.scallop_merged.gtf"), bse = BASES),
-        expand(os.path.join(scallop_outdir,"{contrast}.scallop_merged.gtf"), contrast = CONTRASTS),
-        os.path.join(config["project_top_level"],"all_assemblers_merged.gtf"),
-        expand(os.path.join(stringtie_outdir,"{bse}.stringtie_merged.gtf"), bse = BASES),
-        expand(os.path.join(stringtie_outdir,"{contrast}.stringtie_merged.gtf"), contrast = CONTRASTS)
+        expand(os.path.join(bam_dir_temporary,"{grp}.bam"), grp = ALLGROUP),
+        expand(os.path.join(bam_dir_temporary,"{grp}.bam.bai"),grp = ALLGROUP)
 
-rule compose_gtf_list_all_assemblers:
+
+
+rule merge_bam_groups:
     input:
-        os.path.join(stringtie_outdir,"stringtie_merged.gtf"),
-        os.path.join(scallop_outdir, "scallop_merged.gtf"),
+        group_bam_files = lambda wildcards: file_path_list(wildcards.grp,bam_dir,config['bam_suffix'] + '.bam')
     output:
-        txt = os.path.join(config["project_top_level"],"gtf_list_all_assemblers.txt")
-    run:
-        with open(output.txt, 'w') as out:
-            print(*input, sep="\n", file=out)
-
-rule merge_all_assemblies:
-    input:
-        gtf_list = os.path.join(config["project_top_level"],"gtf_list_all_assemblers.txt")
-    output:
-        merged_gtf = os.path.join(config["project_top_level"],"all_assemblers_merged.gtf")
-    params:
-        gtfmerge = config['gtfmerge']
+        bam= os.path.join(bam_dir_temporary,"{grp}.bam"),
+    threads: 10
     shell:
         """
-        {params.gtfmerge} union {input.gtf_list} {output.merged_gtf} -t 2 -n
+        samtools merge {output.bam} {input.group_bam_files} --threads {threads}
+        """
+
+rule index_merged_group:
+    input:
+        bam = os.path.join(bam_dir_temporary,"{grp}.bam")
+    output:
+        bai= os.path.join(bam_dir_temporary,"{grp}.bam.bai")
+    threads: 10
+    shell:
+        """
+        samtools index {input.bam} {output.bai}
+        """
+
+rule scallop_per_group:
+    input:
+        bam= os.path.join(bam_dir_temporary,"{grp}.bam"),
+        bai= os.path.join(bam_dir_temporary,"{grp}.bam.bai")
+    output:
+        os.path.join(scallop_outdir,'{grp}' + ".gtf")
+    conda:
+        "../envs/scallop.yml"
+    params:
+        scallop_path = 'scallop2',
+        verbose = 0,
+        scallop_out_folder = scallop_outdir,
+        scallop_extra_config = return_parsed_extra_params(config['scallop_extra_parameters']),
+        libtype = config['scallop_strand']
+    shell:
+        """
+        mkdir -p {params.scallop_out_folder}
+        {params.scallop_path} \
+        -i {input.bam} \
+        -o {output} \
+        --library_type {params.libtype} \
+        {params.scallop_extra_config}
+        """
+
+rule stringtie_per_group:
+    input:
+        bam= os.path.join(bam_dir_temporary,"{grp}.bam"),
+        bai= os.path.join(bam_dir_temporary,"{grp}.bam.bai")
+    output:
+        stringtie_outdir + "{grp}.gtf"
+    conda:
+        "../envs/stringtie.yml"
+    shell:
+        "stringtie {input.bam} -G {input.ref_gtf} -o {output}"
+
+
+rule compare_reference:
+    input:
+        input: lambda wildcards: expand("{outdir}/{grp}.gtf.map", outdir=both_output_dirs, grp=wildcards.grp)
+    output:
+        os.path.join('{outdir}', '{grp}' + ".gtf.map")
+    params:
+        ref_gtf = GTF,
+        gffcompare = config['gffcompare'],
+        prefix = os.path.join('{outdir}', '{grp}')
+    shell:
+        """
+        {params.gffcompare} -o gffall -r {params.ref_gtf} {input}
+        """
+
+rule fetch_unique:
+    input:
+        sample_tmap = os.path.join(scallop_outdir,"scallop_merged.gtf"),
+        sample_gtf = os.path.join(scallop_outdir, "gffall.scallop_merged.gtf.tmap")
+    output:
+        os.path.join(scallop_outdir, "scallop_merged.unique.gtf")
+    params:
+        ref_gtf = GTF,
+        gtfcuff = config['gtfcuff']
+    shell:
+        """
+        {params.gtfcuff} puniq {input.sample_tmap} {input.sample_gtf} {params.ref_gtf} {output}
         """
