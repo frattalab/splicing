@@ -60,7 +60,7 @@ rule scallop_per_group:
         """
         mkdir -p {params.scallop_out_folder}
         {params.scallop_path} \
-        -i {input.bam_file} \
+        -i {input.bam} \
         -o {output} \
         --library_type {params.libtype} \
         --verbose {params.verbose} \
