@@ -28,7 +28,9 @@ both_output_dirs = [stringtie_outdir,scallop_outdir]
 rule allMerging:
     input:
         expand(os.path.join(bam_dir_temporary,"{grp}.bam"), grp = ALLGROUP),
-        expand(os.path.join(bam_dir_temporary,"{grp}.bam.bai"),grp = ALLGROUP)
+        expand(os.path.join(bam_dir_temporary,"{grp}.bam.bai"),grp = ALLGROUP),
+        expand(os.path.join(scallop_outdir,'{grp}' + ".gtf"),grp = ALLGROUP),
+        expand(os.path.join(stringtie_outdir,'{grp}' + ".gtf"),grp = ALLGROUP)
 
 
 
@@ -64,7 +66,6 @@ rule scallop_per_group:
         "../envs/scallop.yml"
     params:
         scallop_path = 'scallop2',
-        verbose = 0,
         scallop_out_folder = scallop_outdir,
         scallop_extra_config = return_parsed_extra_params(config['scallop_extra_parameters']),
         libtype = config['scallop_strand']
