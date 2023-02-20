@@ -42,8 +42,6 @@ rule merge_bam_groups:
         bam= os.path.join(bam_dir_temporary,"{grp}.bam"),
         bai= os.path.join(bam_dir_temporary,"{grp}.bam.bai")
     threads: 10
-    conda:
-        "../envs/stringtie.yml"
     shadow:
         "shallow"
     shell:
