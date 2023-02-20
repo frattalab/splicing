@@ -92,7 +92,7 @@ rule stringtie_per_group:
 
 rule compare_reference:
     input:
-        input: lambda wildcards: expand("{outdir}/{grp}.gtf.map", outdir=both_output_dirs, grp=wildcards.grp)
+        lambda wildcards: expand("{outdir}/{grp}.gtf.map", outdir=both_output_dirs, grp=wildcards.grp)
     output:
         os.path.join('{outdir}', '{grp}' + ".gtf.map")
     params:
