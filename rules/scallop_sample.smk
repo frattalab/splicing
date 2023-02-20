@@ -37,15 +37,12 @@ print(scallop_outdir)
 
 rule all_scallop:
     input:
-        expand(scallop_outdir + "{sample}.gtf", sample = ALLGROUP),
+        expand(scallop_outdir + "{grp}.gtf", sample = ALLGROUP),
         os.path.join(scallop_outdir, "scallop_merged.unique.gtf"),
         os.path.join(scallop_outdir, "gffall.scallop_merged.gtf.tmap"),
-        expand(os.path.join(scallop_outdir,"{bse}.scallop_merged.gtf"), bse = BASES),
-        expand(os.path.join(scallop_outdir,"{contrast}.scallop_merged.gtf"), contrast = CONTRASTS)
-
+        expand(os.path.join(scallop_outdir,"{grp}.scallop_merged.gtf"), sample = ALLGROUP)
 rule scallop_per_group:
     input:
-        bam_file = lambda wildcards: bam_dir + '{sample}' + config['bam_suffix'] + ".bam",
         bam= os.path.join(bam_dir_temporary,"{grp}.bam"),
         bai= os.path.join(bam_dir_temporary,"{grp}.bam.bai")
     output:
