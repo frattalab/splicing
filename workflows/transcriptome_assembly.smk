@@ -88,7 +88,7 @@ rule stringtie_per_group:
     conda:
         "../envs/stringtie.yml"
     shell:
-        "stringtie {input.bam} -G {input.ref_gtf} -o {output}"
+        "stringtie {input.bam} -G {GTF} -o {output}"
 
 
 rule compare_reference:
