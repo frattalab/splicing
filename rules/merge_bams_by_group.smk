@@ -32,19 +32,30 @@ scallop_outdir = get_output_dir(config["project_top_level"], config['scallop_out
 
 rule allMerging:
     input:
-        expand(os.path.join(bam_dir_temporary,"{grp}.bam"), grp = ALLGROUP)
+        expand(os.path.join(bam_dir_temporary,"{grp}.bam"), grp = ALLGROUP),
+        expand(os.path.join(bam_dir_temporary,"{grp}.bam.bai"),grp = ALLGROUP)
+
 
 
 rule merge_bam_groups:
     input:
-        base_group_stringtie = lambda wildcards: file_path_list(wildcards.grp,bam_dir,config['bam_suffix'] + '.bam')
+        group_bam_files = lambda wildcards: file_path_list(wildcards.grp,bam_dir,config['bam_suffix'] + '.bam')
     output:
         bam= os.path.join(bam_dir_temporary,"{grp}.bam"),
+    threads: 10
+    shell:
+        """
+        samtools merge {output.bam} {input.group_bam_files} --threads {threads}
+        """
+
+rule index_merged_group:
+    input:
+        bam = os.path.join(bam_dir_temporary,"{grp}.bam")
+    output:
         bai= os.path.join(bam_dir_temporary,"{grp}.bam.bai")
     threads: 10
     shell:
         """
-        samtools merge {output.bam} {input.base_group_stringtie} --threads {threads}
-        samtools index {output.bam} {output.bai} 2> {log}
+        samtools index {input.bam} {output.bai}
         """
 
