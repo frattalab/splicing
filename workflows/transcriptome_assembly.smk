@@ -102,7 +102,7 @@ rule stringtie_per_group:
 
 rule compare_reference:
     input:
-        "{outputdir}{grp}.gtf"
+        "{outputdir}" + "{grp}.gtf"
     output:
         "{outputdir}{grp}.gtf.map"
     wildcard_constraints:
@@ -110,7 +110,7 @@ rule compare_reference:
     params:
         ref_gtf = GTF,
         gffcompare = config['gffcompare'],
-        prefix = os.path.join('{outdir}', '{grp}')
+        prefix = os.path.join('{outputdir}', '{grp}')
     shell:
         """
         {params.gffcompare} -o gffall -r {params.ref_gtf} {input}
