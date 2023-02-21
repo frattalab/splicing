@@ -34,6 +34,7 @@ rule allMerging:
         expand(os.path.join(scallop_outdir,'{grp}' + ".gtf"),grp = ALLGROUP),
         expand(os.path.join(stringtie_outdir,'{grp}' + ".gtf"),grp = ALLGROUP),
         expand('{outputdir}{grp}' + ".annotated.gtf",outputdir =both_output_dirs, grp = ALLGROUP),
+        expand("{outputdir}" + "{grp}.unique.gtf",outputdir =both_output_dirs, grp = ALLGROUP)
 
 rule merge_bam_groups:
     input:
@@ -116,16 +117,18 @@ rule compare_reference:
         {params.gffcompare} -o {params.prefix} -r {params.ref_gtf} {input}
         """
 
-# # rule fetch_unique:
-# #     input:
-# #         sample_tmap = os.path.join(scallop_outdir,"scallop_merged.gtf"),
-# #         sample_gtf = os.path.join(scallop_outdir, "gffall.scallop_merged.gtf.tmap")
-# #     output:
-# #         os.path.join(scallop_outdir, "scallop_merged.unique.gtf")
-# #     params:
-# #         ref_gtf = GTF,
-# #         gtfcuff = config['gtfcuff']
-# #     shell:
-# #         """
-# #         {params.gtfcuff} puniq {input.sample_tmap} {input.sample_gtf} {params.ref_gtf} {output}
-# #         """
+rule fetch_unique:
+    input:
+        sample_gtf = "{outputdir}" + "{grp}.gtf"
+        sample_tmap = "{outputdir}" + "{grp}{grp}.gtf"
+    output:
+        "{outputdir}" + "{grp}.unique.gtf"
+    wildcard_constraints:
+        grp="|".join(ALLGROUP)
+    params:
+        ref_gtf = GTF,
+        gtfcuff = config['gtfcuff']
+    shell:
+        """
+        {params.gtfcuff} puniq {input.sample_tmap} {input.sample_gtf} {params.ref_gtf} {output}
+        """
