@@ -33,7 +33,7 @@ rule allMerging:
         expand(os.path.join(bam_dir_temporary,"{grp}.bam.bai"),grp = ALLGROUP),
         expand(os.path.join(scallop_outdir,'{grp}' + ".gtf"),grp = ALLGROUP),
         expand(os.path.join(stringtie_outdir,'{grp}' + ".gtf"),grp = ALLGROUP),
-        expand('{outputdir}{grp}' + ".gtf.map",outputdir =both_output_dirs, grp = ALLGROUP),
+        expand('{outputdir}{grp}' + ".annotated.gtf",outputdir =both_output_dirs, grp = ALLGROUP),
 
 rule merge_bam_groups:
     input:
@@ -104,7 +104,7 @@ rule compare_reference:
     input:
         "{outputdir}" + "{grp}.gtf"
     output:
-        "{outputdir}{grp}.gtf.map"
+        "{outputdir}{grp}.annotated.gtf"
     wildcard_constraints:
         grp="|".join(ALLGROUP)
     params:
