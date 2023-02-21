@@ -18,8 +18,8 @@ majiq_top_level: majiq/
 #directory of all the already aligned bam files, this is necessary for building the majic data index from this data
 bam_dir:  /SAN/vyplab/first_weeks/splicing_comparisons/symbams/humphrey_i3cortical/
 #for transcriptome primary_assembly
-scallop_output: scallop_output/
-stringtie_output: stringtie_output/
+scallop_output: scallop_output
+stringtie_output: stringtie_output
 #one of empty,unstranded, second, first
 scallop_strand: empty
 
