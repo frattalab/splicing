@@ -33,7 +33,7 @@ rule allMerging:
         expand(os.path.join(bam_dir_temporary,"{grp}.bam.bai"),grp = ALLGROUP),
         expand(os.path.join(scallop_outdir,'{grp}' + ".gtf"),grp = ALLGROUP),
         expand(os.path.join(stringtie_outdir,'{grp}' + ".gtf"),grp = ALLGROUP),
-        # expand(os.path.join('{outputdir}','{grp}' + ".gtf.map"),outputdir =both_output_dirs, grp = ALLGROUP),
+        expand(os.path.join('{outputdir}','{grp}' + ".gtf.map"),outputdir =both_output_dirs, grp = ALLGROUP),
 
 
 
@@ -103,21 +103,21 @@ rule stringtie_per_group:
         "stringtie {input.bam} -G {GTF} -o {output}"
 
 
-# rule compare_reference:
-#     input:
-#         os.path.join('{outputdir}','{grp}' + ".gtf")
-#     output:
-#         os.path.join('{outputdir}','{grp}' + ".gtf.map")
-#     wildcard_constraints:
-#         grp="|".join(ALLGROUP)
-#     params:
-#         ref_gtf = GTF,
-#         gffcompare = config['gffcompare'],
-#         prefix = os.path.join('{outdir}', '{grp}')
-#     shell:
-#         """
-#         {params.gffcompare} -o gffall -r {params.ref_gtf} {input}
-#         """
+rule compare_reference:
+    input:
+        os.path.join('{outputdir}','{grp}' + ".gtf")
+    output:
+        os.path.join('{outputdir}','{grp}' + ".gtf.map")
+    wildcard_constraints:
+        grp="|".join(ALLGROUP)
+    params:
+        ref_gtf = GTF,
+        gffcompare = config['gffcompare'],
+        prefix = os.path.join('{outdir}', '{grp}')
+    shell:
+        """
+        {params.gffcompare} -o gffall -r {params.ref_gtf} {input}
+        """
 
 # # rule fetch_unique:
 # #     input:
