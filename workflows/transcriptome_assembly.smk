@@ -113,7 +113,7 @@ rule compare_reference:
         prefix = os.path.join('{outputdir}', '{grp}')
     shell:
         """
-        {params.gffcompare} -o gffall -r {params.ref_gtf} {input}
+        {params.gffcompare} -o {params.prefix} -r {params.ref_gtf} {input}
         """
 
 # # rule fetch_unique:
