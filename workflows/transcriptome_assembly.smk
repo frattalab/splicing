@@ -119,7 +119,7 @@ rule compare_reference:
 
 rule fetch_unique:
     input:
-        sample_gtf = "{outputdir}" + "{grp}.gtf"
+        sample_gtf = "{outputdir}" + "{grp}.gtf",
         sample_tmap = "{outputdir}" + "{grp}{grp}.gtf"
     output:
         "{outputdir}" + "{grp}.unique.gtf"
