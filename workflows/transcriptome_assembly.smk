@@ -70,6 +70,8 @@ rule scallop_per_group:
         bai= os.path.join(bam_dir_temporary,"{grp}.bam.bai")
     output:
         os.path.join(scallop_outdir,'{grp}' + ".gtf")
+    wildcard_constraints:
+        grp="|".join(ALLGROUP)
     conda:
         "../envs/scallop.yml"
     params:
@@ -93,6 +95,8 @@ rule stringtie_per_group:
         bai= os.path.join(bam_dir_temporary,"{grp}.bam.bai")
     output:
         stringtie_outdir + "{grp}.gtf"
+    wildcard_constraints:
+        grp="|".join(ALLGROUP)
     conda:
         "../envs/stringtie.yml"
     shell:
@@ -104,6 +108,8 @@ rule compare_reference:
         os.path.join('{outputdir}','{grp}' + ".gtf")
     output:
         os.path.join('{outputdir}','{grp}' + ".gtf.map")
+    wildcard_constraints:
+        grp="|".join(ALLGROUP)
     params:
         ref_gtf = GTF,
         gffcompare = config['gffcompare'],
