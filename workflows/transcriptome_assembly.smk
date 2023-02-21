@@ -56,6 +56,8 @@ rule index_merged_group:
         bam = os.path.join(bam_dir_temporary,"{grp}.bam")
     output:
         bai= os.path.join(bam_dir_temporary,"{grp}.bam.bai")
+    wildcard_constraints:
+        grp="|".join(ALLGROUP)
     threads: 10
     shell:
         """
