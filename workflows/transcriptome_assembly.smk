@@ -44,7 +44,7 @@ rule merge_bam_groups:
     output:
         bam= os.path.join(bam_dir_temporary,"{grp}.bam"),
     wildcard_constraints:
-        group="|".join(ALLGROUP)
+        grp="|".join(ALLGROUP)
     threads: 10
     shell:
         """
