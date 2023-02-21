@@ -27,7 +27,7 @@ cp config/config.yaml ${FOLDER}/${RUN_NAME}_config.yaml
 cp config/comparisons.yaml ${FOLDER}/${RUN_NAME}_comparisons.yaml
 
 
-snakemake -s rules/scallop_sample.smk \
+snakemake -s $WORKFLOW \
 --use-conda \
 --conda-prefix "/SAN/vyplab/vyplab_reference_genomes/conda_envs/" \
 --jobscript cluster_qsub.sh \
@@ -36,4 +36,4 @@ snakemake -s rules/scallop_sample.smk \
 -j 40 \
 --nolock \
 --rerun-incomplete \
---latency-wait 100 
+--latency-wait 100 --rerun-triggers mtime
