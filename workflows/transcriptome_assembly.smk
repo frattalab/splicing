@@ -25,6 +25,8 @@ scallop_outdir = get_output_dir(config["project_top_level"], config['scallop_out
 
 both_output_dirs = [stringtie_outdir,scallop_outdir]
 
+
+print(both_output_dirs)
 rule allMerging:
     input:
         expand(os.path.join(bam_dir_temporary,"{grp}.bam"), grp = ALLGROUP),
