@@ -43,6 +43,8 @@ rule merge_bam_groups:
         group_bam_files = lambda wildcards: file_path_list(wildcards.grp,bam_dir,config['bam_suffix'] + '.bam')
     output:
         bam= os.path.join(bam_dir_temporary,"{grp}.bam"),
+    wildcard_constraints:
+        group="|".join(ALLGROUP)
     threads: 10
     shell:
         """
