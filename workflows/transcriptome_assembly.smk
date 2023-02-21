@@ -117,18 +117,18 @@ rule stringtie_per_group:
 #     shell:
 #         """
 #         {params.gffcompare} -o gffall -r {params.ref_gtf} {input}
-        """
+#         """
 
-# rule fetch_unique:
-#     input:
-#         sample_tmap = os.path.join(scallop_outdir,"scallop_merged.gtf"),
-#         sample_gtf = os.path.join(scallop_outdir, "gffall.scallop_merged.gtf.tmap")
-#     output:
-#         os.path.join(scallop_outdir, "scallop_merged.unique.gtf")
-#     params:
-#         ref_gtf = GTF,
-#         gtfcuff = config['gtfcuff']
-#     shell:
-#         """
-#         {params.gtfcuff} puniq {input.sample_tmap} {input.sample_gtf} {params.ref_gtf} {output}
-#         """
+# # rule fetch_unique:
+# #     input:
+# #         sample_tmap = os.path.join(scallop_outdir,"scallop_merged.gtf"),
+# #         sample_gtf = os.path.join(scallop_outdir, "gffall.scallop_merged.gtf.tmap")
+# #     output:
+# #         os.path.join(scallop_outdir, "scallop_merged.unique.gtf")
+# #     params:
+# #         ref_gtf = GTF,
+# #         gtfcuff = config['gtfcuff']
+# #     shell:
+# #         """
+# #         {params.gtfcuff} puniq {input.sample_tmap} {input.sample_gtf} {params.ref_gtf} {output}
+# #         """
