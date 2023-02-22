@@ -147,9 +147,11 @@ rule filter_stringtie:
         stringtie_outdir + "{grp}.unique.gtf"
     output:
         stringtie_outdir + "{grp}.unstranded_filtered.unique.gtf"
+    params:
+        my_awk = "awk '{if ($7 != ".") {print}}'"
     shell:
         """
-        awk '{if ($7 != ".") {print}}' {input} > {output}
+        {params.my_awk} {input} > {output}
         """
 
 rule write_exon_beds:
