@@ -133,7 +133,8 @@ rule fetch_unique:
     output:
         "{outputdir}" + "{grp}.unique.gtf"
     wildcard_constraints:
-        grp="|".join(ALLGROUP)
+        grp="|".join(ALLGROUP),
+        outputdir="|".join(both_output_dirs)
     params:
         ref_gtf = GTF,
         gtfcuff = config['gtfcuff']
