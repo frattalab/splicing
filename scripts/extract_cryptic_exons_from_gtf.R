@@ -201,7 +201,7 @@ option_list = list(
 opt_parser = OptionParser(option_list=option_list);
 opt = parse_args(opt_parser);
 
-print(opt$outputname))
+print(opt$outputname)
 combine_exons_junctions(transcripts = opt$transcripts, junctions = opt$delta, output_name = opt$outputname)
 
 assign("temp_bed",bed_gf)
