@@ -31,10 +31,14 @@ stringtie_outdir = get_output_dir(config["project_top_level"], config['stringtie
 scallop_outdir = get_output_dir(config["project_top_level"], config['scallop_output'])
 
 both_output_dirs = [stringtie_outdir,scallop_outdir]
+def return_awk():
+    awk_string = """awk '{if ($7 != ".") {print}}'"""
+    return awk_string
 
+awk_string = """awk '{if ($7 != ".") {print}}'"""
 
 print(both_output_dirs)
-
+print(awk_string)
 rule allMerging:
     input:
         expand(os.path.join(scallop_outdir,'{grp}' + ".gtf"),grp = ALLGROUP),
@@ -149,7 +153,7 @@ rule filter_stringtie:
     output:
         stringtie_outdir + "{grp}.unstranded_filtered.unique.gtf"
     params:
-        my_awk ="""awk '{if ($7 != ".") {{print}}}'"""
+        my_awk = return_awk()
     shell:
         """
         {params.my_awk} {input} > {output}
