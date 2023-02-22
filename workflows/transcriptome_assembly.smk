@@ -153,7 +153,7 @@ rule filter_stringtie:
     output:
         stringtie_outdir + "{grp}.unstranded_filtered.unique.gtf"
     params:
-        my_awk = return_awk()
+        my_awk = lambda wildcards: return_awk()
     shell:
         """
         {params.my_awk} {input} > {output}
