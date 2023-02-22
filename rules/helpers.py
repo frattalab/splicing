@@ -2,6 +2,17 @@ import os
 import pandas as pd
 import yaml
 
+def return_bed_and_bases(bases,contrasts,output_dirs):
+    #I want to zip bases with contrasts
+    zipped_comparisons = [x+"-"+str(y) for x,y in zip(bases,contrasts)]
+    all_final_files = []
+    for z in zipped_comparisons:
+        for x in output_dirs:
+            res = x + z
+            all_final_files.append(res)
+    all_final_files
+    return(all_final_files)
+
 def load_comparisons():
     comparisons = "config/comparisons.yaml"
     with open(comparisons, 'r') as stream:

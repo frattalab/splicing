@@ -42,7 +42,7 @@ rule allMerging:
         expand(os.path.join(stringtie_outdir,'{grp}' + ".gtf"),grp = ALLGROUP),
         expand('{outputdir}{grp}' + ".annotated.gtf",outputdir =both_output_dirs, grp = ALLGROUP),
         expand("{outputdir}" + "{grp}.unique.gtf",outputdir =both_output_dirs, grp = ALLGROUP),
-        expand(os.path.join("{outputdir}","{bse}-{contrast}_cryptic_exons.bed"),zip, bse = BASES,contrast = CONTRASTS,outputdir =both_output_dirs)
+        return_bed_and_bases(BASES,CONTRASTS,both_output_dirs)
 
 
 rule merge_bam_groups:
