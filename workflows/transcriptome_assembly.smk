@@ -36,8 +36,6 @@ both_output_dirs = [stringtie_outdir,scallop_outdir]
 print(both_output_dirs)
 rule allMerging:
     input:
-        expand(os.path.join(bam_dir_temporary,"{grp}.bam"), grp = ALLGROUP),
-        expand(os.path.join(bam_dir_temporary,"{grp}.bam.bai"),grp = ALLGROUP),
         expand(os.path.join(scallop_outdir,'{grp}' + ".gtf"),grp = ALLGROUP),
         expand(os.path.join(stringtie_outdir,'{grp}' + ".gtf"),grp = ALLGROUP),
         expand('{outputdir}{grp}' + ".annotated.gtf",outputdir =both_output_dirs, grp = ALLGROUP),
@@ -49,7 +47,7 @@ rule merge_bam_groups:
     input:
         group_bam_files = lambda wildcards: file_path_list(wildcards.grp,bam_dir,config['bam_suffix'] + '.bam')
     output:
-        bam= os.path.join(bam_dir_temporary,"{grp}.bam"),
+        temp(bam= os.path.join(bam_dir_temporary,"{grp}.bam"),)
     wildcard_constraints:
         grp="|".join(ALLGROUP)
     threads: 10
@@ -62,7 +60,7 @@ rule index_merged_group:
     input:
         bam = os.path.join(bam_dir_temporary,"{grp}.bam")
     output:
-        bai= os.path.join(bam_dir_temporary,"{grp}.bam.bai")
+        temp(bai= os.path.join(bam_dir_temporary,"{grp}.bam.bai"))
     wildcard_constraints:
         grp="|".join(ALLGROUP)
     threads: 10

@@ -182,7 +182,7 @@ combine_exons_junctions = function(transcripts, junctions, output_name, contrast
       separate(cryptic_exon, into = c("seqname","start","end")) %>%
       filter(!is.na(start)) %>%
       mutate(name = glue::glue("{baseline_avg_PSI}|{contrast_avg_PSI}|{gene_name}")) %>% 
-      rtracklayer::export(glue::glue("{output_name}.bed"))
+      rtracklayer::export(glue::glue("{output_name}"))
   print("HIIII")
   cryptic_exons %>% 
       fwrite(glue::glue("{output_name}.csv"))
@@ -201,11 +201,7 @@ option_list = list(
 opt_parser = OptionParser(option_list=option_list);
 opt = parse_args(opt_parser);
 
-print(opt$outputname)
+
+
 combine_exons_junctions(transcripts = opt$transcripts, junctions = opt$delta, output_name = opt$outputname)
 
-assign("temp_bed",bed_gf)
-start(temp_bed) = start(temp_bed) + 1
-# end(temp_bed) = end(temp_bed) + 1
-exons_on_junction_ends = build_all_potential_exon_table(temp_bed,flattened_exons)
-nrow(exons_on_junction_ends)
