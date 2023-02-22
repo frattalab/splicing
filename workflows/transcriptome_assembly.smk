@@ -38,6 +38,7 @@ rule allMerging:
     input:
         expand(os.path.join(scallop_outdir,'{grp}' + ".gtf"),grp = ALLGROUP),
         expand(os.path.join(stringtie_outdir,'{grp}' + ".gtf"),grp = ALLGROUP),
+        expand(os.path.join(stringtie_outdir,"{grp}.unstranded_filtered.unique.gtf"),grp = ALLGROUP),
         expand('{outputdir}{grp}' + ".annotated.gtf",outputdir =both_output_dirs, grp = ALLGROUP),
         expand("{outputdir}" + "{grp}.unique.gtf",outputdir =both_output_dirs, grp = ALLGROUP),
         return_bed_and_bases(BASES,CONTRASTS,both_output_dirs)
@@ -47,7 +48,7 @@ rule merge_bam_groups:
     input:
         group_bam_files = lambda wildcards: file_path_list(wildcards.grp,bam_dir,config['bam_suffix'] + '.bam')
     output:
-        temp(bam= os.path.join(bam_dir_temporary,"{grp}.bam"),)
+        bam= temp(os.path.join(bam_dir_temporary,"{grp}.bam"))
     wildcard_constraints:
         grp="|".join(ALLGROUP)
     threads: 10
@@ -60,7 +61,7 @@ rule index_merged_group:
     input:
         bam = os.path.join(bam_dir_temporary,"{grp}.bam")
     output:
-        temp(bai= os.path.join(bam_dir_temporary,"{grp}.bam.bai"))
+        bai= temp(os.path.join(bam_dir_temporary,"{grp}.bam.bai"))
     wildcard_constraints:
         grp="|".join(ALLGROUP)
     threads: 10
@@ -139,6 +140,16 @@ rule fetch_unique:
     shell:
         """
         {params.gtfcuff} puniq {input.sample_tmap} {input.sample_gtf} {params.ref_gtf} {output}
+        """
+
+rule filter_stringtie:
+    input:
+        stringtie_outdir + "{grp}.unique.gtf"
+    output:
+        stringtie_outdir + "{grp}.unstranded_filtered.unique.gtf"
+    shell:
+        """
+        awk '{if ($7 != ".") {print}}' {input} > {output}
         """
 
 rule write_exon_beds:
