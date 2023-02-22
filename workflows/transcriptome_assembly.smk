@@ -148,6 +148,7 @@ rule fetch_unique:
         """
 
 rule filter_stringtie:
+    #stringtie outputs strandless 1 exon transcripts, R crashes when it reads those in, so filter them out
     input:
         stringtie_outdir + "{grp}.unique.gtf"
     output:
@@ -158,11 +159,20 @@ rule filter_stringtie:
         """
         {params.my_awk} {input} > {output}
         """
-
+rule filter_scallop:
+    #stringtie outputs strandless 1 exon transcripts, R crashes when it reads those in, so filter them out
+    input:
+        scallop_outdir + "{grp}.unique.gtf"
+    output:
+        scallop_outdir + "{grp}.unstranded_filtered.unique.gtf"
+    shell:
+        """
+        ln -s {input} {output}
+        """
 rule write_exon_beds:
     input:
         delta_csv = os.path.join(MAJIQ_DIR,"delta_psi_voila_tsv","{bse}-{contrast}_annotated_junctions.csv"),
-        assembled_gtf =  "{outputdir}" + "{contrast}.unique.gtf"
+        assembled_gtf =  "{outputdir}" + "{contrast}.unstranded_filtered.unique.gtf"
         # assembled_gtf =  os.path.join(stringtie_outdir,"stringtie_merged.gtf")
     output:
         "{outputdir}" + "{bse}-{contrast}_cryptic_exons.bed",
