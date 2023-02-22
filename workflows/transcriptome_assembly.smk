@@ -5,6 +5,15 @@ import yaml
 configfile: "config/config.yaml"
 include: "../rules/helpers.py"
 
+configfile: "config/config.yaml"
+
+include: "helpers.py"
+
+#reading in the samples and dropping the samples to be excluded in order to get a list of sample names
+
+BASES, CONTRASTS = return_bases_and_contrasts()
+MAJIQ_DIR = get_output_dir(config['project_top_level'], config['majiq_top_level'])
+
 samples = pd.read_csv(config['sampleCSVpath'])
 samples2 = samples.loc[samples.exclude_sample_downstream_analysis != 1]
 SAMPLE_NAMES = list(set(samples2['sample_name']))
@@ -34,7 +43,9 @@ rule allMerging:
         expand(os.path.join(scallop_outdir,'{grp}' + ".gtf"),grp = ALLGROUP),
         expand(os.path.join(stringtie_outdir,'{grp}' + ".gtf"),grp = ALLGROUP),
         expand('{outputdir}{grp}' + ".annotated.gtf",outputdir =both_output_dirs, grp = ALLGROUP),
-        expand("{outputdir}" + "{grp}.unique.gtf",outputdir =both_output_dirs, grp = ALLGROUP)
+        expand("{outputdir}" + "{grp}.unique.gtf",outputdir =both_output_dirs, grp = ALLGROUP),
+        expand(os.path.join("{outputdir}","{bse}-{contrast}_cryptic_exons.bed"),zip, bse = BASES,contrast = CONTRASTS,outputdir =both_output_dirs)
+
 
 rule merge_bam_groups:
     input:
@@ -131,4 +142,21 @@ rule fetch_unique:
     shell:
         """
         {params.gtfcuff} puniq {input.sample_tmap} {input.sample_gtf} {params.ref_gtf} {output}
+        """
+
+rule write_exon_beds:
+    input:
+        delta_csv = os.path.join(MAJIQ_DIR,"delta_psi_voila_tsv","{bse}-{contrast}_annotated_junctions.csv"),
+        assembled_gtf =  "{outputdir}" + "{contrast}.unique.gtf"
+        # assembled_gtf =  os.path.join(stringtie_outdir,"stringtie_merged.gtf")
+    output:
+        "{outputdir}" + "{bse}-{contrast}_cryptic_exons.bed"
+    # conda:
+    #     "../envs/splicing_dependencies.yml"
+    shell:
+        """
+        Rscript scripts/extract_cryptic_exons_from_gtf.R \
+        --transcripts {input.assembled_gtf} \
+        --delta {input.delta_csv} \
+        --outputname {output}
         """
