@@ -118,7 +118,8 @@ rule compare_reference:
     input:
         "{outputdir}" + "{grp}.gtf"
     output:
-        "{outputdir}{grp}.annotated.gtf"
+        "{outputdir}{grp}.annotated.gtf",
+        "{outputdir}" + "{grp}.{grp}.gtf.tmap"
     wildcard_constraints:
         grp="|".join(ALLGROUP)
     params:
