@@ -149,9 +149,11 @@ rule write_exon_beds:
         assembled_gtf =  "{outputdir}" + "{contrast}.unique.gtf"
         # assembled_gtf =  os.path.join(stringtie_outdir,"stringtie_merged.gtf")
     output:
-        "{outputdir}" + "{bse}-{contrast}_cryptic_exons.bed"
+        "{outputdir}" + "{bse}-{contrast}_cryptic_exons.bed",
     # conda:
     #     "../envs/splicing_dependencies.yml"
+    wildcard_constraints:
+        outputdir="|".join(both_output_dirs)
     shell:
         """
         Rscript scripts/extract_cryptic_exons_from_gtf.R \
