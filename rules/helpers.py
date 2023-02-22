@@ -4,7 +4,7 @@ import yaml
 
 def return_bed_and_bases(bases,contrasts,output_dirs):
     #I want to zip bases with contrasts
-    zipped_comparisons = [x+"-"+str(y) for x,y in zip(bases,contrasts)]
+    zipped_comparisons = [x+"-"+str(y)+"_cryptic_exons.bed" for x,y in zip(bases,contrasts)]
     all_final_files = []
     for z in zipped_comparisons:
         for x in output_dirs:
