@@ -149,7 +149,7 @@ rule filter_stringtie:
     output:
         stringtie_outdir + "{grp}.unstranded_filtered.unique.gtf"
     params:
-        my_awk ="""awk '{if ($7 != ".") {print}}'"""
+        my_awk ="""awk '{if ($7 != ".") {{print}}}'"""
     shell:
         """
         {params.my_awk} {input} > {output}
