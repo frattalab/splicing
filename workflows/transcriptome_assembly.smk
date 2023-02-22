@@ -7,8 +7,6 @@ include: "../rules/helpers.py"
 
 configfile: "config/config.yaml"
 
-include: "helpers.py"
-
 #reading in the samples and dropping the samples to be excluded in order to get a list of sample names
 
 BASES, CONTRASTS = return_bases_and_contrasts()
