@@ -97,7 +97,7 @@ star_tabs_to_beds:
 scallop_per_group:
     h_vmem:   16G
     tmem:   16G
-    h_rt: 4:00:00
+    h_rt: 10:00:00
 fetch_unique:
     h_vmem:   4G
     tmem:   4G
