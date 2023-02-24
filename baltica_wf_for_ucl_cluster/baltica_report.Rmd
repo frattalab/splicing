@@ -1,0 +1,371 @@
+---
+title: "Baltica report"
+date: "`r Sys.Date()`"
+output:
+  rmdformats::downcute:
+    self_contained: true
+    lightbox: true
+    gallery: false
+params:
+  rmd: baltica_report.Rmd
+---
+
+```{css, echo=FALSE}
+.Sidebar {
+  background-image: url('https://raw.githubusercontent.com/dieterich-lab/Baltica/master/baltica_logo.png');
+  background-repeat: no-repeat;
+  background-position: center top;
+  margin-top: 1em;
+  background-size: 180px Auto;
+}
+
+#toc {
+  margin-top: 200px;
+}
+
+kbd {
+    background-color: #eee;
+    border-radius: 3px;
+    border: 1px solid #b4b4b4;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, .2), 0 2px 0 0 rgba(255, 255, 255, .7) inset;
+    color: #333;
+    display: inline-block;
+    font-size: .85em;
+    font-weight: 700;
+    line-height: 1;
+    padding: 2px 4px;
+    white-space: nowrap;
+   }
+```
+
+```{r libs, include = FALSE}
+library(tidyverse)
+library(knitr)
+library(rmdformats)
+library(scales)
+library(ggrepel)
+library(pander)
+library(ComplexHeatmap)
+library(reactable)
+
+
+## Global options
+format_power10 <- scales::trans_format("log10", scales::label_math())
+
+opts_chunk$set(
+  echo = FALSE,
+  cache = FALSE,
+  prompt = FALSE,
+  tidy = FALSE,
+  comment = NA,
+  message = FALSE,
+  warning = FALSE
+)
+sj_annotated_file <- as.character(snakemake@input[[1]])
+is_sj_annotate <- file.exists(sj_annotated_file)
+leafcutter_file <- as.character(snakemake@input[[2]])
+is_leafcutter <- file.exists(leafcutter_file)
+config <- yaml::read_yaml(snakemake@params$config)
+
+if (!"assembly" %in% names(config)) {
+  config$assembly <- "hg38"
+}
+if (!"ucsc_url" %in% names(config)) {
+  config$ucsc_url <- "http://genome-euro.ucsc.edu"
+}
+
+knitr::knit_hooks$set(
+  error = function(x, options) {
+    paste('\n\n<div class="alert alert-danger">',
+      gsub("##", "\n", gsub("^##\ Error", "**Error**", x)),
+      "</div>",
+      sep = "\n"
+    )
+  },
+  warning = function(x, options) {
+    paste('\n\n<div class="alert alert-warning">',
+      gsub("##", "\n", gsub("^##\ Warning:", "**Warning**", x)),
+      "</div>",
+      sep = "\n"
+    )
+  },
+  message = function(x, options) {
+    paste('\n\n<div class="alert alert-info">',
+      gsub("##", "\n", x),
+      "</div>",
+      sep = "\n"
+    )
+  }
+)
+```
+
+## Resources:
+
+This is a report for the Baltica framework. Please see https://github.com/dieterich-lab/Baltica and https://dieterich-lab.github.io/Baltica/ for details.
+
+## Baltica table:
+```{r warning=TRUE, message=TRUE}
+
+
+if (!is_sj_annotate) {
+  warning("Baltica table file not found.")
+}
+```
+
+
+```{r echo=FALSE, eval=is_sj_annotate}
+knitr::asis_output("### Common splice junctions \\n\\n")
+
+df <- readr::read_csv(sj_annotated_file, col_types = cols(
+  .default = col_double(),
+  is_novel = col_logical(),
+  gene_name = col_character(),
+  transcript_name = col_character(),
+  class_code = col_character(),
+  exon_number = col_character(),
+  coordinates = col_character(),
+  # as_type = col_character()
+))
+
+
+mat <- df %>%
+  dplyr::select(matches("-vs-")) %>%
+  as.matrix(.)
+
+# supported methods
+methods <- c("rmats", "junctionseq", "majiq", "leafcutter", "orthogonal")
+
+comparisons <- unique(
+  gsub(x = colnames(mat), str_c(c(methods, "_"), collapse = "|"), "")
+)
+
+mat[mat > 0.95] <- 1
+mat[mat < 0.95] <- 0
+total <- colSums(mat, na.rm = T)
+mat[is.na(mat)] <- 0
+
+
+comb_mat <- make_comb_mat(mat)
+comb_mat <- comb_mat[comb_degree(comb_mat) > 1]
+
+
+color_list <- list(
+  group = setNames(
+    scales::brewer_pal(palette = "Set1")(length(comparisons)),
+    comparisons
+  ),
+  method = setNames(
+    scales::brewer_pal(palette = "Set2")(length(methods)),
+    methods
+  )
+)
+
+UpSet(
+  comb_mat,
+  comb_order = order(rev(comb_degree(comb_mat))),
+  top_annotation = columnAnnotation(
+    inter = anno_barplot(
+      comb_size(comb_mat),
+      gp = gpar(fill = "black"),
+      height = unit(35, "mm"),
+      add_numbers = T,
+    ),
+    annotation_name_side = "left",
+    show_annotation_name = TRUE,
+    annotation_label = "Intersection\nsize"
+  ),
+  right_annotation = rowAnnotation(
+    set_size = anno_barplot(
+      set_size(comb_mat),
+      gp = gpar(fill = "black"),
+      add_numbers = T,
+      border = T,
+      width = unit(35, "mm"),
+    ),
+    group = str_extract(
+      names(set_size(comb_mat)),
+      str_c(comparisons, collapse = "|")
+    ),
+    methods = str_extract(
+      names(set_size(comb_mat)),
+      str_c(methods, collapse = "|")
+    ),
+    annotation_label = c("Set size", "group", "methods"),
+    col = color_list
+  ),
+  lwd = 0.8,
+  width = unit(40, "mm"),
+  pt_size = unit(2, "mm")
+)
+```
+
+
+
+```{r echo=FALSE, eval=is_sj_annotate}
+knitr::asis_output("### Baltica Table \\n
+Click on coordinates to go to the UCSC Genome Browser; on the ▼ to see
+intron annotation. Multi columns are sortable by holding <kbd>SHIFT</kbd>.
+Note that the output is limited to the top 1,000 (or `baltica_max_table`)
+rows, ranked by row sum.\n
+Legend: R, rMATS; J, JunctionSeq; M, Majiq; L, LeafCutter, O, Orthogonal
+\U2713, intron is not in the reference annotation.
+\U2718, intron is annotated.
+")
+
+df <- df %>%
+  arrange(
+    desc(
+      rowSums(
+        across(
+          contains("-vs-")
+        )
+      )
+    )
+  ) %>%
+  head(
+    ifelse(
+      "baltica_max_table" %in% names(config),
+      config[["baltica_max_table"]],
+      1000
+    )
+  ) %>%
+  mutate_if(is.numeric, round, 3) %>%
+  # mutate(as_type = simplify(as_type)) %>%
+  dplyr::select(
+    coordinates,
+    gene_name,
+    transcript_name,
+    class_code,
+    # as_type,
+    exon_number,
+    is_novel,
+    everything()
+  )
+
+sticky_style <- list(
+  position = "sticky",
+  left = 0,
+  background = "#fff",
+  zIndex = 1,
+  borderRight = "1px solid #eee"
+)
+comp_cols <- grepl("-vs-", colnames(df))
+comp_cols <- colnames(df)[comp_cols]
+comp_cols_mat <- str_split(comp_cols, "_", simplify = T)
+comp_cols_mat <- as_tibble(comp_cols_mat)
+comp_cols_mat["V3"] <- comp_cols
+cols_groups <- split(comp_cols_mat$V3, comp_cols_mat$V2)
+columnGroups <- lapply(
+  names(cols_groups),
+  function(x) colGroup(name = x, columns = cols_groups[[x]])
+)
+
+process_colum_names <- function(col_name) {
+  col_name <- substring(col_name, 1, 1)
+  col_name <- toupper(col_name)
+  return(col_name)
+}
+
+comp_cols_new_name <- lapply(seq_along(comp_cols), function(i) {
+  colDef(
+    name = process_colum_names(comp_cols[i]),
+    cell = function(value) ifelse(is.na(value), "-", value)
+  )
+})
+names(comp_cols_new_name) <- comp_cols
+# from https://github.com/glin/reactable/issues/29#issuecomment-591752165
+html <- function(x, inline = FALSE) {
+  container <- if (inline) htmltools::span else htmltools::div
+  container(dangerouslySetInnerHTML = list("__html" = x))
+}
+
+target_url <- "{config$ucsc_url}/cgi-bin/hgTracks?db=
+{config$assembly}&position={new_value}"
+# <p><strong>as_type: </strong>{as_type}</p>"
+
+df %>%
+  mutate(ex = str_glue_data(
+    .,
+    "<p><strong>transcript_name:</strong>{transcript_name}</p>\n
+    <p><strong>class_code:</strong>{class_code}</p>\n
+    <p><strong>exon_number:</strong>{exon_number}</p>"
+  )) %>%
+  mutate(ex = ifelse(is.na(gene_name), NA_character_, ex)) %>%
+  dplyr::select(
+    -transcript_name, -class_code, -exon_number,
+    # -as_type
+  ) %>%
+  reactable(
+    bordered = TRUE,
+    highlight = TRUE,
+    compact = TRUE,
+    striped = TRUE,
+    height = 400,
+    columnGroups = columnGroups,
+    paginationType = "simple",
+    defaultPageSize = 10,
+    defaultColDef = colDef(
+      minWidth = 80
+    ),
+    columns = modifyList(
+      list(
+        ex = colDef(show = FALSE),
+        coordinates = colDef(
+          cell = function(value, index) {
+            # Render as a link
+            new_value <- sub(x = value, ":[-+*]", "")
+            url <- str_glue(target_url)
+            htmltools::tags$a(
+              href = url, target = "_blank", as.character(value)
+            )
+          },
+          style = sticky_style,
+          headerStyle = sticky_style,
+          minWidth = 200
+        ),
+        gene_name = colDef(
+          filterable = TRUE,
+          minWidth = 120
+        ),
+        is_novel = colDef(
+          name = "Novel",
+          cell = function(value) {
+            case_when(
+              is.na(value) ~ "-",
+              value == TRUE ~ "\u2713",
+              TRUE ~ "\u2718"
+            )
+          }
+        )
+      ), comp_cols_new_name
+    ),
+    details = function(index) {
+      if (
+        !is.na(.$ex[index])) {
+        htmltools::tagList(html(.$ex[index]))
+      }
+    }
+  )
+```
+
+
+## Reproducibility: {.tabset .tabset-fade .tabset-pills}
+
+### Parameters used in the analysis:  
+- Baltica configuration file
+- R session information
+- References for methods included in Baltica
+
+
+### Configuration:  
+```{r}
+pander::pander(config, compact = FALSE)
+```
+
+### Session information:    
+```{r}
+pander::pander(sessionInfo(), compact = FALSE)
+```
+
+### References:
+If you use Baltica, [please cite it and its the underlying methods](https://dieterich-lab.github.io/Baltica/bibliography.html)

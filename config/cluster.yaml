@@ -16,16 +16,16 @@ majiq_delta_modulizer:
     submission_string: "-pe smp 4 -R y"
     h_vmem:   4G
     tmem:   4G
-    h_rt: 12:00:00
+    h_rt: 24:00:00
 write_junctions_beds:
     h_vmem:   4G
     tmem:   4G
     h_rt: 12:00:00
 majiq_build:
     submission_string: "-pe smp 4 -R y"
-    h_vmem:   2G
-    tmem:   2G
-    h_rt: 90:00:00
+    h_vmem:   16G
+    tmem:   16G
+    h_rt: 12:00:00
 squashed_normalize_annotate:
     submission_string: " "
     h_vmem:   32G
@@ -37,10 +37,9 @@ majiq_psi:
     h_rt: 72:00:00
     submission_string: "-pe smp 2 -R y"
 majiq_psi_single_parse:
-    h_vmem:   7G
-    tmem:   7G
-    h_rt: 12:00:00
-    submission_string: "-pe smp 2 -R y"
+    h_vmem:   32G
+    tmem:   32G
+    h_rt: 02:00:00
 majiq_single_psi:
     h_vmem:   8G
     tmem:   8G
@@ -61,9 +60,9 @@ majiq_group_psi_tsv:
     tmem:   8G
     h_rt: 08:00:00
 majiq_psi_group_parse:
-    h_vmem:   8G
-    tmem:   8G
-    h_rt: 08:00:00
+    h_vmem:   32G
+    tmem:   32G
+    h_rt: 02:00:00
 majiq_psi_group:
     h_vmem:   2G
     tmem:   2G
@@ -95,10 +94,10 @@ star_tabs_to_beds:
     h_vmem:   1G
     tmem:   1G
     h_rt: 72:00:00
-scallop_per_samp:
-    h_vmem:   32G
-    tmem:   32G
-    h_rt: 4:00:00
+scallop_per_group:
+    h_vmem:   16G
+    tmem:   16G
+    h_rt: 10:00:00
 fetch_unique:
     h_vmem:   4G
     tmem:   4G
@@ -108,7 +107,7 @@ compare_reference:
     h_vmem:   8G
     tmem:   8G
     h_rt: 4:00:00
-StringTie_Assemble:
+stringtie_per_group:
     h_vmem:   8G
     tmem:   8G
     h_rt: 4:00:00
@@ -165,3 +164,7 @@ write_exon_beds:
     h_vmem:   16G
     tmem:   16G
     h_rt: 8:00:00
+merge_bams_by_group:
+    h_vmem:   18G
+    tmem:   18G
+    h_rt: 20:00:00

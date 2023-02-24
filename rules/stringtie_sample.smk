@@ -15,31 +15,34 @@ samples = pd.read_csv(config['sampleCSVpath'])
 samples2 = samples.loc[samples.exclude_sample_downstream_analysis != 1]
 SAMPLE_NAMES = list(set(samples2['sample_name']))
 BASES, CONTRASTS = return_bases_and_contrasts()
+ALLGROUP = list(set(BASES + CONTRASTS))
+print(ALLGROUP)
 
 
 SPECIES = config["species"]
 GTF = config['gtf']
 
-#make sure the output folder for STAR exists before running anything
-bam_dir = get_output_dir(config["project_top_level"], config['bam_dir'])
+#make sure the output folder exists before running anything
+bam_dir_temporary = get_output_dir(config["project_top_level"], 'merged_bams')
+
 stringtie_outdir = get_output_dir(config["project_top_level"], config['stringtie_output'])
 
 
 rule all_stringtie:
     input:
-        expand(stringtie_outdir + "{sample}.assemble.gtf", sample = SAMPLE_NAMES),
-        os.path.join(stringtie_outdir, "stringtie_merged.unique.gtf"),
-        os.path.join(stringtie_outdir,"stringtie_merged.gtf"),
-        expand(os.path.join(stringtie_outdir,"{bse}.stringtie_merged.gtf"), bse = BASES),
-        expand(os.path.join(stringtie_outdir,"{contrast}.stringtie_merged.gtf"), contrast = CONTRASTS)
+        expand(stringtie_outdir + "{grp}.assemble.gtf", sample = ALLGROUP),
 
+        # os.path.join(stringtie_outdir, "stringtie_merged.unique.gtf"),
+        # os.path.join(stringtie_outdir,"stringtie_merged.gtf"),
+        # expand(os.path.join(stringtie_outdir,"{bse}.stringtie_merged.gtf"), bse = BASES),
+        # expand(os.path.join(stringtie_outdir,"{contrast}.stringtie_merged.gtf"), contrast = CONTRASTS)
 
-rule StringTie_Assemble:
+rule stringtie_denovo_transcriptomics:
     input:
-        bam = lambda wildcards: bam_dir + '{sample}' + config['bam_suffix'] + '.bam',
-        ref_gtf = GTF
+        bam= os.path.join(bam_dir_temporary,"{grp}.bam"),
+        bai= os.path.join(bam_dir_temporary,"{grp}.bam.bai")
     output:
-        stringtie_outdir + "{sample}.assemble.gtf"
+        stringtie_outdir + "{grp}.assemble.gtf"
     conda:
         "../envs/stringtie.yml"
     shell:
@@ -65,6 +68,7 @@ rule merge_stringtie_gtfs:
         """
         {params.gtfmerge} union {input.gtf_list} {output.merged_gtf} -t 2 -n
         """
+
 ######### DOING THE SAME THING THREE TIMES NOW
 rule compose_gtf_list_bases_stringtie:
     input:
