@@ -81,6 +81,8 @@ rule majiq_delta_psi:
     output:
         os.path.join(MAJIQ_DIR,"delta_psi","{bse}-{contrast}" + ".deltapsi.tsv"),
         os.path.join(MAJIQ_DIR,"delta_psi","{bse}-{contrast}" + ".deltapsi.voila")
+    conda:
+        'majiq'
     params:
         majiq_path = config['majiq_path'],
         delta_psi_output_folder = os.path.join(MAJIQ_DIR,"delta_psi"),
@@ -118,7 +120,7 @@ rule majiq_single_psi:
         voila =  os.path.join(MAJIQ_DIR,"psi_single","{sample}" + config['bam_suffix'] + ".psi.voila")
         # whatever = os.path.join(MAJIQ_DIR,"psi_single",'{sample}' + ".psi.voila")
     conda:
-        "../envs/splicing_dependencies.yml"
+        "majiq"
     params:
         majiq_path = config['majiq_path'],
         psi_output_folder = os.path.join(MAJIQ_DIR,"psi_single"),
