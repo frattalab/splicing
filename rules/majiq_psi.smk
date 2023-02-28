@@ -33,6 +33,8 @@ rule majiq_psi_group:
     output:
         voila = os.path.join(MAJIQ_DIR,"psi",'{group}' + ".psi.voila"),
         tsv = os.path.join(MAJIQ_DIR,"psi",'{group}' + ".psi.tsv")
+    conda:
+        'majiq'
     params:
         majiq_path = config['majiq_path'],
         psi_output_folder = os.path.join(MAJIQ_DIR,"psi"),

@@ -51,11 +51,11 @@ gff3: /SAN/vyplab/vyplab_reference_genomes/annotation/human/GRCh38/gencode.v40.a
 #the path where your samtools is installed
 samtools_path: /share/apps/genomics/samtools-1.9/bin/samtools
 # cufflinks_path: /share/apps/genomics/cufflinks-2.2.1/bin/cufflinks
-majiq_path: /SAN/vyplab/alb_projects/pipelines/splicing/env/bin/python3 /SAN/vyplab/alb_projects/pipelines/splicing/env/bin/majiq
-voila_path: /SAN/vyplab/alb_projects/pipelines/splicing/env/bin/python3 /SAN/vyplab/alb_projects/pipelines/splicing/env/bin/voila
+majiq_path: majiq
+voila_path: voila
 
-majiq_path_old: /SAN/vyplab/alb_projects/pipelines/splicing/env/bin/python3 /SAN/vyplab/alb_projects/pipelines/splicing/env/bin/majiq
-voila_path_old: /SAN/vyplab/alb_projects/pipelines/splicing/env/bin/python3 /SAN/vyplab/alb_projects/pipelines/splicing/env/bin/voila
+majiq_path_old: majiq
+voila_path_old: voila
 #########################
 ## Scallop PARAMETERS
 #########################
@@ -66,6 +66,7 @@ scallop_extra_parameters:
   min_transcript_length_base: 50
   min_transcript_length_increase: 10
   min_transcript_coverage: 0.01
+  verbose: 0
 #########################
 ##SCALLOP HELPER TOOLS PATHS######
 #########################
