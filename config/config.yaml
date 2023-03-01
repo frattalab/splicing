@@ -56,14 +56,13 @@ voila_path: voila
 #########################
 ## Scallop PARAMETERS
 #########################
-scallop_path: /SAN/vyplab/alb_projects/tools/scallop-0.10.4/src/scallop
 scallop_extra_parameters:
+  verbose: 0 
   min_transcript_length_increase: 25
   min_single_exon_coverage: 15
   min_transcript_length_base: 50
   min_transcript_length_increase: 10
   min_transcript_coverage: 0.01
-  verbose: 0 
 #########################
 ##SCALLOP HELPER TOOLS PATHS######
 #########################
