@@ -2,21 +2,23 @@
 Splicing done with MAJIQ tool **still a work in progress**
 The purpose of this pipeline is to be able to run MAJIQ using Snakemake. The aim is to make MAJIQ easier to run for non-bioinformaticians and it produces additional parsing and annotation to the MAJIQ output.
 
-As of MAJIQ v.2.3 there's finally published a tool to make their output easier to use:
-https://biociphers.bitbucket.io/majiq-docs-academic/modulizer/quick-start.html
-
 *BEWARE*
 
-I am actively developing how this pipeline works - for now it runs in 3 steps
+I am actively developing how this pipeline works - for now it runs in 4 steps
 
 1. build
 2. psi
 3. annotate
+4. transcriptome_assembly
 
+After going through several different installation methods for majiq, I found that the easiest/most reliable seems to be installing
+majiq in a conda environment named "majiq"
 
-However, additional parsing of the 'modulizer' module is also being developed. 
+therefore, this pipeline assumes that you have a named conda environment called "majiq", which has majiq installed in it. As of Mar 02 2023 - this pipeline is using `majiq 2.4.dev4+gdd43612`
 
-Buyer beware, mileage may vary, 
+Transcriptome assembly will merge the bams and then 2 different transcriptome assembly tools, scallop2, and stringtie2 - and then extract the novel exons that match to significant junctions called by MAJIQ
+
+Buyer beware, mileage may vary. 
 
 Feel free to email/pop up any issues on the repo
 
