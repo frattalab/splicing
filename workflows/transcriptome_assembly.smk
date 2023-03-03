@@ -47,7 +47,7 @@ rule allMerging:
         expand('{outputdir}{grp}' + ".annotated.gtf",outputdir =both_output_dirs, grp = ALLGROUP),
         expand("{outputdir}" + "{grp}.unique.gtf",outputdir =both_output_dirs, grp = ALLGROUP),
         return_bed_and_bases(BASES,CONTRASTS,both_output_dirs),
-        expand(config["project_top_level"] + "merged_cryptic_events/" +  "{bse}-{contrast}_cryptic_exons.csv",zip, bse = BASES,contrast =  CONTRASTS)
+        # expand(config["project_top_level"] + "merged_cryptic_events/" +  "{bse}-{contrast}_cryptic_exons.csv",zip, bse = BASES,contrast =  CONTRASTS)
 
 
 
