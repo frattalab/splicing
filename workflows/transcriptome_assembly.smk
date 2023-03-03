@@ -198,6 +198,8 @@ rule merged_exon_beds:
     input:
         scallop_bed = scallop_outdir + "{bse}-{contrast}_cryptic_exons.bed",
         stringie_bed = stringtie_outdir + "{bse}-{contrast}_cryptic_exons.bed"
+    params:
+        outfolder = config["project_top_level"] + "merged_cryptic_events/" 
     output:
         config["project_top_level"] + "merged_cryptic_events/" +  "{bse}-{contrast}_cryptic_exons.bed",
         config["project_top_level"] + "merged_cryptic_events/" +  "{bse}-{contrast}_cryptic_exons.csv",
@@ -206,5 +208,5 @@ rule merged_exon_beds:
         Rscript scripts/merge_the_exon_files.R \
         --scallopbed {input.scallop_bed} \
         --stringtiebed {input.stringie_bed} \
-        --outputname {output}
+        --outputname {params.outfolder}
         """
