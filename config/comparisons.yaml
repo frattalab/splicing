@@ -3,30 +3,38 @@
 #problems. I suggest camelCase names, but doesn't really matter as long as you can interpret them. Throughout the file they have to be unique.
 #each of these two items has as many idenitifiers as you like, but they must be
 #valid identifiers from the column_name column in the sample_csv. The first identifier is always the baseline group
-compare_CTRL_SBMA:
+doxCurves00125:
+ column_name:
+   - group
+ noDox:
+   - no_dox
+ dox00125:
+   - dox_0125
+doxCurves00187:
   column_name:
     - group
-  controlmuscle:
-    - control_muscle
-  SBMAmuscle:
-    - sbma
-compare_CTRL_ALS:
+  noDox:
+    - no_dox
+  dox00187:
+    - dox_0187
+doxCurves0021:
   column_name:
     - group
-  controlmuscle:
-    - control_muscle
-  ALSmuscle:
-    - fus
-    - sod
-    - tdpALS 
-    - C9
-compare_ALS_SBMA:
-  column_name:
-    - group
-  ALSmuscle:
-    - fus
-    - sod
-    - tdpALS 
-    - C9
-  SBMAmuscle:
-    - sbma
+  noDox:
+    - no_dox
+  dox0021:
+    - dox_021
+doxCurves0025:
+ column_name:
+   - group
+ noDox:
+   - no_dox
+ dox0025:
+   - dox_025
+doxCurves0075:
+ column_name:
+   - group
+ noDox:
+   - no_dox
+ dox0075:
+   - dox_075
