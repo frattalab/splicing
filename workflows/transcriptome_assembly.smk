@@ -35,10 +35,10 @@ def return_awk():
     awk_string = """awk '{if ($7 != ".") {print}}'"""
     return awk_string
 
-awk_string = """awk '{if ($7 != ".") {print}}'"""
+
 
 print(both_output_dirs)
-print(awk_string)
+
 rule allMerging:
     input:
         expand(os.path.join(scallop_outdir,'{grp}' + ".gtf"),grp = ALLGROUP),
@@ -46,7 +46,9 @@ rule allMerging:
         expand(os.path.join(stringtie_outdir,"{grp}.unstranded_filtered.unique.gtf"),grp = ALLGROUP),
         expand('{outputdir}{grp}' + ".annotated.gtf",outputdir =both_output_dirs, grp = ALLGROUP),
         expand("{outputdir}" + "{grp}.unique.gtf",outputdir =both_output_dirs, grp = ALLGROUP),
-        return_bed_and_bases(BASES,CONTRASTS,both_output_dirs)
+        return_bed_and_bases(BASES,CONTRASTS,both_output_dirs),
+        expand(config["project_top_level"] + "merged_cryptic_events/" +  "{bse}-{contrast}_cryptic_exons.csv",zip, bse = BASES,contrast =  CONTRASTS)
+
 
 
 rule merge_bam_groups:
@@ -96,6 +98,7 @@ rule scallop_per_group:
         {params.scallop_path} \
         -i {input.bam} \
         -o {output} \
+        --verbose 0 \
         --library_type {params.libtype} \
         {params.scallop_extra_config}
         """
@@ -166,9 +169,11 @@ rule filter_scallop:
         scallop_outdir + "{grp}.unique.gtf"
     output:
         scallop_outdir + "{grp}.unstranded_filtered.unique.gtf"
+    params:
+        my_awk = lambda wildcards: return_awk()
     shell:
         """
-        ln -s {input} {output}
+        {params.my_awk} {input} > {output}
         """
 rule write_exon_beds:
     input:
@@ -186,5 +191,26 @@ rule write_exon_beds:
         Rscript scripts/extract_cryptic_exons_from_gtf.R \
         --transcripts {input.assembled_gtf} \
         --delta {input.delta_csv} \
+        --outputname {output}
+        """
+
+rule merged_exon_beds:
+    input:
+        scallop_bed = scallop_outdir + "{bse}-{contrast}_cryptic_exons.bed",
+        stringie_bed = stringtie_outdir + "{bse}-{contrast}_cryptic_exons.bed",
+        scallop_csv = scallop_outdir + "{bse}-{contrast}_cryptic_exons.bed.csv",
+        stringie_csv = stringtie_outdir + "{bse}-{contrast}_cryptic_exons.bed.csv,
+    output:
+        config["project_top_level"] + "merged_cryptic_events/" +  "{bse}-{contrast}_cryptic_exons.bed",
+        config["project_top_level"] + "merged_cryptic_events/" +  "{bse}-{contrast}_cryptic_exons.csv",
+    # conda:
+    #     "../envs/splicing_dependencies.yml"
+    wildcard_constraints:
+        outputdir="|".join(both_output_dirs)
+    shell:
+        """
+        Rscript scripts/merge_the_exon_files.R \
+        --scallopbed {input.scallop_bed} \
+        --stringtiebed {input.stringie_bed} \
         --outputname {output}
         """
