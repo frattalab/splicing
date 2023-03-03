@@ -47,7 +47,7 @@ rule allMerging:
         expand('{outputdir}{grp}' + ".annotated.gtf",outputdir =both_output_dirs, grp = ALLGROUP),
         expand("{outputdir}" + "{grp}.unique.gtf",outputdir =both_output_dirs, grp = ALLGROUP),
         return_bed_and_bases(BASES,CONTRASTS,both_output_dirs),
-        # expand(config["project_top_level"] + "merged_cryptic_events/" +  "{bse}-{contrast}_cryptic_exons.csv",zip, bse = BASES,contrast =  CONTRASTS)
+        expand(config["project_top_level"] + "merged_cryptic_events/" +  "{bse}-{contrast}_cryptic_exons.csv",zip, bse = BASES,contrast =  CONTRASTS)
 
 
 
@@ -194,19 +194,17 @@ rule write_exon_beds:
         --outputname {output}
         """
 
-# rule merged_exon_beds:
-#     input:
-#         scallop_bed = scallop_outdir + "{bse}-{contrast}_cryptic_exons.bed",
-#         stringie_bed = stringtie_outdir + "{bse}-{contrast}_cryptic_exons.bed",
-#         scallop_csv = scallop_outdir + "{bse}-{contrast}_cryptic_exons.bed.csv",
-#         stringie_csv = stringtie_outdir + "{bse}-{contrast}_cryptic_exons.bed.csv,
-#     output:
-#         config["project_top_level"] + "merged_cryptic_events/" +  "{bse}-{contrast}_cryptic_exons.bed",
-#         config["project_top_level"] + "merged_cryptic_events/" +  "{bse}-{contrast}_cryptic_exons.csv",
-#     shell:
-#         """
-#         Rscript scripts/merge_the_exon_files.R \
-#         --scallopbed {input.scallop_bed} \
-#         --stringtiebed {input.stringie_bed} \
-#         --outputname {output}
-#         """
+rule merged_exon_beds:
+    input:
+        scallop_bed = scallop_outdir + "{bse}-{contrast}_cryptic_exons.bed",
+        stringie_bed = stringtie_outdir + "{bse}-{contrast}_cryptic_exons.bed"
+    output:
+        config["project_top_level"] + "merged_cryptic_events/" +  "{bse}-{contrast}_cryptic_exons.bed",
+        config["project_top_level"] + "merged_cryptic_events/" +  "{bse}-{contrast}_cryptic_exons.csv",
+    shell:
+        """
+        Rscript scripts/merge_the_exon_files.R \
+        --scallopbed {input.scallop_bed} \
+        --stringtiebed {input.stringie_bed} \
+        --outputname {output}
+        """

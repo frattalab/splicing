@@ -1,5 +1,6 @@
 #read in the bed files for a given group
 #!/usr/bin/env Rscript
+
 library(tidyverse)
 library(data.table)
 library("optparse")
@@ -24,9 +25,7 @@ outputname = opt$outputname
 
 dir.create(outputname, showWarnings = FALSE)
 comparison_name = basename(scallopbed)
-# 
-# scallopbed = "/Users/annaleigh/cluster/first_weeks/splicing_comparisons/symbams/humphrey_i3cortical/scallop_output/controlHumphreyCorticalNeuron-TDP43KDHumphreyCorticalNeuron_cryptic_exons.bed"
-# stringtiebed = "/Users/annaleigh/cluster/first_weeks/splicing_comparisons/symbams/humphrey_i3cortical/stringtie_output/controlHumphreyCorticalNeuron-TDP43KDHumphreyCorticalNeuron_cryptic_exons.bed"
+
 
 scallopcsv = fread(paste0(scallopbed, ".csv"))
 scallopbed = fread(scallopbed)
