@@ -3,38 +3,52 @@
 #problems. I suggest camelCase names, but doesn't really matter as long as you can interpret them. Throughout the file they have to be unique.
 #each of these two items has as many idenitifiers as you like, but they must be
 #valid identifiers from the column_name column in the sample_csv. The first identifier is always the baseline group
-doxCurves00125:
- column_name:
-   - group
- noDox:
-   - no_dox
- dox00125:
-   - dox_0125
-doxCurves00187:
+DZcurves002:
   column_name:
     - group
-  noDox:
-    - no_dox
-  dox00187:
-    - dox_0187
-doxCurves0021:
+  Control:
+    - DZ_curves_0
+  TDP43KD002:
+    - DZ_curves_002
+DZcurves003:
   column_name:
     - group
-  noDox:
-    - no_dox
-  dox0021:
-    - dox_021
-doxCurves0025:
- column_name:
-   - group
- noDox:
-   - no_dox
- dox0025:
-   - dox_025
-doxCurves0075:
- column_name:
-   - group
- noDox:
-   - no_dox
- dox0075:
-   - dox_075
+  Control:
+    - DZ_curves_0
+  TDP43KD003:
+    - DZ_curves_003
+DZcurves004:
+  column_name:
+    - group
+  Control:
+    - DZ_curves_0
+  TDP43KD004:
+    - DZ_curves_004
+DZcurves005:
+  column_name:
+    - group
+  Control:
+    - DZ_curves_0
+  TDP43KD005:
+    - DZ_curves_005
+DZcurves0075:
+  column_name:
+    - group
+  Control:
+    - DZ_curves_0
+  TDP43KD0075:
+    - DZ_curves_0075
+DZcurves01:
+  column_name:
+    - group
+  Control:
+    - DZ_curves_0
+  TDP43KD01:
+    - DZ_curves_01
+DZcurves1:
+  column_name:
+    - group
+  Control:
+    - DZ_curves_0
+  TDP43KD1:
+    - DZ_curves_1
