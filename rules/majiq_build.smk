@@ -31,7 +31,6 @@ rule create_majiq_config_file:
         conditions_bams_parsed = parse_sample_csv_majiq(config['sampleCSVpath'])
         options = [
             "[info]",
-            "readlen=" + str(config['read_len']),
             "bamdirs=" + config['bam_dir'],
             "genome=" + config['genome_refcode'],
             "strandness=none",
