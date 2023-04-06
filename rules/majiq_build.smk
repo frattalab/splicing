@@ -31,7 +31,6 @@ rule create_majiq_config_file:
         conditions_bams_parsed = parse_sample_csv_majiq(config['sampleCSVpath'])
         options = [
             "[info]",
-            "readlen=" + str(config['read_len']),
             "bamdirs=" + config['bam_dir'],
             "genome=" + config['genome_refcode'],
             "strandness=none",
@@ -49,6 +48,8 @@ rule majiq_build:
         expand(os.path.join(MAJIQ_DIR,"builder",'{name}' + ".sj"),name = SAMPLE_NAMES),
         os.path.join(MAJIQ_DIR,"builder/splicegraph.sql"),
         os.path.join(MAJIQ_DIR,"builder/builder_done")
+    conda:
+        'majiq'
     threads:
             4
     params:
