@@ -60,7 +60,8 @@ rule majiq_group_psi_tsv:
         voila_file = os.path.join(MAJIQ_DIR,"psi",'{group}' + ".psi.voila")
     output:
         tsv = os.path.join(MAJIQ_DIR,"psi_voila_tsv",'{group}' + ".psi.tsv")
-
+    conda:
+        'majiq'
     params:
         voila_path = config['voila_path'],
         psi_output_folder = os.path.join(MAJIQ_DIR,"psi_voila_tsv"),
@@ -100,6 +101,8 @@ rule majiq_delta_psi_tsv:
         voila_file = lambda wildcards: os.path.join(MAJIQ_DIR,"delta_psi","{bse}-{contrast}" + ".deltapsi.voila")
     output:
         tsv = os.path.join(MAJIQ_DIR,"delta_psi_voila_tsv","{bse}-{contrast}" + ".psi.tsv")
+    conda:
+        'majiq'
     params:
         voila_path = config['voila_path'],
         psi_output_folder = os.path.join(MAJIQ_DIR,"delta_psi_voila_tsv"),
@@ -139,6 +142,8 @@ rule majiq_psi_tsv:
         voila_file = lambda wildcards: os.path.join(MAJIQ_DIR,"psi_single","{sample}" + config['bam_suffix'] + ".psi.voila")
     output:
         tsv = os.path.join(MAJIQ_DIR,"psi_voila_tsv_single",'{sample}' + config['bam_suffix'] + ".psi.tsv")
+    conda:
+        'majiq'
     params:
         voila_path = config['voila_path'],
         psi_output_folder = os.path.join(MAJIQ_DIR,"psi_voila_tsv_single"),
